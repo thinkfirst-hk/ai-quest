@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>先思考!Think First! — AI 大挑戰</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --sky:#EAF4FF;
+    --ink:#1B2A4A;
+    --coral:#FF6B5B;
+    --sunny:#FFC83D;
+    --mint:#3ECF8E;
+    --blue:#4A8FE7;
+    --card:#FFFFFF;
+    --shadow:0 6px 0 rgba(27,42,74,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--sky);
+    color:var(--ink);
+    font-family:'Nunito',system-ui,sans-serif;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    padding:16px;
+  }
+  .app{width:100%;max-width:520px}
+  h1,h2,h3,.btn,.badge-name{font-family:'Baloo 2','Nunito',system-ui,sans-serif}
+
+  /* top bar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .logo{font-family:'Baloo 2';font-weight:800;font-size:1.25rem;letter-spacing:.3px}
+  .logo span{color:var(--coral)}
+  .lang-toggle{
+    border:3px solid var(--ink);background:var(--card);border-radius:999px;
+    font-family:'Baloo 2';font-weight:700;font-size:.85rem;padding:6px 14px;
+    cursor:pointer;box-shadow:var(--shadow);transition:transform .1s;
+  }
+  .lang-toggle:active{transform:translateY(3px);box-shadow:none}
+
+  /* think-first meter (signature element) */
+  .meter-wrap{margin:10px 0 18px}
+  .meter-labels{display:flex;justify-content:space-between;font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:5px}
+  .meter-labels .l{color:var(--coral)} .meter-labels .m{color:var(--mint)} .meter-labels .r{color:var(--blue)}
+  .meter{
+    position:relative;height:26px;border:3px solid var(--ink);border-radius:999px;overflow:hidden;
+    background:linear-gradient(90deg,#FFD9D4 0%,#FFD9D4 32%,#CFF5E4 32%,#CFF5E4 68%,#D7E8FF 68%,#D7E8FF 100%);
+  }
+  .meter-needle{
+    position:absolute;top:-4px;width:14px;height:34px;background:var(--ink);border-radius:6px;
+    left:50%;transform:translateX(-50%);transition:left .6s cubic-bezier(.34,1.56,.64,1);
+  }
+  .meter-caption{text-align:center;font-size:.78rem;font-weight:700;margin-top:5px;opacity:.75}
+
+  /* cards */
+  .card{
+    background:var(--card);border:3px solid var(--ink);border-radius:22px;
+    box-shadow:var(--shadow);padding:22px;
+  }
+  .scene-tag{
+    display:inline-block;background:var(--sunny);border:2.5px solid var(--ink);border-radius:999px;
+    font-family:'Baloo 2';font-weight:700;font-size:.78rem;padding:3px 12px;margin-bottom:12px;
+  }
+  .scene-emoji{font-size:2.6rem;line-height:1;margin-bottom:10px}
+  .scene-text{font-size:1.02rem;font-weight:700;line-height:1.55;margin-bottom:18px}
+
+  .btn{
+    display:block;width:100%;text-align:left;
+    background:var(--card);border:3px solid var(--ink);border-radius:16px;
+    font-weight:700;font-size:.95rem;line-height:1.4;
+    padding:13px 16px;margin-bottom:10px;cursor:pointer;
+    box-shadow:var(--shadow);transition:transform .1s, background .15s;
+  }
+  .btn:hover{background:#FFF6DE}
+  .btn:active{transform:translateY(4px);box-shadow:none}
+  .btn:focus-visible{outline:3px dashed var(--blue);outline-offset:3px}
+
+  .btn.primary{
+    background:var(--coral);color:#fff;text-align:center;
+    font-family:'Baloo 2';font-size:1.05rem;letter-spacing:.3px;
+  }
+  .btn.primary:hover{background:#ff5946}
+
+  .btn-back{
+    background:none;border:none;cursor:pointer;
+    font-family:'Baloo 2','Nunito',system-ui,sans-serif;font-weight:700;font-size:.88rem;
+    color:var(--ink);opacity:.55;padding:8px 4px;margin-top:2px;
+  }
+  .btn-back:hover{opacity:1;text-decoration:underline}
+  .btn-back:focus-visible{outline:3px dashed var(--blue);outline-offset:3px;opacity:1}
+
+  /* feedback */
+  .verdict{
+    font-family:'Baloo 2';font-weight:800;font-size:1.2rem;margin-bottom:8px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .verdict.wise{color:#1d9e69}.verdict.okay{color:#c98f00}.verdict.risky{color:var(--coral)}
+  .explain{font-size:.95rem;font-weight:600;line-height:1.6;margin-bottom:16px}
+  .tip{
+    background:#FFF6DE;border:2.5px dashed var(--ink);border-radius:14px;
+    padding:12px 14px;font-size:.88rem;font-weight:700;margin-bottom:18px;
+  }
+  .tip b{color:var(--coral)}
+
+  /* progress dots */
+  .dots{display:flex;gap:8px;justify-content:center;margin:16px 0 4px}
+  .dot{width:12px;height:12px;border-radius:50%;border:2.5px solid var(--ink);background:var(--card)}
+  .dot.done{background:var(--mint)}
+  .dot.now{background:var(--sunny)}
+
+  /* end screen */
+  .end{text-align:center}
+  .badge{
+    width:120px;height:120px;border-radius:50%;margin:8px auto 14px;
+    display:flex;align-items:center;justify-content:center;font-size:3.2rem;
+    border:4px solid var(--ink);box-shadow:var(--shadow);
+  }
+  .badge.gold{background:var(--sunny)} .badge.silver{background:#D7E8FF} .badge.bronze{background:#FFD9D4}
+  .badge-name{font-size:1.5rem;font-weight:800;margin-bottom:6px}
+  .end-sub{font-weight:700;opacity:.8;margin-bottom:18px;line-height:1.55}
+  .score-pill{
+    display:inline-block;background:var(--ink);color:#fff;border-radius:999px;
+    font-family:'Baloo 2';font-weight:700;padding:6px 18px;margin-bottom:18px;
+  }
+
+  /* intro */
+  .intro h1{font-size:1.7rem;font-weight:800;line-height:1.25;margin-bottom:10px}
+  .intro h1 em{font-style:normal;color:var(--coral)}
+  .intro p{font-weight:700;line-height:1.6;opacity:.85;margin-bottom:18px}
+  .age-row{display:flex;gap:8px;margin-bottom:18px}
+  .age-chip{
+    flex:1;text-align:center;border:3px solid var(--ink);border-radius:14px;background:var(--card);
+    font-family:'Baloo 2';font-weight:700;font-size:.85rem;padding:9px 4px;cursor:pointer;
+    box-shadow:var(--shadow);transition:transform .1s;
+  }
+  .age-chip.sel{background:var(--mint)}
+  .age-chip:active{transform:translateY(3px);box-shadow:none}
+  .footer-note{text-align:center;font-size:.72rem;font-weight:700;opacity:.5;margin-top:14px}
+
+  @media (prefers-reduced-motion: reduce){
+    .meter-needle{transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar">
+    <div class="logo">Think<span>First!</span> 🧠</div>
+    <button class="lang-toggle" id="langBtn" onclick="toggleLang()">English</button>
+  </div>
+
+  <div class="meter-wrap" id="meterWrap" style="display:none">
+    <div class="meter-labels"><span class="l" id="mlL"></span><span class="m" id="mlM"></span><span class="r" id="mlR"></span></div>
+    <div class="meter"><div class="meter-needle" id="needle"></div></div>
+    <div class="meter-caption" id="meterCap"></div>
+  </div>
+
+  <div class="card" id="stage"></div>
+  <div class="dots" id="dots"></div>
+  <div class="footer-note" id="footNote"></div>
+</div>
+
+<script>
+/* ---------------- i18n + content ---------------- */
+const UI = {
+  en:{
+    start:"Start the Quest!", next:"Next challenge →", finish:"See my badge!",
+    again:"Play again", back:"← Go back", tagScene:"Challenge", tip:"Power-up tip:",
+    wise:"Wise move!", okay:"Not bad…", risky:"Hmm, risky!",
+    mL:"Trusts everything", mM:"Thinks first", mR:"Trusts nothing",
+    meterCap:"Your Think-First meter",
+    introH:'Can you out-smart the <em>robots</em>?',
+    introP:"AI is amazing — but it isn't always right, and it isn't always safe. Make 6 choices and see if you're a true Think-First Hero.",
+    ageQ:"I am…", ages:["8–10","11–13","14+"],
+    endSub:"Share your badge with a grown-up and tell them ONE thing you learned!",
+    score:"points",
+    badges:{gold:["🏆","Think-First Hero"],silver:["🥈","Smart Explorer"],bronze:["🌱","AI Rookie"]},
+    foot:"Prototype v0.1 · ThinkFirst Learning · Hong Kong"
+  },
+  zh:{
+    start:"開始挑戰!", next:"下一關 →", finish:"看看我的徽章!",
+    again:"再玩一次", back:"← 返回", tagScene:"挑戰", tip:"小貼士:",
+    wise:"聰明的選擇!", okay:"不錯,但…", risky:"嗯,有點危險!",
+    mL:"乜都信", mM:"先思考", mR:"乜都唔信",
+    meterCap:"你的「先思考」指數",
+    introH:'你能比<em>機械人</em>更聰明嗎?',
+    introP:"AI 好犀利 — 但它不一定對,也不一定安全。完成 6 個選擇,看看你是不是真正的「先思考」英雄!",
+    ageQ:"我是…", ages:["8–10 歲","11–13 歲","14 歲以上"],
+    endSub:"把徽章分享給家長或老師,告訴他們你學到的一件事!",
+    score:"分",
+    badges:{gold:["🏆","先思考英雄"],silver:["🥈","智慧探險家"],bronze:["🌱","AI 新手"]},
+    foot:"原型 v0.1 · ThinkFirst Learning · 香港"
+  }
+};
+
+/* each option: t = text, s = score (2 wise / 1 okay / 0 risky), m = meter push (-1 over-trust, +1 over-doubt, 0 balanced) */
+const SCENARIOS = [
+  {
+    emoji:"📚",
+    en:{ q:"You ask an AI to help with your maths homework. It instantly gives you the full answer. What do you do?",
+      opts:[
+        {t:"Copy it down fast — done!", s:0, m:-1, ex:"If you just copy, the AI did the learning — not you. On test day, the AI won't be there!"},
+        {t:"Ask the AI to explain the steps, then try a similar one myself.", s:2, m:0, ex:"Perfect! Using AI as a coach (not a copy machine) makes YOU smarter."},
+        {t:"Never use AI for homework, it's cheating.", s:1, m:1, ex:"Using AI to understand isn't cheating — copying answers is. The tool is fine; how you use it matters."}
+      ]},
+    zh:{ q:"你請 AI 幫你做數學功課,它立即給你完整答案。你會怎樣做?",
+      opts:[
+        {t:"快點抄低 — 搞掂!", s:0, m:-1, ex:"如果只是抄,學習的是 AI,不是你。考試時 AI 可不會在你身邊!"},
+        {t:"請 AI 解釋步驟,然後自己試做一題類似的。", s:2, m:0, ex:"完美!把 AI 當教練(而不是抄寫機)會令「你」更聰明。"},
+        {t:"絕不用 AI 做功課,這是作弊。", s:1, m:1, ex:"用 AI 去「理解」不是作弊 — 抄答案才是。工具沒問題,重點是怎樣用。"}
+      ]}
+  },
+  {
+    emoji:"🔒",
+    en:{ q:"A fun chatbot says: \"Tell me your full name, school and address so I can be your best friend!\"",
+      opts:[
+        {t:"Tell it everything — it's just a robot.", s:0, m:-1, ex:"Stop! Anything you type can be stored or seen by people. Real friends don't need your address on day one — neither do bots."},
+        {t:"Keep personal details private and never share them with AI.", s:2, m:0, ex:"Exactly. Name, school, address, photos — keep them off-limits. You can chat without revealing who or where you are."},
+        {t:"Give a fake name and fake address instead.", s:1, m:0, ex:"Protecting yourself is good thinking! Even better: simply don't share personal-style info at all, real or fake."}
+      ]},
+    zh:{ q:"一個有趣的聊天機械人說:「話我知你的全名、學校同地址,我哋就可以做最好的朋友!」",
+      opts:[
+        {t:"全部話佢知 — 佢只係機械人啫。", s:0, m:-1, ex:"停一停!你輸入的東西可能被儲存或被人看到。真朋友第一天不會問你住址 — 機械人也不應該。"},
+        {t:"個人資料保密,絕不告訴 AI。", s:2, m:0, ex:"正確!姓名、學校、地址、相片 — 全部不要分享。不透露身份一樣可以傾偈。"},
+        {t:"給它假名和假地址。", s:1, m:0, ex:"懂得保護自己,好!更好的做法是:無論真假,個人資料類的內容都不要分享。"}
+      ]}
+  },
+  {
+    emoji:"🎬",
+    en:{ q:"In your class group chat, someone shares a video of a famous singer saying something shocking. Everyone is forwarding it. You…",
+      opts:[
+        {t:"Forward it too — everyone else did!", s:0, m:-1, ex:"AI can make fake videos (deepfakes) that look 100% real. Forwarding fakes spreads them faster — and you become part of the trick."},
+        {t:"Check a trusted news site first before believing or sharing it.", s:2, m:0, ex:"Hero move! \"Pause → check → then share (or don't)\" is the #1 superpower against deepfakes."},
+        {t:"Reply \"this is fake\" without checking.", s:1, m:1, ex:"Good instinct to doubt! But calling things fake without checking can also spread confusion. Check first, then speak."}
+      ]},
+    zh:{ q:"班群裡有人分享一段影片:著名歌手說了一些令人震驚的話。大家都在轉發。你會…",
+      opts:[
+        {t:"我也轉發 — 個個都發啦!", s:0, m:-1, ex:"AI 可以製作以假亂真的影片(深偽 deepfake)。轉發假片會令它傳得更快 — 你也成了騙局的一部分。"},
+        {t:"先到可信的新聞網站查證,才決定信不信、發不發。", s:2, m:0, ex:"英雄級操作!「停一停 → 查一查 → 再決定」是對付深偽影片的第一超能力。"},
+        {t:"不查證就回覆「假嘅嚟」。", s:1, m:1, ex:"有懷疑精神,好!但未查證就斷定是假,也可能製造混亂。先查證,再開口。"}
+      ]}
+  },
+  {
+    emoji:"🤖",
+    en:{ q:"You ask an AI \"Which Hong Kong MTR station is deepest?\" It answers very confidently — but your dad says that's wrong. What's true about AI?",
+      opts:[
+        {t:"AI is always right; Dad must be wrong.", s:0, m:-1, ex:"AI can sound super confident and still be wrong — it sometimes \"makes things up\" (we call these hallucinations)."},
+        {t:"AI can be wrong even when it sounds sure, so I should double-check facts.", s:2, m:0, ex:"Yes! Confidence ≠ correctness. For facts that matter, check a second source."},
+        {t:"AI is wrong so often it's useless.", s:1, m:1, ex:"It's not useless — it's a powerful helper that needs a fact-checker: you!"}
+      ]},
+    zh:{ q:"你問 AI:「香港最深的港鐵站是哪個?」它非常有信心地回答 — 但爸爸說它答錯了。關於 AI,哪句才是真的?",
+      opts:[
+        {t:"AI 一定對,錯的是爸爸。", s:0, m:-1, ex:"AI 可以聽起來超有信心但其實答錯 — 它有時會「老作」(我們叫這做 AI 幻覺)。"},
+        {t:"AI 就算語氣肯定都可能錯,重要資料要再核實。", s:2, m:0, ex:"正確!有信心 ≠ 一定對。重要的事實,記得查多一個來源。"},
+        {t:"AI 經常錯,根本無用。", s:1, m:1, ex:"它不是無用 — 它是強大的助手,只是需要一位事實核查員:就是你!"}
+      ]}
+  },
+  {
+    emoji:"💬",
+    en:{ q:"Your friend seems sad lately and says: \"I only talk to my AI chatbot now. It's nicer than people.\" What's the kind, smart thing to do?",
+      opts:[
+        {t:"Cool, AI friends are enough for anyone.", s:0, m:-1, ex:"AI can be comforting, but it can't hug you, can't truly know you, and shouldn't replace people. Everyone needs humans too."},
+        {t:"Hang out with them more, and suggest talking to a trusted adult if they're feeling down.", s:2, m:0, ex:"That's real friendship. AI can be a tool, but care comes from people — and trusted adults can really help."},
+        {t:"Tell them AI chatbots are stupid and they should delete it.", s:1, m:1, ex:"Your heart's in the right place! But mocking their comfort may push them away. Invite, don't insult."}
+      ]},
+    zh:{ q:"你的朋友最近不開心,還說:「我而家淨係同 AI 傾偈,佢好過人類。」最善良又聰明的做法是?",
+      opts:[
+        {t:"幾好喎,有 AI 朋友就夠啦。", s:0, m:-1, ex:"AI 可以給人安慰,但它不能擁抱你,不能真正認識你,更不應取代真人。每個人都需要人與人的連結。"},
+        {t:"多陪伴他,並建議他不開心時找信任的大人傾訴。", s:2, m:0, ex:"這才是真友誼。AI 可以是工具,但關心來自人 — 信任的大人真的可以幫到手。"},
+        {t:"話佢知 AI 好蠢,叫佢即刻刪除。", s:1, m:1, ex:"你的出發點是好的!但取笑他的安慰來源可能令他更封閉。邀請他,不要嘲笑他。"}
+      ]}
+  },
+  {
+    emoji:"🎨",
+    en:{ q:"There's a school art competition. You could ask AI to generate a picture and enter it as your own. You…",
+      opts:[
+        {t:"Enter the AI picture with my name on it. Easy win!", s:0, m:-1, ex:"Saying AI's work is yours isn't winning — it's hiding the truth. If you're found out, trust is hard to win back."},
+        {t:"Ask if AI tools are allowed; if I use them, I say so honestly.", s:2, m:0, ex:"That's integrity! Many creators use AI openly as a tool. The rule is simple: be honest about how you made it."},
+        {t:"Refuse to ever touch AI art tools.", s:1, m:1, ex:"That's one choice! But AI art tools can also help you sketch ideas. The key isn't avoiding them — it's honesty about using them."}
+      ]},
+    zh:{ q:"學校舉行繪畫比賽。你可以叫 AI 生成一幅畫,然後當成自己的作品參賽。你會…",
+      opts:[
+        {t:"用 AI 幅畫寫上我的名 — 輕鬆贏!", s:0, m:-1, ex:"把 AI 的作品說成自己的,不是贏 — 是隱瞞。一旦被發現,信任很難重建。"},
+        {t:"先問清楚可否用 AI 工具;如果用了,就誠實說明。", s:2, m:0, ex:"這就是誠信!很多創作者都公開地用 AI 做工具。規則很簡單:誠實交代你是怎樣創作的。"},
+        {t:"永遠不碰 AI 繪畫工具。", s:1, m:1, ex:"這也是一種選擇!但 AI 工具也可以幫你構思草圖。重點不是避開它,而是誠實地使用它。"}
+      ]}
+  }
+];
+
+/* ---------------- state ---------------- */
+let lang = "zh";
+let step = -1;            // -1 intro, 0..5 scenarios, 6 end
+let score = 0;
+let meterPos = 0;         // -3..+3 roughly
+let answered = null;      // chosen option during feedback
+let history = [];         // committed answers: {s, m} per completed step
+let ageSel = 1;
+
+const stage = document.getElementById("stage");
+const dots = document.getElementById("dots");
+
+function t(){ return UI[lang]; }
+
+function toggleLang(){
+  lang = lang === "zh" ? "en" : "zh";
+  document.getElementById("langBtn").textContent = lang === "zh" ? "English" : "繁體中文";
+  render();
+}
+
+function setMeterUI(){
+  const w = document.getElementById("meterWrap");
+  w.style.display = step >= 0 && step < SCENARIOS.length + 1 ? "block" : "none";
+  document.getElementById("mlL").textContent = t().mL;
+  document.getElementById("mlM").textContent = t().mM;
+  document.getElementById("mlR").textContent = t().mR;
+  document.getElementById("meterCap").textContent = t().meterCap;
+  const pct = 50 + Math.max(-3, Math.min(3, meterPos)) * 13;
+  document.getElementById("needle").style.left = pct + "%";
+}
+
+function renderDots(){
+  dots.innerHTML = "";
+  if(step < 0 || step > SCENARIOS.length){ return; }
+  for(let i=0;i<SCENARIOS.length;i++){
+    const d = document.createElement("div");
+    d.className = "dot" + (i < step ? " done" : i === step ? " now" : "");
+    dots.appendChild(d);
+  }
+}
+
+function render(){
+  document.getElementById("footNote").textContent = t().foot;
+  setMeterUI(); renderDots();
+
+  if(step === -1){ renderIntro(); }
+  else if(step >= SCENARIOS.length){ renderEnd(); }
+  else if(answered !== null){ renderFeedback(); }
+  else{ renderScenario(); }
+}
+
+function renderIntro(){
+  const u = t();
+  stage.innerHTML = `
+    <div class="intro">
+      <div class="scene-emoji">🤖🧠✨</div>
+      <h1>${u.introH}</h1>
+      <p>${u.introP}</p>
+      <div style="font-weight:800;margin-bottom:8px">${u.ageQ}</div>
+      <div class="age-row">
+        ${u.ages.map((a,i)=>`<button class="age-chip ${i===ageSel?'sel':''}" onclick="pickAge(${i})">${a}</button>`).join("")}
+      </div>
+      <button class="btn primary" onclick="startQuest()">${u.start}</button>
+    </div>`;
+}
+
+function pickAge(i){ ageSel = i; render(); }
+
+function startQuest(){ step = 0; score = 0; meterPos = 0; answered = null; history = []; render(); }
+
+function renderScenario(){
+  const s = SCENARIOS[step][lang];
+  stage.innerHTML = `
+    <span class="scene-tag">${t().tagScene} ${step+1} / ${SCENARIOS.length}</span>
+    <div class="scene-emoji">${SCENARIOS[step].emoji}</div>
+    <div class="scene-text">${s.q}</div>
+    ${s.opts.map((o,i)=>`<button class="btn" onclick="choose(${i})">${o.t}</button>`).join("")}
+    <button class="btn-back" onclick="goBack()">${t().back}</button>
+  `;
+}
+
+function choose(i){
+  const o = SCENARIOS[step][lang].opts[i];
+  answered = i;
+  score += o.s;
+  meterPos += o.m;
+  render();
+}
+
+function renderFeedback(){
+  const o = SCENARIOS[step][lang].opts[answered];
+  const cls = o.s === 2 ? "wise" : o.s === 1 ? "okay" : "risky";
+  const icon = o.s === 2 ? "🌟" : o.s === 1 ? "🤔" : "⚠️";
+  const verdict = o.s === 2 ? t().wise : o.s === 1 ? t().okay : t().risky;
+  const last = step === SCENARIOS.length - 1;
+  stage.innerHTML = `
+    <div class="verdict ${cls}">${icon} ${verdict}</div>
+    <div class="explain">${o.ex}</div>
+    <div class="tip"><b>${t().tip}</b> ${lang==="en"
+      ? "AI is a tool, not a boss and not an enemy. You stay the pilot. 🧑‍✈️"
+      : "AI 是工具,不是老闆,也不是敵人。掌舵的人永遠是你。🧑‍✈️"}</div>
+    <button class="btn primary" onclick="nextStep()">${last ? t().finish : t().next}</button>
+    <button class="btn-back" onclick="goBack()">${t().back}</button>
+  `;
+}
+
+function nextStep(){
+  const o = SCENARIOS[step][lang].opts[answered];
+  history[step] = {s:o.s, m:o.m};
+  answered = null; step++; render();
+}
+
+function goBack(){
+  if(answered !== null){
+    /* on feedback screen: undo this answer, re-show the same question */
+    const o = SCENARIOS[step][lang].opts[answered];
+    score -= o.s; meterPos -= o.m;
+    answered = null;
+  } else if(step === 0){
+    /* first question: return to intro */
+    step = -1;
+  } else if(step > 0){
+    /* return to previous question and undo its committed answer */
+    step--;
+    const h = history[step];
+    if(h){ score -= h.s; meterPos -= h.m; history[step] = null; }
+  }
+  render();
+}
+
+function renderEnd(){
+  const max = SCENARIOS.length * 2;
+  const tier = score >= max - 2 ? "gold" : score >= max/2 ? "silver" : "bronze";
+  const [emoji, name] = t().badges[tier];
+  stage.innerHTML = `
+    <div class="end">
+      <div class="badge ${tier}">${emoji}</div>
+      <div class="badge-name">${name}</div>
+      <div class="score-pill">${score} / ${max} ${t().score}</div>
+      <div class="end-sub">${t().endSub}</div>
+      <button class="btn primary" onclick="startQuest()">${t().again}</button>
+    </div>`;
+}
+
+render();
+</script>
+</body>
+</html>
