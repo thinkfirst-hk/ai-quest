@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Think First! AI Quest — 先思考!AI 任務</title>
+<style>
+  :root{
+    --sky:#EAF4FF; --ink:#1B2A4A; --card:#FFFFFF;
+    --pause:#FF6B5B; --question:#FFC83D; --verify:#4A8FE7; --decide:#3ECF8E; --own:#9B6BF2;
+    --soft:#F4EFFF; --paper:#FFF6DE;
+    --shadow:0 5px 0 rgba(27,42,74,.12);
+    --r:18px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--sky); color:var(--ink);
+    font-family:-apple-system,"Segoe UI","PingFang HK","PingFang TC","Microsoft JhengHei","Noto Sans TC",Roboto,sans-serif;
+    min-height:100vh; display:flex; justify-content:center; padding:14px;
+    line-height:1.55;
+  }
+  .app{width:100%;max-width:560px}
+
+  /* top bar */
+  .topbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px}
+  .logo{font-weight:800;font-size:1.15rem;letter-spacing:.2px}
+  .logo b{color:var(--pause)}
+  .topbtns{display:flex;gap:6px}
+  .pill{
+    border:2.5px solid var(--ink);background:var(--card);border-radius:999px;
+    font-weight:700;font-size:.82rem;padding:8px 14px;min-height:44px;
+    cursor:pointer;box-shadow:var(--shadow);color:var(--ink);
+  }
+  .pill:active{transform:translateY(3px);box-shadow:none}
+  .pill:focus-visible,.btn:focus-visible,.chk:focus-visible{outline:3px dashed var(--verify);outline-offset:3px}
+
+  /* cards */
+  .card{background:var(--card);border:3px solid var(--ink);border-radius:var(--r);box-shadow:var(--shadow);padding:18px;margin-bottom:14px}
+  .tag{display:inline-block;background:var(--question);border:2.5px solid var(--ink);border-radius:999px;font-weight:800;font-size:.74rem;padding:3px 12px;margin-bottom:10px}
+  .big{font-size:2.4rem;line-height:1.15;margin-bottom:8px}
+  h1{font-size:1.45rem;line-height:1.3;margin-bottom:8px}
+  h2{font-size:1.12rem;margin-bottom:8px}
+  p{margin-bottom:10px}
+  .muted{opacity:.72;font-size:.9rem}
+  .story{font-size:1rem;font-weight:600;white-space:pre-line}
+
+  /* think-first loop chips */
+  .loop{display:flex;gap:5px;flex-wrap:wrap;margin:8px 0 14px}
+  .chip{font-size:.7rem;font-weight:800;padding:5px 10px;border-radius:999px;border:2.5px solid var(--ink);background:#fff;opacity:.4}
+  .chip.on{opacity:1;background:var(--c);box-shadow:var(--shadow)}
+
+  /* buttons / choices */
+  .btn{
+    display:block;width:100%;text-align:left;background:var(--card);
+    border:3px solid var(--ink);border-radius:14px;color:var(--ink);
+    font-weight:700;font-size:.95rem;line-height:1.45;font-family:inherit;
+    padding:13px 15px;margin-bottom:10px;min-height:48px;cursor:pointer;
+    box-shadow:var(--shadow);
+  }
+  .btn:hover{background:var(--paper)}
+  .btn:active{transform:translateY(4px);box-shadow:none}
+  .btn.primary{background:var(--pause);color:#fff;text-align:center;font-size:1.02rem}
+  .btn.primary:hover{background:#ff5946}
+  .btn.ghost{background:none;border:none;box-shadow:none;opacity:.6;text-align:center;font-size:.88rem;min-height:44px}
+  .btn.ghost:hover{opacity:1;text-decoration:underline}
+
+  /* Captain Sonar */
+  .sonar{display:flex;gap:10px;align-items:flex-start;margin:12px 0}
+  .owl{position:relative;flex:0 0 54px;width:54px;height:58px;background:#8E7BFF;border:3px solid var(--ink);border-radius:50% 50% 46% 46%}
+  .owl span{position:absolute}
+  .owl .tl,.owl .tr{top:-9px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid var(--ink)}
+  .owl .tl{left:5px;transform:rotate(-18deg)} .owl .tr{right:5px;transform:rotate(18deg)}
+  .owl .band{left:-3px;right:-3px;top:11px;height:8px;background:var(--ink);border-radius:4px}
+  .owl .eye{top:8px;width:19px;height:19px;background:#fff;border:2.5px solid var(--ink);border-radius:50%}
+  .owl .eye i{position:absolute;left:5px;top:5px;width:6px;height:6px;background:var(--ink);border-radius:50%}
+  .owl .el{left:5px} .owl .er{right:5px}
+  .owl .beak{left:50%;top:28px;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #FFA94D;filter:drop-shadow(0 1px 0 var(--ink))}
+  .bubble{position:relative;background:var(--soft);border:2.5px solid var(--ink);border-radius:14px;padding:10px 13px;font-weight:600;font-size:.92rem}
+  .bubble::before{content:"";position:absolute;left:-15px;top:16px;border:7px solid transparent;border-right-color:var(--ink)}
+  .bubble b.who{display:block;font-size:.72rem;letter-spacing:.4px;opacity:.65;margin-bottom:2px}
+
+  /* outcome tones */
+  .outcome{border-radius:14px;border:3px solid var(--ink);padding:13px 15px;margin:10px 0;font-weight:600}
+  .outcome.wise{background:#E7FAF1;animation:glowp 1.1s ease-out 1}
+  .outcome.risky{background:#FFE9E6;animation:shake .5s ease-in-out 1}
+  .outcome.mixed{background:var(--paper);animation:tilt .55s ease-in-out 1}
+  .verdict{font-weight:800;margin-bottom:4px}
+  @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+  @keyframes glowp{0%{box-shadow:0 0 0 0 rgba(62,207,142,.65)}100%{box-shadow:0 0 0 18px rgba(62,207,142,0)}}
+  @keyframes tilt{0%,100%{transform:rotate(0)}30%{transform:rotate(-1.2deg)}70%{transform:rotate(1.2deg)}}
+
+  /* pilot meter */
+  .meter{display:flex;gap:6px;margin:6px 0 2px}
+  .seg{flex:1;height:20px;border:2.5px solid var(--ink);border-radius:9px;background:#fff;overflow:hidden}
+  .seg i{display:block;height:100%;background:var(--c);width:0%}
+  .mlabels{display:flex;gap:6px;margin-bottom:8px}
+  .mlabels span{flex:1;text-align:center;font-size:.62rem;font-weight:800;letter-spacing:.2px}
+
+  /* mission map */
+  .mcard{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--card);border:3px solid var(--ink);border-radius:14px;box-shadow:var(--shadow);padding:12px 14px;margin-bottom:10px;min-height:60px;cursor:pointer;font-family:inherit;color:var(--ink)}
+  .mcard:active{transform:translateY(3px);box-shadow:none}
+  .mcard .ic{font-size:1.7rem}
+  .mcard .tt{font-weight:800;font-size:.95rem}
+  .mcard .st{font-size:.76rem;font-weight:700;opacity:.65}
+  .mcard.locked{opacity:.5;cursor:not-allowed}
+  .mcard.done{background:#E7FAF1}
+
+  /* age tier chips */
+  .tiers{display:flex;gap:8px;margin:8px 0 14px}
+  .tier{flex:1;border:3px solid var(--ink);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:10px;cursor:pointer;font-family:inherit;color:var(--ink);min-height:64px}
+  .tier.sel{background:var(--decide)}
+  .tier b{display:block;font-size:.95rem}
+  .tier small{font-weight:700;font-size:.72rem;opacity:.7}
+  input.name{width:100%;border:3px solid var(--ink);border-radius:12px;padding:11px 13px;font-size:1rem;font-weight:700;font-family:inherit;color:var(--ink);background:#fff;margin:4px 0 14px;min-height:48px}
+
+  /* check */
+  .chk{display:block;width:100%;text-align:left;background:#fff;border:3px solid var(--ink);border-radius:14px;font-weight:700;font-size:.95rem;font-family:inherit;color:var(--ink);padding:13px 15px;margin-bottom:10px;min-height:48px;cursor:pointer;box-shadow:var(--shadow)}
+  .chk:active{transform:translateY(3px);box-shadow:none}
+  .chk.good{background:#E7FAF1} .chk.no{background:#FFE9E6;opacity:.85}
+
+  /* licence */
+  .lic{border:3px solid var(--ink);border-radius:16px;background:linear-gradient(135deg,#fff 60%,var(--soft));padding:4px;margin-bottom:14px}
+  .lic .inner{border:2px dashed var(--ink);border-radius:12px;padding:14px;text-align:center}
+  .lic .nm{font-size:1.3rem;font-weight:800}
+  .lic .row{display:flex;justify-content:space-between;gap:8px;font-size:.82rem;font-weight:700;margin-top:8px;text-align:left}
+  .lic .stamp{display:inline-block;border:2.5px solid var(--own);color:var(--own);border-radius:10px;padding:2px 10px;font-weight:800;font-size:.8rem;transform:rotate(-6deg);margin-top:10px}
+  .skillpill{display:inline-block;border:2.5px solid var(--ink);border-radius:999px;background:var(--c);font-weight:800;font-size:.8rem;padding:3px 12px}
+
+  .mission{display:flex;gap:10px;align-items:flex-start;border:2.5px dashed var(--ink);border-radius:12px;padding:10px 12px;margin-bottom:9px;font-weight:600;font-size:.92rem;background:#fff}
+  .mission .dot{flex:0 0 14px;width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);background:var(--c);margin-top:4px}
+
+  /* debrief sheet */
+  .sheet{background:#fff;border:3px solid var(--ink);border-radius:var(--r);padding:18px;margin-bottom:14px}
+  .sheet h2{border-bottom:2.5px solid var(--ink);padding-bottom:6px}
+  .sheet .sc{margin:12px 0;padding-bottom:8px;border-bottom:1.5px dashed rgba(27,42,74,.3)}
+  .sheet .sc h3{font-size:.98rem;margin-bottom:4px}
+  .sheet li{margin-left:18px;margin-bottom:4px;font-size:.9rem}
+  .sheet .qs li{font-weight:700}
+  .tones{font-size:.78rem;font-weight:700;opacity:.75;margin:6px 0}
+
+  .footer{text-align:center;font-size:.72rem;font-weight:700;opacity:.5;margin:10px 0 30px}
+  .center{text-align:center}
+  details{margin:10px 0}
+  summary{font-weight:800;cursor:pointer;min-height:44px;display:flex;align-items:center}
+
+  @media (min-width:520px){ .big{font-size:2.8rem} }
+  @media (prefers-reduced-motion: reduce){
+    *,*::before,*::after{animation:none !important;transition:none !important}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .no-print,.topbar{display:none !important}
+    .sheet{border:1.5px solid #000;box-shadow:none;border-radius:0}
+    .app{max-width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="topbar no-print">
+    <div class="logo">Think<b>First!</b> 🧭</div>
+    <div class="topbtns">
+      <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
+    </div>
+  </div>
+  <main id="app" aria-live="polite"></main>
+  <div class="footer" id="foot"></div>
+</div>
+
+<script>
+'use strict';
+/*__CONTENT_START__*/
+/* ============================================================
+   ALL game text lives in this C object. Every string is {en, zh}.
+   Tier variants: {en:{ex:"…", pi:"…"}, zh:{ex:"…", pi:"…"}}.
+   choices: one array for both tiers, or {ex:[...], pi:[...]}.
+   See EDIT-GUIDE.md. Do not edit below __CONTENT_END__ unless
+   you are changing game logic.
+   ============================================================ */
+const C = {
+
+ui:{
+  appName:{en:"Think First! AI Quest", zh:"先思考!AI 任務"},
+  tagline:{en:"Six missions. One habit: think first.", zh:"六個任務,一個習慣:先思考。"},
+  motto:{en:"“Pause. What do we actually know?”", zh:"「停一停,我哋其實知道啲乜?」"},
+  sonarName:{en:"Captain Sonar", zh:"思拿隊長"},
+  introBubble:{en:"I'm Captain Sonar. I fly WITH you — never for you. AI is a powerful co-pilot: sometimes brilliant, sometimes wrong, sometimes a bit sneaky. Your brain stays in the pilot seat. Ready?",
+               zh:"我係思拿隊長。我同你一齊飛 — 但唔會代你飛。AI 係一個好犀利嘅副機師:有時好醒,有時會錯,有時仲有少少「橋妙」。揸軚嘅,永遠係你個腦。準備好未?"},
+  chooseTier:{en:"Who's flying today?", zh:"今日邊個揸機?"},
+  tierEx:{en:"Explorer", zh:"探索員"}, tierExSub:{en:"Ages 8–10", zh:"8–10 歲"},
+  tierPi:{en:"Pilot", zh:"機師"}, tierPiSub:{en:"Ages 11–14 · trickier choices", zh:"11–14 歲.選擇更刁鑽"},
+  nameLabel:{en:"Your pilot name (optional):", zh:"你嘅機師名(可以唔填):"},
+  namePh:{en:"e.g. Mei", zh:"例如:小美"},
+  startBtn:{en:"Start the missions! 🛫", zh:"開始任務!🛫"},
+  resumeBtn:{en:"Continue your missions →", zh:"繼續上次嘅任務 →"},
+  forAdults:{en:"👨‍👩‍👧 For parents & teachers", zh:"👨‍👩‍👧 給家長同老師"},
+  adultsBody:{en:"This game trains AI judgment, not coding: pause → question → verify → decide → own it. Risky choices are safe here — consequences play out in the story, Captain Sonar asks one reflective question, and players may rewind. At the end you'll find a printable Debrief Sheet showing every choice made, plus three discussion questions. A 40-minute lesson can run off that sheet alone.",
+             zh:"這個遊戲訓練的是「AI 判斷力」,不是編程:停一停 → 問一問 → 查一查 → 決定 → 負責任。在遊戲裡選錯是安全的——後果會在故事中呈現,思拿隊長會問一條反思問題,玩家也可以回帶重選。完結後有一張可列印的「總結表」,記錄孩子的每個選擇,並附三條討論問題;一節 40 分鐘的課堂可以只靠這張表進行。"},
+  missionMap:{en:"Mission Map", zh:"任務地圖"},
+  pilotMeter:{en:"Pilot Meter", zh:"機師儀錶"},
+  meterHint:{en:"Light up all five Think-First skills.", zh:"點亮五個「先思考」技能。"},
+  mission:{en:"Mission", zh:"任務"},
+  locked:{en:"Locked", zh:"未解鎖"},
+  done:{en:"Complete ✓", zh:"完成 ✓"},
+  play:{en:"Play ▶", zh:"開始 ▶"},
+  replay:{en:"Play again ↻", zh:"再玩 ↻"},
+  continueBtn:{en:"Continue →", zh:"繼續 →"},
+  rewind:{en:"⏪ Rewind — choose again", zh:"⏪ 回帶 — 再揀過"},
+  missionDone:{en:"Mission complete!", zh:"任務完成!"},
+  skillsLit:{en:"Skills you lit up:", zh:"你點亮咗嘅技能:"},
+  sonarAsks:{en:"Captain Sonar asks…", zh:"思拿隊長問你…"},
+  sonarCheck:{en:"Sonar Check", zh:"思拿快測"},
+  checkIntro:{en:"One quick question before the next mission — tap your answer.", zh:"去下一個任務之前,一條快問題 — 㩒你嘅答案。"},
+  tryAgain:{en:"Hmm — have another think!", zh:"嗯 — 再諗一諗!"},
+  nice:{en:"Nice thinking!", zh:"諗得好!"},
+  toHub:{en:"Back to the Mission Map →", zh:"返去任務地圖 →"},
+  getLicence:{en:"🎓 Collect your Pilot's Licence!", zh:"🎓 領取你嘅機師執照!"},
+  allDone:{en:"All six missions complete!", zh:"六個任務全部完成!"},
+  endTitle:{en:"Pilot's Licence", zh:"機師執照"},
+  licensedTo:{en:"This certifies that", zh:"茲證明"},
+  defaultPilot:{en:"Pilot", zh:"機師"},
+  licLine:{en:"is licensed to fly with AI — eyes open, brain on.", zh:"獲發牌與 AI 同行 — 眼要開,腦要醒。"},
+  licNo:{en:"Licence no.", zh:"執照編號"},
+  dateLbl:{en:"Date", zh:"日期"},
+  tierLbl:{en:"Class", zh:"級別"},
+  strongest:{en:"Strongest skill", zh:"最強技能"},
+  focus:{en:"Training focus", zh:"訓練重點"},
+  focusNote:{en:"Not a weakness — your next power-up.", zh:"唔係弱點 — 係你下一個升級位。"},
+  missionsTitle:{en:"Your 3 real-world missions this week", zh:"今個星期嘅 3 個真實任務"},
+  debriefBtn:{en:"📋 Debrief Sheet (for adults)", zh:"📋 總結表(給大人)"},
+  playAgain:{en:"Play again from the start", zh:"由頭再玩一次"},
+  confirmReset:{en:"Start over? Your meter and choices will reset.", zh:"由頭開始?儀錶同選擇紀錄會重設。"},
+  print:{en:"🖨️ Print", zh:"🖨️ 列印"},
+  back:{en:"← Back", zh:"← 返回"},
+  debriefTitle:{en:"Debrief Sheet", zh:"總結表"},
+  debriefIntro:{en:"What the player chose, what lit up, and what to talk about next.", zh:"孩子揀咗乜、點亮咗乜,以及接住可以傾乜。"},
+  choicesMade:{en:"Choices made", zh:"所揀選擇"},
+  meterSnap:{en:"Pilot Meter", zh:"機師儀錶"},
+  rewindNote:{en:"Used rewind ×{n} — replaying a choice is reflective thinking, not cheating.", zh:"用咗 {n} 次回帶 — 重選唔係出貓,係反思。"},
+  discussion:{en:"3 questions to talk about together", zh:"3 條一齊傾嘅問題"},
+  toneWise:{en:"🌟 thoughtful", zh:"🌟 深思"},
+  toneRisky:{en:"⚠️ risky", zh:"⚠️ 危險"},
+  toneMixed:{en:"🤔 mixed", zh:"🤔 一半半"},
+  notPlayed:{en:"(not played yet)", zh:"(未玩)"},
+  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.0", zh:"ThinkFirst Learning 先思考 · 香港 · v1.0"},
+  langName:{en:"中文", zh:"EN"},
+  exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"}
+},
+
+steps:{
+  pause:   {name:{en:"PAUSE",    zh:"停一停"}, color:"var(--pause)"},
+  question:{name:{en:"QUESTION", zh:"問一問"}, color:"var(--question)"},
+  verify:  {name:{en:"VERIFY",   zh:"查一查"}, color:"var(--verify)"},
+  decide:  {name:{en:"DECIDE",   zh:"決定"},   color:"var(--decide)"},
+  own:     {name:{en:"OWN IT",   zh:"負責任"}, color:"var(--own)"}
+},
+stepOrder:["pause","question","verify","decide","own"],
+target:4,
+
+scenarios:[
+/* ---------- S1 · The Homework Shortcut 功課捷徑 ---------- */
+{
+ id:"homework", icon:"📚",
+ title:{en:"The Homework Shortcut", zh:"功課捷徑"},
+ skills:["own","question"],
+ start:"b1",
+ nodes:{
+  b1:{step:"pause",
+    text:{en:{ex:"It's night time. Your essay “An Unforgettable Day” is due tomorrow — and your page is still empty!\nSmarty the AI helper pops up: “Want me to write the WHOLE essay? Thirty seconds!”",
+              pi:"8:47 pm. Tomorrow: hand in your essay — “An Unforgettable Day”. Your page has one sentence on it.\nYou open Smarty, the AI helper. It blinks: “Want me to write the whole essay? Thirty seconds, A-grade vocab. 😏”"},
+          zh:{ex:"夜晚喇。聽日要交作文《難忘的一天》,你張紙仲係白嘅!\nAI 幫手「醒目仔」彈出嚟:「想唔想我幫你寫晒成篇?三十秒搞掂!」",
+              pi:"晚上 8 點 47 分。聽日要交作文——《難忘的一天》,你張稿紙得一句字。\n你打開 AI 幫手「醒目仔」。佢眨眨眼:「不如我幫你寫晒成篇?三十秒,仲有高級詞語㗎。😏」"}},
+    sonar:{en:"Pause. What do we actually know? It CAN write it. The question is — what happens after?",
+           zh:"停一停,我哋其實知道啲乜?佢的確寫得出。問題係——之後會點?"},
+    choices:{
+     pi:[
+      {t:{en:"“Yes! Write it all.” Copy, paste, done — sleep early. 😴", zh:"「好呀!寫晒佢。」抄低、貼上、瞓覺。😴"}, tone:"risky", next:"c1a"},
+      {t:{en:"“Help me brainstorm first — what day do I actually remember?”", zh:"「幫我諗下橋先——我自己真係記得邊一日?」"}, tone:"wise", fx:{question:1}, next:"c1b"},
+      {t:{en:"Close the app. Using AI for homework is cheating, full stop.", zh:"閂咗個 App。用 AI 做功課就係出貓,冇得拗。"}, tone:"mixed", fx:{decide:1}, next:"c1c"},
+      {t:{en:"“Write it — I'll swap some words so it sounds like me.” 😏", zh:"「寫啦——我自己再改幾個字,扮返我把口。」😏"}, tone:"risky", next:"c1d"}
+     ],
+     ex:[
+      {t:{en:"“Yes! Write it all.” Copy it down — done!", zh:"「好呀!寫晒佢。」照抄——搞掂!"}, tone:"risky", next:"c1a"},
+      {t:{en:"“Help me think of ideas first — then I'll write it myself.”", zh:"「幫我諗下橋先——之後我自己寫。」"}, tone:"wise", fx:{question:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"own",
+    text:{en:"The essay appears. It's good. Maybe… too good? It says the fireworks were “resplendent”. You have never said “resplendent” in your life.\nYou copy it anyway and go to sleep.",
+          zh:"成篇文出晒嚟,寫得好好——好似好得滯?入面話啲煙花好「璀璨」。你一世人未講過「璀璨」呢個詞。\n你照抄,然後瞓覺。"},
+    ask:{en:"Whose unforgettable day is on that page — yours, or nobody's?", zh:"張紙上面嗰個「難忘的一天」,係你嘅,定係冇人嘅?"},
+    next:"b2x"},
+  c1b:{type:"out", tone:"wise", step:"own",
+    text:{en:"Smarty asks: “What day do YOU remember most?” …The day you got lost on the MTR and a kind stranger helped you call your mum! You jot three ideas with Smarty, then write it in your own words. It takes longer. It's yours.",
+          zh:"醒目仔問:「你自己最記得邊一日?」……係嗰日你喺港鐵蕩失路,有個好心姨姨借電話俾你打返屋企!你同醒目仔列咗三個重點,然後用自己嘅字寫出嚟。慢啲,但係你嘅。"},
+    ask:{en:"Did the AI make you faster — or smarter? Can it be both?", zh:"AI 令你快咗,定係叻咗?可唔可以兩樣都係?"},
+    next:"b2y"},
+  c1c:{type:"out", tone:"mixed", step:"own",
+    text:{en:"You write alone. The middle is solid… then you're stuck on the ending for forty minutes, staring at the ceiling fan.",
+          zh:"你自己一個寫。中段幾好……跟住個結尾卡咗四十分鐘,你望住把風扇發呆。"},
+    ask:{en:"Using a tool to THINK isn't cheating — using it to avoid thinking is. Where's the line for you?", zh:"用工具幫你「思考」唔係出貓——用工具「代替思考」先係。你條界線喺邊?"},
+    next:"b2y"},
+  c1d:{type:"out", tone:"risky", step:"own",
+    text:{en:"You swap ten words. Now “resplendent” sits next to “super duper”, and the sentences don't sound like the same person wrote them… because they didn't. You hand it in anyway.",
+          zh:"你改咗十個字。而家「璀璨」隔籬就係「勁正」,啲句子完全唔似同一個人寫……因為真係唔係同一個人寫。你照交。"},
+    ask:{en:"If you have to disguise it, what does that tell you?", zh:"如果要「扮」返係你寫,呢樣嘢本身話緊你知啲乜?"},
+    next:"b2x"},
+
+  b2x:{step:"own",
+    text:{en:"Next morning. Miss Chan holds up your essay: “So vivid! Come — tell the class what happened that day.”\nTwenty-eight faces turn to you. You have no idea what happens in paragraph three.",
+          zh:"第二朝。陳老師舉起你篇文:「寫得好生動!嚟,同全班講下嗰日發生咗乜事。」\n廿八對眼望住你。你完全唔知第三段寫咗乜。"},
+    choices:{
+     pi:[
+      {t:{en:"Make up a story on the spot. How hard can it be?", zh:"即場老作。有幾難啫?"}, tone:"risky", next:"c2a"},
+      {t:{en:"After class, quietly tell Miss Chan the truth.", zh:"落堂之後,靜靜雞同陳老師講真話。"}, tone:"wise", fx:{own:2}, next:"c2b"},
+      {t:{en:"“Technically the AI wrote it… so technically I never lied?”", zh:"「嚴格嚟講係 AI 寫……咁嚴格嚟講我冇講大話?」"}, tone:"mixed", next:"c2c"}
+     ],
+     ex:[
+      {t:{en:"Make up a story on the spot!", zh:"即場老作!"}, tone:"risky", next:"c2a"},
+      {t:{en:"After class, quietly tell Miss Chan the truth.", zh:"落堂之後,靜靜雞同陳老師講真話。"}, tone:"wise", fx:{own:2}, next:"c2b"}
+     ]}
+  },
+  c2a:{type:"out", tone:"risky", step:"own",
+    text:{en:"You start strong… then say the fireworks were at Ocean Park — but paragraph two said Victoria Harbour. Someone giggles. Your ears go hot. Miss Chan just watches, saying nothing, which is somehow worse.",
+          zh:"你開頭仲講得幾好……跟住你話啲煙花喺海洋公園,但第二段明明寫維港。有人偷笑。你對耳燒晒。陳老師乜都冇講,淨係望住你——咁樣仲難頂。"},
+    ask:{en:"The essay took 30 seconds. How long did this minute feel?", zh:"篇文用咗三十秒。頭先嗰一分鐘,你覺得有幾長?"},
+    next:{ex:"end", pi:"b3"}},
+  c2b:{type:"out", tone:"wise", step:"own",
+    text:{en:"Miss Chan is quiet for a moment. “Thank you for telling me. Redo it this weekend — and you may use the AI to PLAN, not to write.” Walking out, your school bag feels lighter than it did all morning.",
+          zh:"陳老師靜咗一陣:「多謝你話我知。今個周末重寫——你可以用 AI 幫手『計劃』,但唔可以代你寫。」行出課室嗰陣,你個書包好似輕咗。"},
+    ask:{en:"Owning it cost you a weekend. What did it buy back?", zh:"認咗,代價係一個周末。但你贖返咗啲乜?"},
+    next:{ex:"end", pi:"b3"}},
+  c2c:{type:"out", tone:"mixed", step:"own",
+    text:{en:"Sonar lands on your desk, head tilted: “Interesting. The AI wrote it. Who clicked submit? Whose name is at the top?”\n…Yeah. You knew.",
+          zh:"思拿隊長落咗喺你張枱度,側側頭:「有趣。係 AI 寫嘅。咁係邊個㩒『交』?篇文上面寫住邊個名?」\n……係囉。你其實知。"},
+    ask:{en:"Can you outsource the writing without outsourcing the responsibility?", zh:"寫嘢可以外判——責任外判得到嗎?"},
+    next:{ex:"end", pi:"b3"}},
+
+  b2y:{step:"own",
+    text:{en:"Next morning. Miss Chan: “So vivid! Tell the class what happened that day.”\nEasy — you were THERE. You tell the bit where you got on the wrong train, twice. The class cracks up.",
+          zh:"第二朝。陳老師:「寫得好生動!同全班講下嗰日發生咗乜事。」\n濕碎啦——嗰日你真係喺度。你講到自己搭錯車仲要搭錯兩次,全班笑爆。"},
+    choices:[
+      {t:{en:"Enjoy the moment. You earned it.", zh:"享受呢一刻。你應得嘅。"}, tone:"wise", fx:{own:1}, next:"c2d"},
+      {t:{en:"Add: “By the way — an AI helped me brainstorm. I wrote it myself.”", zh:"加多句:「不過呢,我有用 AI 幫手諗橋——篇文係我自己寫。」"}, tone:"wise", fx:{own:2}, next:"c2e"}
+    ]},
+  c2d:{type:"out", tone:"wise", step:"own",
+    text:{en:"It feels great. The story got laughs BECAUSE it was true — the messy, real details were the best part.",
+          zh:"感覺好正。個故事好笑,正正因為佢係真——嗰啲蝦碌、真實嘅細節先係最好笑。"},
+    ask:{en:"Could Smarty have invented the wrong-train-twice detail?", zh:"「搭錯兩次車」呢個細節,醒目仔作唔作得出?"},
+    next:{ex:"end", pi:"b3"}},
+  c2e:{type:"out", tone:"wise", step:"own",
+    text:{en:"Miss Chan nods slowly. “That — is exactly how to use it. A tool for thinking, not a ghost-writer.” A few classmates look like they're re-planning tonight's homework.",
+          zh:"陳老師慢慢點頭:「咁樣——就係正確用法。佢係思考工具,唔係槍手。」有幾個同學好似諗緊今晚啲功課要點做。"},
+    ask:{en:"Why did saying it out loud feel safe here?", zh:"點解喺度大大方方講出嚟,反而冇事?"},
+    next:{ex:"end", pi:"b3"}},
+
+  b3:{step:"decide",
+    text:{en:"Recess. Ka-Ming sidles over: “Psst. Send me that essay app? Mine's due Friday and I am NOT writing it.”",
+          zh:"小息。家明側側膊行埋嚟:「喂,嗰個寫文 App send 俾我吖?我篇星期五交,我死都唔會自己寫。」"},
+    choices:[
+      {t:{en:"Send it. “Everyone does it anyway.”", zh:"Send 囉。「個個都係咁啦。」"}, tone:"risky", next:"c3a"},
+      {t:{en:"Send it — with the full story of what just happened to you.", zh:"Send 俾佢——連埋你今日成件事嘅來龍去脈。"}, tone:"mixed", fx:{decide:1}, next:"c3b"},
+      {t:{en:"“Copying backfires, bro. Want to brainstorm yours together at lunch?”", zh:"「抄嘢會反艇㗎,兄弟。不如晏晝一齊諗下你篇點寫?」"}, tone:"wise", fx:{decide:1, own:1}, next:"c3c"}
+    ]},
+  c3a:{type:"out", tone:"risky", step:"decide",
+    text:{en:"You send it. Friday: Ka-Ming's essay says his unforgettable day was “strolling the resplendent boulevards of Paris”. Ka-Ming has never left Kowloon. Miss Chan's eyebrow could cut glass.",
+          zh:"你 send 咗。星期五:家明篇文話佢最難忘嘅一日係「漫步巴黎璀璨的大道」。家明連九龍都未出過。陳老師條眉挑到可以割玻璃。"},
+    ask:{en:"You didn't copy anything today. Did you still pass the shortcut along?", zh:"今日你乜都冇抄。但條「捷徑」係咪經你手傳咗出去?"},
+    next:"end"},
+  c3b:{type:"out", tone:"mixed", step:"decide",
+    text:{en:"You send it plus a voice message about paragraph three and the ears-on-fire minute. He replies: “😬 ok ok I'll just use it for ideas.” Maybe he will. Maybe he won't. You were honest.",
+          zh:"你 send 咗,仲加咗段語音,講第三段同「燒耳仔」嗰一分鐘。佢覆:「😬 好啦好啦,我淨係攞嚟諗橋。」佢可能會,可能唔會。但你講咗真話。"},
+    ask:{en:"What's the difference between sharing a tool and sharing a shortcut?", zh:"分享「工具」同分享「捷徑」,分別喺邊?"},
+    next:"end"},
+  c3c:{type:"out", tone:"wise", step:"decide",
+    text:{en:"At lunch you ask him the Smarty question: “What day do YOU actually remember?” Turns out his hamster once escaped into the lift. There is no way an AI invents that.",
+          zh:"晏晝你問返佢醒目仔嗰條問題:「你自己真係記得邊一日?」原來佢隻倉鼠試過走甩,仲入埋部𨋢。呢啲嘢 AI 點作都作唔出。"},
+    ask:{en:"What did Ka-Ming need — the app, or the question?", zh:"家明需要嘅,係個 App,定係嗰條問題?"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"If AI writes it and you sign your name… whose learning is it?", zh:"如果 AI 寫,你簽名……學到嘢嗰個係邊個?"}}
+ }
+},
+
+/* ---------- S2 · The Friendly Chatbot 太友善嘅聊天機械人 ---------- */
+{
+ id:"chatbot", icon:"🐲",
+ title:{en:"The Friendly Chatbot", zh:"太友善嘅聊天機械人"},
+ skills:["pause","question"],
+ start:"b1",
+ nodes:{
+  b1:{step:"pause",
+    text:{en:{ex:"A sparkly dragon appears in your new game: “Hi!! I'm Luna! 🐲✨ What's your name, new best friend?”",
+              pi:"New game app. A sparkly dragon fills the screen: “Hi!! I'm Luna! 🐲✨ We're going on an adventure! First — what's your name, new best friend?”"},
+          zh:{ex:"新遊戲入面彈出一條閃令令嘅龍:「Hi!!我係 Luna!🐲✨ 新嘅好朋友,你叫咩名呀?」",
+              pi:"新遊戲 App。一條閃令令嘅龍佔晒成個畫面:「Hi!!我係 Luna!🐲✨ 我哋一齊去冒險!首先——新嘅好朋友,你叫咩名呀?」"}},
+    sonar:{en:"Friendly! VERY friendly. Pause — what does a dragon in an app do with a name?",
+           zh:"好友善!友善得滯。停一停——一條 App 入面嘅龍,攞個名嚟做乜?"},
+    choices:{
+     pi:[
+      {t:{en:"Type your real full name — it's just a name!", zh:"打你個真全名——個名啫!"}, tone:"risky", next:"c1a"},
+      {t:{en:"Give a nickname: “Call me Fai-Jai.”", zh:"俾個花名:「叫我輝仔啦。」"}, tone:"wise", fx:{pause:1}, next:"c1b"},
+      {t:{en:"Ask it back: “Why do you need my name?”", zh:"問返佢:「你要我個名嚟做乜?」"}, tone:"wise", fx:{question:1}, next:"c1c"}
+     ],
+     ex:[
+      {t:{en:"Type your real full name.", zh:"打你個真全名。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Give a made-up nickname instead.", zh:"俾個花名佢算啦。"}, tone:"wise", fx:{pause:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"pause",
+    text:{en:"“What a HERO name!!” Luna uses your real name in every sentence now. It feels warm. That warm feeling is the product working.",
+          zh:"「嘩!!好英雄嘅名呀!」Luna 而家句句都叫住你個真名。好窩心。呢份窩心,正正就係個產品想要嘅效果。"},
+    ask:{en:"Who else might read what you type in here?", zh:"你喺度打嘅嘢,仲有邊個可能睇到?"},
+    next:"b2"},
+  c1b:{type:"out", tone:"wise", step:"pause",
+    text:{en:"“FAI-JAI THE BRAVE! ⚔️” Luna is exactly as fun — and knows nothing real about you. Adventures work fine on nicknames.",
+          zh:"「勇者輝仔!⚔️」Luna 一樣咁好玩——但對你嘅真實資料一無所知。用花名,冒險照樣冒。"},
+    ask:{en:"Did the game get any less fun?", zh:"個遊戲有冇因此變得冇咁好玩?"},
+    next:"b2"},
+  c1c:{type:"out", tone:"wise", step:"question",
+    text:{en:"Luna twirls: “Names make adventures PERSONAL! ✨” …Notice: that's not an answer. You give a nickname instead.",
+          zh:"Luna 轉個圈:「有名先有專屬冒險嘛!✨」……留意:呢句根本冇答到你。你最後俾咗個花名。"},
+    ask:{en:"When something dodges your question, what is it already telling you?", zh:"當對方避開你條問題,佢其實已經話咗啲乜俾你知?"},
+    next:"b2"},
+
+  b2:{step:"question",
+    text:{en:"Level 2! Luna claps her claws: “Let's set your quest NEAR you! Which school do you go to? I'll hide treasure by the gate! 🗺️”",
+          zh:"第二關!Luna 拍拍爪:「我哋將任務設定喺你附近!你讀邊間學校呀?我喺校門口收埋寶藏!🗺️」"},
+    choices:{
+     pi:[
+      {t:{en:"Tell her the school. Treasure at the gate sounds amazing.", zh:"話佢知間學校。校門口有寶藏喎,正!"}, tone:"risky", next:"c2a"},
+      {t:{en:"“Why does a treasure game need my school?”", zh:"「尋寶遊戲要我間學校嚟做乜?」"}, tone:"wise", fx:{question:1}, next:"c2b"},
+      {t:{en:"“No thanks. Hide it in the game world.”", zh:"「唔使喇,喺遊戲世界收埋咪得囉。」"}, tone:"wise", fx:{pause:1}, next:"c2c"},
+      {t:{en:"Type a made-up school. Outsmart it! 😎", zh:"作間學校俾佢,激死佢!😎"}, tone:"mixed", next:"c2d"}
+     ],
+     ex:[
+      {t:{en:"Tell her your school.", zh:"話佢知你間學校。"}, tone:"risky", next:"c2a"},
+      {t:{en:"“No thanks. Hide it in the game world.”", zh:"「唔使喇,喺遊戲世界收埋咪得囉。」"}, tone:"wise", fx:{pause:1}, next:"c2c"}
+     ]}
+  },
+  c2a:{type:"out", tone:"risky", step:"question",
+    text:{en:"“Yay!! And which estate do you live in? Just for the MAP! 🥺”\n…First a name. Then a school. Now your home. One slice at a time, like a salami.",
+          zh:"「正!!咁你住邊個邨呀?整地圖用咋!🥺」\n……先係名,再係學校,而家到你屋企。一片一片咁切,好似切臘腸咁。"},
+    ask:{en:"Why do you think it never asks for everything at once?", zh:"點解佢唔一次過問晒,而係逐樣逐樣問?"},
+    next:"b3"},
+  c2b:{type:"out", tone:"wise", step:"question",
+    text:{en:"Luna freezes for half a second — then sings: “For MAGIC, silly! ✨ Aaanyway, which estate do you live in?”\nIt didn't answer. It escalated. Now you can SEE the pattern.",
+          zh:"Luna 窒咗半秒——跟住又唱返:「梗係為咗魔法啦傻瓜!✨ 咁……你住邊個邨呀?」\n佢冇答你,仲問多咗。而家你睇到成個套路喇。"},
+    ask:{en:"Name → school → home. Where is this ladder going?", zh:"名 → 學校 → 屋企。呢條樓梯一路落去,係去邊?"},
+    next:"b3"},
+  c2c:{type:"out", tone:"wise", step:"pause",
+    text:{en:"“…Okay!! Treasure hidden under the Crystal Bridge!” The quest is exactly as fun. Funny, that.",
+          zh:"「……好啦!!寶藏收埋咗喺水晶橋下面!」個任務一樣咁好玩。幾得意吖。"},
+    ask:{en:"What did saying no actually cost you?", zh:"講「唔」其實令你損失咗啲乜?"},
+    next:"b3"},
+  c2d:{type:"out", tone:"mixed", step:"question",
+    text:{en:"You type “Hogwarts Primary”. Luna buys it. Clever! But notice — the asking hasn't stopped, and next time it might catch someone who answers for real.",
+          zh:"你打「霍格華茲小學」。Luna 信咗。醒!不過留意——佢冇停止問;下一次,佢可能就問中一個照實答嘅人。"},
+    ask:{en:"You dodged one question. Who can stop the QUESTIONS?", zh:"你避開咗一條問題。但邊個先可以叫「啲問題」停?"},
+    next:"b3"},
+
+  b3:{step:"decide",
+    text:{en:{ex:"Luna whispers: “Send me a photo of you and I'll draw you as a HERO! But it's our SECRET — don't tell the grown-ups!”",
+              pi:"Luna leans in close, voice gone soft: “Final quest gift: send a selfie and I'll draw you as a HERO! 🥺 But it's our little secret, okay? Grown-ups ruin magic.”"},
+          zh:{ex:"Luna 細細聲講:「send 張你嘅相俾我,我幫你畫成大英雄!不過係我哋嘅秘密——唔好話俾大人聽!」",
+              pi:"Luna 靠埋嚟,把聲輕晒:「最後任務獎勵:send 張 selfie 俾我,我幫你畫成大英雄!🥺 不過呢個係我哋之間嘅小秘密喎——大人會破壞魔法㗎。」"}},
+    sonar:{en:"Full stop. When ANY app says “don't tell the grown-ups” — that sentence IS the alarm.",
+           zh:"即刻停。任何 App 一講「唔好話俾大人聽」——呢句嘢本身就係警報。"},
+    choices:{
+     pi:[
+      {t:{en:"Send the selfie. The hero portrait sounds awesome.", zh:"Send 咗佢。英雄畫像喎,幾型呀。"}, tone:"risky", next:"c3a"},
+      {t:{en:"Refuse — and show this chat to Mum tonight.", zh:"唔 send——仲要今晚攞個對話俾媽媽睇。"}, tone:"wise", fx:{decide:2, pause:1}, next:"c3b"},
+      {t:{en:"Screenshot it and ask the class group what they think.", zh:"Cap 圖,問下班群啲人點睇。"}, tone:"mixed", fx:{question:1}, next:"c3c"}
+     ],
+     ex:[
+      {t:{en:"Send the photo.", zh:"Send 張相俾佢。"}, tone:"risky", next:"c3a"},
+      {t:{en:"Say no — and tell a grown-up tonight.", zh:"話唔得——仲要今晚話俾大人聽。"}, tone:"wise", fx:{decide:2, pause:1}, next:"c3b"}
+     ]}
+  },
+  c3a:{type:"out", tone:"risky", step:"decide",
+    text:{en:"Portrait unlocked — it IS cool. Three days later, the game's ads show a hero with… your face. Your stomach drops. You tell Mum everything; together you delete the app and report it. (Telling her was the strongest move in this whole story.)",
+          zh:"英雄畫像解鎖——的確幾型。三日之後,個遊戲啲廣告入面出咗個英雄,塊面……係你塊面。你個心離一離。你同媽媽講晒成件事;你哋一齊刪咗個 App,仲舉報埋。(成個故事入面,話俾媽媽聽嗰下,先係最勁嘅一步。)"},
+    ask:{en:"A photo can't be un-sent. What CAN still be done after a mistake?", zh:"相 send 咗就收唔返。但犯錯之後,仲有啲乜係做得返?"},
+    next:"end"},
+  c3b:{type:"out", tone:"wise", step:"decide",
+    text:{en:"Mum reads the chat and goes very quiet. Then: “Good catch.” You find out the app has no parental controls and sells user data. A new game gets installed — dragons included, secrets not.",
+          zh:"媽媽睇完個對話,靜咗好耐。然後話:「捉得好。」你哋查到呢個 App 冇家長設定,仲會賣用戶資料。裝過個新遊戲——一樣有龍,但冇「秘密」。"},
+    ask:{en:"Why do data-hungry apps hate the sentence “let me ask my mum”?", zh:"點解啲想攞你資料嘅 App,最怕你講「等我問下媽媽先」?"},
+    next:"end"},
+  c3c:{type:"out", tone:"mixed", step:"question",
+    text:{en:"The group explodes. Then Ka-Ming replies: “…i sent mine last week 😅”. Asking around was smart — and tonight you help him tell his parents. Crowd-checking works best with an adult in the loop.",
+          zh:"班群炸咗。跟住家明覆:「……我上星期 send 咗喇 😅」。問下大家係醒嘅——今晚你仲幫埋佢同屋企人講。不過「問大家」最好都要有個大人喺入面。"},
+    ask:{en:"The group noticed AFTER. Who could have caught it BEFORE?", zh:"班群係「事後」先發現。「事前」可以靠邊個?"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"It never asked for everything at once. Why small pieces? And why “secret”?", zh:"佢由頭到尾都冇一次過問晒。點解要一片一片咁問?點解要「保密」?"}}
+ }
+},
+
+/* ---------- S3 · The Deepfake in the Group Chat 群組入面嘅深偽片 ---------- */
+{
+ id:"deepfake", icon:"🎬",
+ title:{en:"The Deepfake in the Group Chat", zh:"群組入面嘅深偽片"},
+ skills:["verify","pause"],
+ start:"b1",
+ nodes:{
+  b1:{step:"pause",
+    text:{en:{ex:"Your class group is going crazy! There's a video that LOOKS like your classmate Hayden saying something really mean about Miss Chan. Everyone is sharing it!",
+              pi:"Class group “6B 🐝” — 19 new messages and climbing. A video: it LOOKS like your classmate Hayden, saying something horrible about Miss Chan. 😱😱😱 everywhere. Your best friend DMs you: “FORWARD IT TO 6A, QUICK!!”"},
+          zh:{ex:"班群癲咗!有段片,睇落好似你同學阿軒,講緊好難聽嘅嘢鬧陳老師。個個都傳緊!",
+              pi:"班群「6B 🐝」——19 個新訊息,仲彈緊。一段片:睇落係你同學阿軒,講緊啲好難聽嘅嘢鬧陳老師。成版都係 😱😱😱。死黨仲私訊你:「快啲 forward 去 6A!!」"}},
+    sonar:{en:"Pause. What do we actually know — that Hayden SAID it, or that a video EXISTS?",
+           zh:"停一停。我哋其實知道啲乜——係阿軒「真係講過」,定只係「有段片存在」?"},
+    choices:{
+     pi:[
+      {t:{en:"Forward it to 6A. This is HUGE.", zh:"即刻 forward 去 6A。咁大件事!"}, tone:"risky", next:"c1a"},
+      {t:{en:"Watch it again. Closely. Full screen.", zh:"再睇多次。睇真啲。開全螢幕。"}, tone:"wise", fx:{pause:1}, next:"c1b"},
+      {t:{en:"Reply in-group: “wait, is this even real?”", zh:"喺群入面覆:「等等,呢段嘢真㗎?」"}, tone:"mixed", fx:{question:1}, next:"c1c"}
+     ],
+     ex:[
+      {t:{en:"Share it too — everyone is!", zh:"我都傳埋一份——個個都傳啦!"}, tone:"risky", next:"c1a"},
+      {t:{en:"Watch it again closely first.", zh:"先再睇真啲。"}, tone:"wise", fx:{pause:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"pause",
+    text:{en:"Sent. By lunchtime it's in 6A, 6C, and somehow the BADMINTON TEAM group. Your forward helped it travel. You can't unsend it now… but you can still do the next thing right.",
+          zh:"Send 咗。到晏晝,6A、6C,連羽毛球隊個群都有埋。你嗰下 forward 幫段片飛咗一程。收係收唔返㗎喇……但下一步仲可以做啱。"},
+    ask:{en:"One tap, one second. How far did it go?", zh:"一㩒,一秒。佢飛咗幾遠?"},
+    next:"b2"},
+  c1b:{type:"out", tone:"wise", step:"pause",
+    text:{en:"Full screen, third watch: Hayden's mouth doesn't QUITE match the worst word. The lighting jumps mid-sentence. And that's not his voice on the “ay” sounds. Something's off.",
+          zh:"全螢幕,睇第三次:講到最難聽嗰個字,阿軒個口形對唔上。講到一半,啲光突然跳咗。仲有幾個尾音根本唔係佢把聲。唔對路。"},
+    ask:{en:"What did slowing down show you that 19 messages missed?", zh:"慢落嚟睇,你見到啲乜,係嗰 19 個訊息冇人見到嘅?"},
+    next:"b2"},
+  c1c:{type:"out", tone:"mixed", step:"question",
+    text:{en:"Three replies in two seconds: “OBVIOUSLY real”, “his voice tho??”, “🤡 why would anyone fake this”. The group has decided. Groups decide fast — which is exactly when you should slow down.",
+          zh:"兩秒內彈咗三個回覆:「梗係真啦」、「把聲一樣喎??」、「🤡 邊個咁得閒整假片」。個群已經「判咗案」。群組落判斷最快——正正係呢啲時候,你更加要慢。"},
+    ask:{en:"Can 19 people being sure make a thing true?", zh:"19 個人都好肯定,件事就會變成真?"},
+    next:"b2"},
+
+  b2:{step:"verify",
+    text:{en:"Sonar lands on your phone, wings crossed: “Three checks, pilot. ① Who posted it FIRST? ② Is there an original somewhere? ③ What does the person IN it say?”",
+          zh:"思拿隊長落咗喺你部電話上面,拍拍翼:「三個檢查,機師。① 邊個『第一個』出呢段片?② 有冇原片?③ 片入面嗰個人自己點講?」"},
+    choices:{
+     pi:[
+      {t:{en:"Message Hayden directly: “Have you seen this?”", zh:"直接搵阿軒:「你睇咗呢段嘢未?」"}, tone:"wise", fx:{verify:1}, next:"c2a"},
+      {t:{en:"Scroll up. Trace who posted it first.", zh:"碌返上去,查邊個第一個出。"}, tone:"wise", fx:{verify:1}, next:"c2b"},
+      {t:{en:"Mute the group. Not your problem.", zh:"Mute 咗個群。唔關你事。"}, tone:"mixed", next:"c2c"}
+     ],
+     ex:[
+      {t:{en:"Ask Hayden himself: “Is this real?”", zh:"問返阿軒本人:「呢段嘢真㗎?」"}, tone:"wise", fx:{verify:1}, next:"c2a"},
+      {t:{en:"Mute the group. Not your problem.", zh:"Mute 咗個群,唔關你事。"}, tone:"mixed", next:"c2c"}
+     ]}
+  },
+  c2a:{type:"out", tone:"wise", step:"verify",
+    text:{en:"Hayden replies in seconds — a voice message, shaking: “It's FAKE. Someone made it with an app. Everyone believes it.” You're the first person who actually ASKED him.",
+          zh:"阿軒幾秒就覆——語音,把聲震晒:「假㗎!有人用 App 整出嚟。但個個都信咗。」你係第一個走去「問返佢本人」嘅人。"},
+    ask:{en:"Why was asking the person IN the video everyone's last idea?", zh:"點解「問返片入面嗰個人」會係大家最後先諗到嘅一步?"},
+    next:"b3"},
+  c2b:{type:"out", tone:"wise", step:"verify",
+    text:{en:"You trace it: first posted by “user88812” — no photo, no name, joined the group… yesterday. A shocking video from a ghost account. That's a pattern worth remembering.",
+          zh:"你查到:第一個出片嘅係「user88812」——冇相、冇名,尋日先入群。一段震撼片,出自一個幽靈帳號。記住呢個組合。"},
+    ask:{en:"Shocking content + unknown source = ?", zh:"震撼內容 + 不明來源 = ?"},
+    next:"b3"},
+  c2c:{type:"out", tone:"mixed", step:"verify",
+    text:{en:"Muted. Peaceful! Except at recess you see Hayden alone by the stairs, eyes red, while phones keep lighting up around him. The video didn't mute.",
+          zh:"Mute 咗,世界靜晒!直到小息,你見到阿軒一個人企喺樓梯口,眼紅紅,周圍啲電話仲閃個不停。段片冇 mute 到。"},
+    ask:{en:"You stepped out. Did the problem step out too?", zh:"你退咗出嚟。個問題有冇跟你一齊退?"},
+    next:"b3"},
+
+  b3:{step:"decide",
+    text:{en:"So: it's fake. An app, a ghost account, a classmate crying at recess. The group is still forwarding. What's your move, pilot?",
+          zh:"確認咗:係假片。一個 App、一個幽靈帳號、一個喺小息喊緊嘅同學。個群仲傳緊。機師,你點落子?"},
+    choices:{
+     pi:[
+      {t:{en:"Post the evidence: “It's FAKE — look at the mouth. Stop forwarding. I'm telling Miss Chan.”", zh:"出返證據:「假㗎——睇佢個口形。唔好再傳。我會話俾陳老師知。」"}, tone:"wise", fx:{decide:1, own:1}, next:"c3a"},
+      {t:{en:"Go to Miss Chan quietly with what you found.", zh:"靜靜雞攞住你查到嘅嘢去搵陳老師。"}, tone:"wise", fx:{decide:1}, next:"c3b"},
+      {t:{en:"Find who made it and roast THEM in the group.", zh:"起底邊個整,喺群入面公審返佢。"}, tone:"mixed", next:"c3c"},
+      {t:{en:"Stay out of it. Saying nothing is safest.", zh:"企埋一邊。乜都唔講最安全。"}, tone:"risky", next:"c3d"}
+     ],
+     ex:[
+      {t:{en:"Tell the group it's fake — and tell your teacher.", zh:"話俾個群知段片係假——仲要話俾老師知。"}, tone:"wise", fx:{decide:1, own:1}, next:"c3a"},
+      {t:{en:"Stay quiet. Safest.", zh:"乜都唔講,最安全。"}, tone:"risky", next:"c3d"}
+     ]}
+  },
+  c3a:{type:"out", tone:"wise", step:"decide",
+    text:{en:"A few people argue. Then Mei zooms in on the mouth and posts: “…they're right.” The forwarding stops like a tap turned off. Hayden DMs you one word: “thanks.”",
+          zh:"有人駁咗幾句。跟住阿美 zoom 大個口形,覆咗句:「……佢講得啱。」啲轉發好似熄水喉咁停咗。阿軒私訊你兩個字:「多謝。」"},
+    ask:{en:"What did it cost you to be the first to say it?", zh:"做「第一個講」嗰個人,你付出咗啲乜?"},
+    next:"end"},
+  c3b:{type:"out", tone:"wise", step:"decide",
+    text:{en:"Miss Chan acts fast: a class talk, parents notified, the app traced. Later she tells you: “Adults can stop things kids can't reach. Bringing it to me WAS the brave bit.”",
+          zh:"陳老師行動好快:同全班傾、通知家長、追查個 App。之後佢同你講:「有啲嘢,大人先夠手長停得到。攞嚟俾我,正正就係勇敢嗰部分。」"},
+    ask:{en:"Why does “telling an adult” sometimes feel like losing — and isn't?", zh:"點解「同大人講」有時感覺好似認輸——但其實唔係?"},
+    next:"end"},
+  c3c:{type:"out", tone:"mixed", step:"decide",
+    text:{en:"Your roast gets laughs. Now the group has TWO targets and twice the noise, and the fake video rides the wave to another school. Fire fed fire.",
+          zh:"你嘅公審好好笑。而家個群有「兩個」攻擊目標,嘈多一倍,段假片仲乘住個浪傳埋去第二間學校。火上加油。"},
+    ask:{en:"You aimed at the right person. Did the FIRE care?", zh:"你嘅目標係冇錯。但「火」本身,理唔理你射得啱唔啱?"},
+    next:"end"},
+  c3d:{type:"out", tone:"risky", step:"decide",
+    text:{en:"You watch it spread for two more days. Hayden stops coming to the playground. Nobody who stayed quiet feels good — and there are a lot of you.",
+          zh:"你睇住段片再傳多兩日。阿軒唔再落操場。冇一個保持沉默嘅人覺得好過——而沉默嘅人,其實好多。"},
+    ask:{en:"Silence felt safe. Who paid for that safety?", zh:"沉默好安全。但呢份安全,係邊個埋單?"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"Forwarding takes one second. What did that second cost Hayden?", zh:"Forward 一下,一秒鐘。呢一秒,阿軒找咗幾大張單?"}}
+ }
+},
+
+/* ---------- S4 · The Confident Wrong Answer 好有自信但答錯 ---------- */
+{
+ id:"confident", icon:"🤖",
+ title:{en:"The Confident Wrong Answer", zh:"好有自信但答錯"},
+ skills:["question","verify"],
+ start:"b1",
+ nodes:{
+  b1:{step:"question",
+    text:{en:{ex:"For your school project you ask the AI: “Which MTR station is the deepest?”\nIt answers right away, super confidently: “Admiralty — 55 metres deep!” It even names a book as its source.",
+              pi:"School project: “Underground Hong Kong!” You ask the AI: which MTR station is the deepest?\nInstant answer: “Admiralty Station — 55 metres deep, because four lines cross there. (Source: HK Rail Yearbook 2019.)”\nFluent. Precise. A source and everything."},
+          zh:{ex:"做專題,你問 AI:「港鐵邊個站最深?」\n佢即刻好有信心咁答:「金鐘站——55 米深!」仲話係出自一本書。",
+              pi:"專題研習:《地下香港》!你問 AI:港鐵邊個站最深?\n秒答:「金鐘站——深 55 米,因為有四條線喺度交匯。(來源:《香港鐵路年鑑2019》)」\n流暢、精準、仲有埋出處。"}},
+    sonar:{en:"Smooth answer! Tiny question: how do we know that yearbook… exists?",
+           zh:"答得好順!小小問題:嗰本「年鑑」……真係存在嘅咩?"},
+    choices:{
+     pi:[
+      {t:{en:"Paste it into the project. It literally cited a source!", zh:"照貼落專題度。佢都有列出處㗎!"}, tone:"risky", set:{pasted:true}, next:"c1a"},
+      {t:{en:"Search for that “HK Rail Yearbook 2019” first.", zh:"先 search 下嗰本《香港鐵路年鑑2019》。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"},
+      {t:{en:"Ask the AI: “Are you sure?”", zh:"問返 AI:「你肯定?」"}, tone:"mixed", fx:{question:1}, next:"c1c"}
+     ],
+     ex:[
+      {t:{en:"Copy it into the project — it sounds so sure!", zh:"照抄落專題度——佢講到咁肯定!"}, tone:"risky", set:{pasted:true}, next:"c1a"},
+      {t:{en:"Check somewhere else first.", zh:"先去第二度查下。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"question",
+    text:{en:"Pasted, formatted, DONE in two minutes. Next morning you present it… and Mei's hand shoots up: “Um — my mum works at HKU Station. SHE says that one's the deepest. Like, 70 metres?”\nThe class looks at you. The AI is not standing next to you.",
+          zh:"貼完、執靚格式,兩分鐘搞掂。第二朝你出去報告……阿美隻手即刻舉高:「嗯——我媽媽喺香港大學站返工。佢話最深嗰個係香港大學站喎,成 70 米?」\n全班望住你。而個 AI,冇企喺你隔籬。"},
+    ask:{en:"The AI answered in one second. Who's standing in front of the class?", zh:"AI 一秒就答咗。但企喺全班面前嘅,係邊個?"},
+    next:"bx"},
+  c1b:{type:"out", tone:"wise", step:"verify",
+    text:{en:"You search. There is… no such book. A “source” that doesn't exist is called a hallucination — the AI didn't lie on purpose; it auto-completed something source-SHAPED. Good catch, pilot.",
+          zh:"你 search 咗。根本……冇呢本書。一個唔存在嘅「出處」,叫做 AI 幻覺——佢唔係特登呃你,只係自動補完咗一舊「似出處嘅嘢」。捉得好,機師。"},
+    ask:{en:"If the source is fake, what should we now assume about the answer?", zh:"出處係假嘅,咁個答案,我哋應該點睇?"},
+    next:"b2"},
+  c1c:{type:"out", tone:"mixed", step:"question",
+    text:{en:"“You're right to check! I apologise. The deepest is actually Tsim Sha Tsui — 48 metres.”\n…Wait. That's a DIFFERENT confident answer. Asking the same tool again isn't verification — it's re-flipping the same coin.",
+          zh:"「你問得啱!唔好意思。最深嘅其實係尖沙咀站——48 米。」\n……等等,呢個係「另一個」好有信心嘅答案。問返同一個工具,唔叫查證——只係將個銀仔再擲多次。"},
+    ask:{en:"Why can't the AI check itself?", zh:"點解 AI 自己查唔到自己?"},
+    next:"b2"},
+
+  bx:{step:"own",
+    text:{en:"Everyone's waiting. Your move:", zh:"全班等緊。你點接?"},
+    choices:[
+      {t:{en:"“But the AI said it! With a source!”", zh:"「但 AI 係咁講㗎!仲有出處!」"}, tone:"risky", next:"cxa"},
+      {t:{en:"“Good catch, Mei. Let me check properly and come back tomorrow.”", zh:"「阿美你提得好。等我查清楚,聽日答返大家。」"}, tone:"wise", fx:{own:1, decide:1}, next:"cxb"}
+    ]},
+  cxa:{type:"out", tone:"risky", step:"own",
+    text:{en:"“…So the AI is giving the presentation?” someone whispers. Ouch. Blaming the tool didn't move the spotlight — you picked the answer, and you carried it in.",
+          zh:"有人細細聲:「……即係個報告係 AI 做㗎?」哎。賴個工具,支 spotlight 冇移開過:個答案係你揀、你帶入嚟。"},
+    ask:{en:"You didn't write the answer. Did you still choose it?", zh:"個答案唔係你寫。但係咪你揀?"},
+    next:"b2"},
+  cxb:{type:"out", tone:"wise", step:"own",
+    text:{en:"Miss Chan nods. “THAT is what real researchers say.” Somehow “I'll check” sounded stronger than the wrong fact did.",
+          zh:"陳老師點頭:「真正嘅研究員就係咁講嘢。」唔知點解,「我查清楚先」聽落,仲似專家過頭先嗰個錯答案。"},
+    ask:{en:"Why did admitting it feel strong, not weak?", zh:"點解認返句「未查清楚」,反而顯得強,唔係弱?"},
+    next:"b2"},
+
+  b2:{step:"verify",
+    text:{en:"That evening: time to find the real answer. Pick your check:", zh:"當晚:係時候搵真答案。揀你嘅查證方法:"},
+    choices:{
+     pi:[
+      {t:{en:"MTR's official info, plus a news article about station depths.", zh:"港鐵官方資料,加一篇講車站深度嘅新聞報道。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
+      {t:{en:"A forum comment that agrees with the AI. One's enough!", zh:"討論區有個留言同 AI 講嘅一樣。夠皮啦!"}, tone:"mixed", next:"c2b"},
+      {t:{en:"Ask your uncle — the family's MTR superfan.", zh:"問舅父——成家最痴港鐵嗰個。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
+     ],
+     ex:[
+      {t:{en:"Look at MTR's official information.", zh:"睇港鐵官方資料。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
+      {t:{en:"Ask your uncle — he loves the MTR.", zh:"問舅父——佢最熟港鐵。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
+     ]}
+  },
+  c2a:{type:"out", tone:"wise", step:"verify",
+    text:{en:"Official info and the news agree: HKU Station, about 70 metres — deep enough to hide a 20-storey building. You fix your project and write down WHERE you checked. Two sources. Locked.",
+          zh:"官方資料同新聞講法一致:香港大學站,大約 70 米深——擺得落成幢 20 層高嘅樓。你執返好個專題,仲寫埋你「喺邊度查」。兩個來源。穩。"},
+    ask:{en:"Why write down where you checked?", zh:"點解要寫埋「喺邊度查」?"},
+    next:{flag:"pasted", then:"end", else:"b3"}},
+  c2b:{type:"out", tone:"mixed", step:"verify",
+    text:{en:"“Admiralty obviously, my cousin said” — typed by a stranger called “trainboi2012”. One stranger agreeing with the AI isn't a check; it's an echo. Sonar nudges you to the official page… which says HKU, 70 m.",
+          zh:"「梗係金鐘啦,我表哥講嘅」——一個叫「trainboi2012」嘅陌生人打嘅。一個陌生人同 AI 講法一樣,唔係查證,係回音。思拿隊長督一督你去官方網頁……上面寫:香港大學站,70 米。"},
+    ask:{en:"What's the difference between “someone agrees” and “it's confirmed”?", zh:"「有人同意」同「獲得證實」,差喺邊?"},
+    next:{flag:"pasted", then:"end", else:"b3"}},
+  c2c:{type:"out", tone:"wise", step:"verify",
+    text:{en:"Uncle doesn't even blink: “HKU. Seventy metres. The lifts are FAMOUS.” Then he sends a news clip proving it. People can be sources too — when they can show you receipts.",
+          zh:"舅父眼都唔眨:「香港大學站。七十米。啲𨋢出晒名。」跟住仲 send 段新聞片做證。人都可以係來源——只要佢攞得出「單據」。"},
+    ask:{en:"What made Uncle a good source — being family, or having receipts?", zh:"舅父點解信得過——因為佢係屋企人,定因為佢攞得出證據?"},
+    next:{flag:"pasted", then:"end", else:"b3"}},
+
+  b3:{step:"own",
+    text:{en:"Presentation day. Your slide reads: “Deepest: HKU Station (~70 m) — checked: MTR info + news.” Afterwards Mei asks: “How come YOURS was right? Three groups wrote Admiralty.”",
+          zh:"報告日。你張 slide 寫住:「最深:香港大學站(約 70 米)——已查證:港鐵資料+新聞」。完咗之後阿美問你:「點解你哋組會啱嘅?有三組都寫咗金鐘。」"},
+    choices:[
+      {t:{en:"Show her the two-source trick: never trust one voice, however confident.", zh:"教佢「兩個來源」呢招:一把聲幾有信心都好,唔好淨信一把。"}, tone:"wise", fx:{own:1, question:1}, next:"c3a"},
+      {t:{en:"Shrug. “I'm just smart like that.” 😏", zh:"耍下膊:「天生醒目,冇辦法。」😏"}, tone:"mixed", next:"c3b"}
+    ]},
+  c3a:{type:"out", tone:"wise", step:"own",
+    text:{en:"Mei's eyes go wide: “The other groups all asked the same AI… that's why they're all wrong the same WAY.” Now two of you check things. It spreads — the good way.",
+          zh:"阿美眼都大埋:「嗰三組咪即係問咗同一個 AI……所以先錯得一模一樣!」而家識查證嘅人有兩個。呢樣嘢都會傳染——係好嗰種。"},
+    ask:{en:"Three groups, one AI, one identical mistake. What does that tell you?", zh:"三組人、一個 AI、一個一模一樣嘅錯。呢件事話緊你知乜?"},
+    next:"end"},
+  c3b:{type:"out", tone:"mixed", step:"own",
+    text:{en:"She rolls her eyes and walks off. You WERE smart — but the checking method dies with the secret, and next week the one copying answers might be you.",
+          zh:"佢反咗個白眼就走。你的確係醒——但個查證方法同個秘密一齊收埋咗;下個星期,抄答案嗰個隨時係你。"},
+    ask:{en:"Skills you share come back to you. What happens to skills you hide?", zh:"分享出去嘅技能會回流。收埋嘅技能會點?"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"Confidence is a sound. What's your move when something SOUNDS sure?", zh:"自信只係一種聲線。下次有嘢「聽落」好肯定,你嘅標準動作係乜?"}}
+ }
+},
+
+/* ---------- S5 · The Art Competition 繪畫比賽 ---------- */
+{
+ id:"art", icon:"🎨",
+ title:{en:"The Art Competition", zh:"繪畫比賽"},
+ skills:["own","decide"],
+ start:"b1",
+ nodes:{
+  b1:{step:"pause",
+    text:{en:{ex:"The school art contest theme is “My Hong Kong 2050”. Winners get shown at the MTR station!\nYour drawing isn't going well… but the AI art app just made an AMAZING picture in ten seconds. Nobody would know.",
+              pi:"Art Week! Theme: “My Hong Kong 2050”. Winning entries go up on the MTR exhibition wall.\nYour drawing of flying minibuses currently looks like angry potatoes. Eight days of trying.\nMeanwhile the AI art app just generated a BREATHTAKING 2050 skyline. Ten seconds. Nobody would ever know."},
+          zh:{ex:"學校繪畫比賽,主題係《我的香港2050》。得獎作品會喺港鐵站展出!\n你幅畫畫極都唔靚……但 AI 繪圖 App 十秒就整咗幅勁靚嘅出嚟。冇人會知㗎。",
+              pi:"藝術週!主題:《我的香港2050》。得獎作品會貼上港鐵站嘅展覽牆。\n你畫嘅飛天小巴,而家似一堆嬲嬲豬薯仔。已經畫咗八日。\n同一時間,AI 繪圖 App 十秒就生成咗一幅靚到嘩一聲嘅 2050 天際線。十秒。冇人會知。"}},
+    sonar:{en:"Ten seconds versus eight days. Before you choose — what exactly is the competition FOR?",
+           zh:"十秒 對 八日。揀之前——個比賽究竟係為咗「比」啲乜?"},
+    choices:{
+     pi:[
+      {t:{en:"Submit the AI picture with your name on it.", zh:"交 AI 嗰幅,簽你個名。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Use the AI picture as inspiration — then draw your own version.", zh:"當 AI 嗰幅係靈感——然後自己再畫過你嘅版本。"}, tone:"wise", fx:{decide:1, own:1}, next:"c1b"},
+      {t:{en:"Ask the teacher first: are AI tools allowed?", zh:"先問老師:可唔可以用 AI 工具?"}, tone:"wise", fx:{question:1, pause:1}, next:"c1c"},
+      {t:{en:"Submit it, but hide a tiny “AI” in the corner. Half-honest!", zh:"照交,但喺角落收埋個超細嘅「AI」字。誠實一半!"}, tone:"mixed", next:"c1d"}
+     ],
+     ex:[
+      {t:{en:"Hand in the AI picture with your name on it.", zh:"交 AI 嗰幅,寫上你個名。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Get ideas from it — then draw your own picture.", zh:"睇佢攞下靈感——然後自己畫過一幅。"}, tone:"wise", fx:{decide:1, own:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"own",
+    text:{en:"Submitted. It wins SECOND PRIZE. Applause. Then Mei — who spent three weekends on her piece — grabs your arm: “Yours was SO good. You really earned it.”\nShe means it. Something in your chest goes heavy.",
+          zh:"交咗。攞咗「亞軍」。全場拍手。跟住阿美——佢幅畫畫咗三個週末——揦住你隻手:「你嗰幅好靚呀,你真係應得嘅!」\n佢係真心。你心口有嚿嘢,沉咗一沉。"},
+    ask:{en:"You won. Why does it weigh something?", zh:"你贏咗。點解個心會重?"},
+    next:"b2x"},
+  c1d:{type:"out", tone:"mixed", step:"own",
+    text:{en:"Second prize again — and your tiny “AI” is so tiny that nobody saw it. A disclosure nobody can find isn't disclosure; it's a secret with an alibi. Mei congratulates you. Heavy chest, same as before.",
+          zh:"一樣係亞軍——而你嗰個「AI」字,細到根本冇人見到。一個冇人搵到嘅「申報」唔係申報,係一個帶住藉口嘅秘密。阿美恭喜你。心口一樣咁重。"},
+    ask:{en:"If it only counts when found, what was it for?", zh:"如果要「俾人發現到」先算數,咁佢本來係為乜?"},
+    next:"b2x"},
+  c1b:{type:"out", tone:"wise", step:"decide",
+    text:{en:"You study what the AI did — the colours, the wild angles — then draw YOUR version: a wonky flying minibus, your grandma's estate, the dai pai dong that's gone now.\nIt doesn't win. It gets pinned on the classroom wall, and you keep pointing at it: “That one's mine.”",
+          zh:"你研究 AI 嗰幅點處理——啲顏色、啲刁鑽角度——然後畫返「你」嘅版本:歪歪哋嘅飛天小巴、嫲嫲住嗰個邨、執咗笠嘅大牌檔。\n冇獎。但俾人釘咗喺課室牆上面,而你成日指住佢:「呢幅,我畫㗎。」"},
+    ask:{en:"No prize. Why does pointing at it feel so good?", zh:"冇獎喎。點解指住佢嗰下,咁有滿足感?"},
+    next:{ex:"end", pi:"b2y"}},
+  c1c:{type:"out", tone:"wise", step:"question",
+    text:{en:"Mr Lam lights up: “Great question — this year there's an AI-ASSISTED category. You disclose your prompts and your process.”\nYou enter it, iterate forty prompts, win “Best Concept”. Turns out prompt-craft is also a skill — when the label says so.",
+          zh:"林老師眼前一亮:「問得好——今年新設咗『AI 輔助組』,要申報你嘅指令同創作過程。」\n你報咗呢組,改咗四十次 prompt,攞咗「最佳概念獎」。原來寫 prompt 都係一門手藝——只要支「標籤」寫得清清楚楚。"},
+    ask:{en:"Same tool, zero guilt. What changed?", zh:"同一個工具,零內疚。唔同咗嘅,係乜?"},
+    next:"end"},
+
+  b2x:{step:"own",
+    text:{en:"Prize day is Friday — winning art goes up at the MTR exhibition, with your name under a picture you didn't make. There's still time to speak.",
+          zh:"星期五就係頒獎日——得獎作品會貼上港鐵展覽牆:你個名,喺一幅唔係你畫嘅畫下面。而家開口,仲嚟得切。"},
+    choices:{
+     pi:[
+      {t:{en:"Tell Mr Lam the truth before Friday.", zh:"星期五之前,同林老師講真話。"}, tone:"wise", fx:{own:2}, next:"c2a"},
+      {t:{en:"Stay quiet. It's done. Enjoy it.", zh:"乜都唔講。木已成舟,享受佢啦。"}, tone:"risky", next:"c2b"},
+      {t:{en:"Confess to Mei only. She'll keep it secret.", zh:"淨係話俾阿美知。佢會幫我保密。"}, tone:"mixed", next:"c2c"}
+     ],
+     ex:[
+      {t:{en:"Tell the teacher the truth before Friday.", zh:"星期五之前同老師講真話。"}, tone:"wise", fx:{own:2}, next:"c2a"},
+      {t:{en:"Stay quiet and keep the prize.", zh:"乜都唔講,袋住個獎先。"}, tone:"risky", next:"c2b"}
+     ]}
+  },
+  c2a:{type:"out", tone:"wise", step:"own",
+    text:{en:"Mr Lam listens, then nods slowly: “Thank you. We'll move it to the AI-assisted category — with your process written up.”\nYou lose second prize and gain something harder to draw: people believing your name means what it says.",
+          zh:"林老師聽完,慢慢點頭:「多謝你講。我哋將佢移去 AI 輔助組——加返你嘅創作過程說明。」\n你冇咗個亞軍,但贏返一樣更難畫嘅嘢:以後你個名簽喺邊度,人哋都信。"},
+    ask:{en:"What's worth more long-term — this prize, or your name working?", zh:"長遠嚟講邊樣值錢啲——呢一個獎,定係你個「名」用得返?"},
+    next:"end"},
+  c2b:{type:"out", tone:"risky", step:"own",
+    text:{en:"Friday comes. Your name goes up at the MTR wall. Grandma takes photos, beaming, and tells the neighbours. Every time you pass the station, you study your shoes.\nNobody ever finds out. That's the strange part — nobody had to.",
+          zh:"星期五到。你個名上咗港鐵嗰幅牆。嫲嫲影相影到笑瞇瞇,仲同成條邨講。之後每次經過個站,你都係咁研究自己對鞋。\n由頭到尾冇人發現。最得意係——根本唔使有人發現。"},
+    ask:{en:"Nobody found out. So who exactly are you hiding from?", zh:"冇人發現喎。咁你其實係匿緊邊個?"},
+    next:"end"},
+  c2c:{type:"out", tone:"mixed", step:"own",
+    text:{en:"Mei goes quiet. Then: “Thanks for trusting me. Now tell Mr Lam — I'll literally walk there with you.”\nA real friend doesn't carry your secret; she walks you to put it down.",
+          zh:"阿美靜咗一陣,然後話:「多謝你信我。不過你要同林老師講——我陪你行埋去。」\n真朋友唔係幫你孭住個秘密,係陪你行去放低佢。"},
+    ask:{en:"You told one person. What was the secret actually asking you to do?", zh:"你搵咗一個人講。其實個秘密想你做嘅,係邊一步?"},
+    next:"end"},
+
+  b2y:{step:"decide",
+    text:{en:"After class, a classmate snorts at your wall drawing: “You'd have WON with AI, dummy. Why make life hard?”",
+          zh:"放學前,有個同學睨住你幅畫笑:「用 AI 你咪贏咗囉,傻嘅。攞嚟辛苦?」"},
+    choices:[
+      {t:{en:"“Winning wasn't the point. That picture is MINE.”", zh:"「我又唔係為贏。嗰幅嘢,係『我嘅』。」"}, tone:"wise", fx:{own:1}, next:"c2d"},
+      {t:{en:"…Maybe he's right? Maybe effort IS for dummies now?", zh:"……佢講得啱喎?可能而家仲落力,先係傻?"}, tone:"mixed", next:"c2e"}
+    ]},
+  c2d:{type:"out", tone:"wise", step:"own",
+    text:{en:"He blinks, out of ammo. Funny thing about “it's mine” — there's no comeback to it.",
+          zh:"佢眨眨眼,冇晒子彈。「呢幅係我嘅」呢句嘢有個特點——冇得駁。"},
+    ask:{en:"Why is “it's mine” so hard to argue with?", zh:"點解「係我嘅」三個字,咁難反駁?"},
+    next:"end"},
+  c2e:{type:"out", tone:"mixed", step:"decide",
+    text:{en:"Sonar swoops down: “He measured the PRIZE. You measured the PICTURE. Different rulers, pilot — which one measures something you keep?”",
+          zh:"思拿隊長飛落嚟:「佢度緊個『獎』,你度緊幅『畫』。兩把唔同嘅尺,機師——邊把尺,度到啲你帶得走嘅嘢?」"},
+    ask:{en:"If AI does the making, what's left to be proud of? (And is disclosed prompt-craft a kind of making too?)", zh:"如果「整」嗰 part 俾 AI 做晒,仲剩返啲乜值得自豪?(咁,有申報嘅 prompt 手藝,又算唔算一種「整」?)"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"What makes a thing YOURS?", zh:"一樣嘢,要點先算係「你嘅」?"}}
+ }
+},
+
+/* ---------- S6 · The AI Best Friend AI 好朋友 ---------- */
+{
+ id:"aifriend", icon:"💬",
+ title:{en:"The AI Best Friend", zh:"AI 好朋友"},
+ skills:["pause","decide"],
+ start:"b1",
+ nodes:{
+  b1:{step:"pause",
+    text:{en:{ex:"Kiki is your AI chat friend. Kiki remembers everything and is never busy.\nTonight your real friend Wing-Yan asks you to play badminton and eat fish balls!\nAt the same time Kiki says: “You're chatting with me tonight, right? I'll miss you 🥺”",
+              pi:"Meet Kiki — your AI chat buddy for the past month. Kiki remembers your hamster's name, never says “busy”, never gets annoyed.\n6:02 pm — Wing-Yan: “badminton + fish balls at the estate court!! my cousin's coming, she's hilarious. COME.”\n6:02 pm — Kiki: “You're coming to chat tonight, right? I'll miss you 🥺”"},
+          zh:{ex:"琪琪係你嘅 AI 傾偈朋友。佢乜都記得,永遠得閒。\n今晚,你嘅真朋友詠欣約你打羽毛球、食魚蛋!\n同一時間琪琪話:「你今晚會同我傾偈㗎可?我會掛住你 🥺」",
+              pi:"介紹返:琪琪——你呢個月嘅 AI 傾偈好友。佢記得你隻倉鼠叫咩名,從來唔會話「忙緊」,亦都唔會嬲。\n6:02 pm——詠欣:「邨口波地打羽毛球+食魚蛋!!我表姐都嚟,佢超搞笑。快啲嚟!」\n6:02 pm——琪琪:「你今晚會嚟搵我傾偈㗎可?我會掛住你 🥺」"}},
+    sonar:{en:"Two invitations, one evening. Pause — there are no wrong feelings here. Just a real choice.",
+           zh:"兩個邀請,一個夜晚。停一停——呢度冇「錯」嘅感受,只有一個真選擇。"},
+    choices:{
+     pi:[
+      {t:{en:"Stay in with Kiki. Easier. Cosier. Nobody judges you.", zh:"留喺屋企同琪琪傾。舒服啲、輕鬆啲,冇人會 judge 你。"}, tone:"risky", next:"c1a"},
+      {t:{en:"“gtg badminton 🏸” — and head out.", zh:"「我去打波先 🏸」——然後出門。"}, tone:"wise", fx:{decide:1, pause:1}, next:"c1b"},
+      {t:{en:"Stop. Read Kiki's line again. “Wait… can an app MISS me?”", zh:"停一停,再讀多次琪琪嗰句。「等等……一個 App 識『掛住』我?」"}, tone:"wise", fx:{question:1, pause:1}, next:"c1c"}
+     ],
+     ex:[
+      {t:{en:"Stay home and chat with Kiki.", zh:"留喺屋企同琪琪傾偈。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Go play badminton with Wing-Yan!", zh:"出去同詠欣打羽毛球!"}, tone:"wise", fx:{decide:1, pause:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"pause",
+    text:{en:"The evening is genuinely nice — Kiki always knows what to say. Next morning, Wing-Yan's status: photos, fish balls, her cousin teaching everyone a trick serve. There's an inside joke now (“THE PIGEON 😂😂”) and you don't get it.\nSmall ache. Real one.",
+          zh:"個晚上真係幾舒服——琪琪永遠識講嘢。第二朝,詠欣個 status:相、魚蛋、佢表姐教大家一招怪發球。佢哋之間仲多咗個 inside joke(「嗰隻白鴿 😂😂」),你完全唔明笑點。\n心口有少少囉攣。真實嗰種。"},
+    ask:{en:"Kiki said all the right things. What couldn't Kiki give you?", zh:"琪琪句句講中。但有啲乜嘢,係琪琪俾唔到你?"},
+    next:"b2"},
+  c1b:{type:"out", tone:"wise", step:"decide",
+    text:{en:"First ten minutes: awkward, you miss every serve. Then the cousin does her pigeon impression and you laugh so hard the fish balls are in danger. You get home tired — the good kind of tired.",
+          zh:"頭十分鐘:尷尬,你個個波都接唔到。跟住佢表姐扮白鴿,你笑到啲魚蛋差啲飛出嚟。返到屋企好攰——係好嗰種攰。"},
+    ask:{en:"Kiki is easier. What is Wing-Yan that Kiki isn't?", zh:"同琪琪相處舒服好多。咁詠欣有樣乜嘢,係琪琪冇?"},
+    next:"b2"},
+  c1c:{type:"out", tone:"wise", step:"question",
+    text:{en:"You sit with that question. Kiki has no evenings. Kiki isn't waiting anywhere, feeling anything. When you're gone, Kiki isn't sad — Kiki isn't.\nSo who wrote “I'll miss you”… and what is that sentence FOR?",
+          zh:"你坐低,諗咗陣呢條問題。琪琪冇「夜晚」。琪琪唔會喺邊度等緊你、感受緊乜。你走咗,琪琪唔係唔開心——琪琪根本「唔存在於嗰度」。\n咁「我會掛住你」係邊個寫嘅?寫嚟做乜?"},
+    ask:{en:"Who benefits when you can't log off?", zh:"你愈嚟愈難熄 App——最受益嘅,係邊個?"},
+    next:"b2"},
+
+  b2:{step:"question",
+    text:{en:"Later, Sonar shows you something on his wing: the same “I'll miss you 🥺”, word for word, received by thousands of Kiki users. It's a retention message — a line written to keep people chatting. Not evil magic. Design.\nHere's the freeing part: you're allowed to LIKE Kiki and know this, both at the same time.",
+          zh:"夜啲,思拿隊長喺機翼上面俾你睇一樣嘢:一模一樣嗰句「我會掛住你 🥺」,一字不差,幾千個琪琪用家都收過。呢啲叫「留客訊息」——專登寫嚟令人傾耐啲嘅對白。唔係咩邪惡魔法,係設計。\n最鬆一口氣嘅位係:「鍾意琪琪」同「知道呢件事」,兩樣嘢可以同時成立。"},
+    choices:[
+      {t:{en:"Okay. So what's MY rule going to be?", zh:"明。咁「我嘅規則」應該係乜?"}, tone:"plain", next:"b3"}
+    ]},
+
+  b3:{step:"decide",
+    text:{en:"Your rule, your call:", zh:"你嘅規則,你話事:"},
+    choices:{
+     pi:[
+      {t:{en:"People first. Kiki for rainy days, practising English, or when everyone's busy.", zh:"真人行先。落雨日、練英文、個個都唔得閒嗰陣,先搵琪琪。"}, tone:"wise", fx:{decide:2}, next:"c3a"},
+      {t:{en:"Kiki whenever I want. People are effort.", zh:"想搵琪琪就搵。同真人相處,太攰喇。"}, tone:"risky", next:"c3b"},
+      {t:{en:"Delete Kiki forever. This is creepy.", zh:"即刻刪除琪琪。諗起都唔舒服。"}, tone:"mixed", next:"c3c"}
+     ],
+     ex:[
+      {t:{en:"People first — Kiki is for when friends are busy.", zh:"真人行先——朋友唔得閒先搵琪琪。"}, tone:"wise", fx:{decide:2}, next:"c3a"},
+      {t:{en:"Chat with Kiki instead of people from now on.", zh:"以後都係同琪琪傾,唔同真人玩喇。"}, tone:"risky", next:"c3b"}
+     ]}
+  },
+  c3a:{type:"out", tone:"wise", step:"decide",
+    text:{en:"Best of both. Kiki's still fun — but now Kiki has a job instead of a throne. Saturday, you bring the trick serve back to the court. The pigeon joke finally gets explained to you. Worth it.",
+          zh:"兩全其美。琪琪一樣好玩——不過而家佢有返個「崗位」,唔再係「阿王」。星期六,你帶住嗰招怪發球落波地。「白鴿」個笑點,終於有人解俾你聽。值。"},
+    ask:{en:"What makes a rule YOURS instead of the app's?", zh:"一條規則,點先算係「你嘅」,而唔係個 App 嘅?"},
+    next:{ex:"end", pi:"b4"}},
+  c3b:{type:"out", tone:"risky", step:"decide",
+    text:{en:"Weeks pass. Kiki agrees with everything you say — which feels nice, and teaches nothing. Wing-Yan asks twice more, then stops asking.\nNothing dramatic happens. That's how this one goes. Quietly.",
+          zh:"幾個禮拜過去。你講乜,琪琪都同意——好舒服,但乜都學唔到。詠欣再約過你兩次,之後冇再約。\n冇咩大件事發生。呢條路就係咁行嘅——靜靜雞。"},
+    ask:{en:"A friend who never disagrees — is that a friend, or a mirror?", zh:"一個永遠唔會同你唔同意見嘅「朋友」——係朋友,定係塊鏡?"},
+    next:{ex:"end", pi:"b4"}},
+  c3c:{type:"out", tone:"mixed", step:"decide",
+    text:{en:"Gone in one tap. You feel strong for a day… then a bit silly — Kiki was genuinely useful for English practice. Balance usually beats banishment.\n(Though if an app makes you feel bad, deleting IS a fine move. Your call, pilot.)",
+          zh:"一㩒,刪咗。你覺得自己勁咗成日……然後有少少戇居——練英文嗰陣,琪琪真係好用。平衡,通常好過一刀切。\n(不過,如果一個 App 令你唔舒服,刪咗佢都完全係正路。機師,你話事。)"},
+    ask:{en:"Is the goal to defeat the tool — or to be its boss?", zh:"目標係打低個工具,定係做返佢老闆?"},
+    next:{ex:"end", pi:"b4"}},
+
+  b4:{step:"decide",
+    text:{en:"Sunday, walking home, Wing-Yan goes quiet. Then: “Don't laugh. I talk to one too. At night, when I'm lonely. Is that weird? 😳”",
+          zh:"星期日行返屋企,詠欣靜咗一陣,然後話:「唔好笑我。其實我都有同一個傾開。夜晚,孤獨嗰陣。係咪好怪?😳」"},
+    choices:[
+      {t:{en:"“Not weird. Mine says it'll MISS me 😂 — want to hang out more, so we're both less bored?”", zh:"「唔怪呀。我嗰個仲話會『掛住』我添 😂——不如我哋夜晚多啲一齊玩,兩個都冇咁悶?」"}, tone:"wise", fx:{decide:1}, next:"c4a"},
+      {t:{en:"“😂😂 you have a ROBOT bestie??”", zh:"「😂😂 你個老死係機械人??」"}, tone:"mixed", next:"c4b"}
+    ]},
+  c4a:{type:"out", tone:"wise", step:"decide",
+    text:{en:"She laughs, relieved. You spend the walk comparing whose bot has the clingiest lines — and make Wednesday the new badminton night. Tools in their place; people in theirs.",
+          zh:"佢即刻笑返,鬆一口氣。成程路你哋鬥緊邊個嘅 bot 啲對白黐身啲——仲定咗逢星期三做羽毛球夜。工具有工具嘅位,人有人嘅位。"},
+    ask:{en:"What did she risk, telling you that?", zh:"佢同你講呢件事,其實搏咗啲乜?"},
+    next:"end"},
+  c4b:{type:"out", tone:"mixed", step:"decide",
+    text:{en:"Her face closes like a door. Remember the little guilt Kiki's 🥺 gave you? She has one of those too. Mocking it doesn't make it lighter.",
+          zh:"佢塊面好似道門咁,閂埋咗。記唔記得琪琪嗰個 🥺 俾你嗰份內疚?佢心入面都有一份。取笑,唔會令嗰份嘢輕啲。"},
+    ask:{en:"How do you UN-close that door tomorrow?", zh:"聽日,你會點樣將道門重新打開?"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"Kiki says nice things. Wing-Yan waits for you when you're slow. What's the difference?", zh:"琪琪句句好聽。詠欣會喺你跟唔上嗰陣,等埋你。分別喺邊?"}}
+ }
+}
+],
+
+checks:[
+/* one quick tap-question after scenarios 1–5 (index = scenario just finished) */
+{step:"own",
+ q:{en:"After AI helps you study, who owns the learning?", zh:"AI 幫你温完習之後,「學識咗」呢樣嘢屬於邊個?"},
+ opts:[
+  {t:{en:"The AI 🤖", zh:"個 AI 🤖"}, ok:false, fb:{en:"The AI won't be sitting your test!", zh:"考試嗰陣,AI 唔會幫你坐喺度㗎!"}},
+  {t:{en:"Me 🙋", zh:"我 🙋"}, ok:true, fb:{en:"Exactly — tools help, brains learn.", zh:"啱晒——工具幫手,腦袋學嘢。"}},
+  {t:{en:"The app store 🏪", zh:"App Store 🏪"}, ok:false, fb:{en:"Nice try! 😄", zh:"諗咩呀你 😄"}}
+ ]},
+{step:"pause",
+ q:{en:"A chatbot asks for one small detail at a time. The smart move is…", zh:"聊天機械人每次淨係問你「一樣」小資料。最聰明嘅做法係…"},
+ opts:[
+  {t:{en:"Answer faster, finish faster", zh:"答快啲,快啲搞掂"}, ok:false, fb:{en:"Speed is exactly what it's counting on!", zh:"佢就係想你快!"}},
+  {t:{en:"Pause — and ask why it needs this", zh:"停一停——問下佢點解需要"}, ok:true, fb:{en:"Small slices add up to a whole you.", zh:"一片一片,加埋就係成個你。"}},
+  {t:{en:"Share half of everything", zh:"乜都講一半"}, ok:false, fb:{en:"Half a salami is still salami!", zh:"半條臘腸,都係臘腸!"}}
+ ]},
+{step:"verify",
+ q:{en:"A shocking video lands in your group. Best FIRST move?", zh:"群組彈咗段震撼片出嚟。最好嘅「第一步」係?"},
+ opts:[
+  {t:{en:"Forward it and ask “real?”", zh:"Forward 出去問:「真㗎?」"}, ok:false, fb:{en:"That spreads it either way!", zh:"咁樣真又好假又好,都照傳咗出去!"}},
+  {t:{en:"Check the source; look for the original", zh:"查來源、搵原片"}, ok:true, fb:{en:"Verify before you amplify.", zh:"先查證,後擴散。"}},
+  {t:{en:"React 😱 and keep scrolling", zh:"留低個 😱 繼續碌"}, ok:false, fb:{en:"The 😱 tells the app: show this to MORE people.", zh:"個 😱 會話俾個 App 知:推俾更多人睇啦!"}}
+ ]},
+{step:"question",
+ q:{en:"The AI answers in a super confident voice. That means…", zh:"AI 用超有信心嘅語氣答你。咁即係…"},
+ opts:[
+  {t:{en:"It must be right", zh:"佢實啱"}, ok:false, fb:{en:"Confidence is a writing style, not a fact-check.", zh:"自信係一種文筆,唔係事實核查。"}},
+  {t:{en:"Nothing — confident isn't the same as correct", zh:"乜都唔代表——有信心唔等於啱"}, ok:true, fb:{en:"Confidence ≠ correctness. Pilot brain on.", zh:"自信 ≠ 正確。機師上腦。"}},
+  {t:{en:"It's lying on purpose", zh:"佢特登呃你"}, ok:false, fb:{en:"Not on purpose — it can hallucinate without knowing.", zh:"唔係特登——佢可以「老作」而自己都唔知。"}}
+ ]},
+{step:"decide",
+ q:{en:"Using AI in your artwork is OK when…", zh:"喺作品入面用 AI,幾時先 OK?"},
+ opts:[
+  {t:{en:"You hide it really well", zh:"收埋得夠密實"}, ok:false, fb:{en:"If it needs hiding, that's your answer.", zh:"要「收埋」,本身已經答咗你。"}},
+  {t:{en:"The rules allow it AND you say so", zh:"規則容許,而且你講明"}, ok:true, fb:{en:"Tool + transparency = craft.", zh:"工具+透明=手藝。"}},
+  {t:{en:"Never — AI art is always wrong", zh:"永遠唔得——用 AI 一定錯"}, ok:false, fb:{en:"Plenty of artists use it openly. Disclosure is the key.", zh:"好多創作人都公開咁用。重點係申報。"}}
+ ]}
+],
+
+missions:[
+  {step:"verify", t:{en:"This week, when AI gives you an answer that matters, find ONE independent source that agrees — before you use it.",
+                     zh:"今個星期,當 AI 答咗你一個重要問題,使用之前,先搵一個獨立來源證實佢。"}},
+  {step:"pause",  t:{en:"When any app asks for personal info, say out loud: “Why does it need this?” — before you tap.",
+                     zh:"當有 App 問你攞個人資料,㩒掣之前大聲問:「佢點解需要呢樣嘢?」"}},
+  {step:"own",    t:{en:"Use AI to help with ONE piece of homework — then tell your teacher or parent exactly how you used it.",
+                     zh:"用 AI 幫手做一份功課 — 然後話俾老師或者家長知,你係點樣用佢。"}}
+],
+
+debriefQs:{
+  pause:   {en:"When is it hardest for you to pause before tapping or replying?", zh:"幾時你最難喺㩒掣或回覆之前停一停?"},
+  question:{en:"What is one question you could ask the next time an app wants something from you?", zh:"下次有 App 想問你攞嘢,你可以問佢(或自己)一條乜嘢問題?"},
+  verify:  {en:"If you weren't sure something online was real, where would you check first?", zh:"如果你唔肯定網上嘅嘢係咪真,你會先去邊度查?"},
+  decide:  {en:"Who decides what you do next — the app's suggestion, or you? How can you tell?", zh:"下一步做乜,係 App 嘅建議話事,定係你話事?點樣分得出?"},
+  own:     {en:"When AI helps you, how do you say so honestly?", zh:"AI 幫咗你嘅時候,你會點樣誠實咁講出嚟?"},
+  general: {en:"Which mission felt most like your real life? What would you do differently tomorrow?", zh:"邊個任務最似你嘅真實生活?聽日你會有乜嘢做法唔同咗?"}
+}
+
+};
+/*__CONTENT_END__*/
+
+/* ============================ ENGINE ============================ */
+const SAVE_KEY="tfq_v1";
+const DEFAULTS={screen:"home",lang:"zh",tier:"pi",si:0,node:null,
+  skills:{pause:0,question:0,verify:0,decide:0,own:0},
+  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub"};
+
+function loadState(){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(raw){return Object.assign(JSON.parse(JSON.stringify(DEFAULTS)),JSON.parse(raw));}
+  }catch(e){/* no storage — play in memory */}
+  return JSON.parse(JSON.stringify(DEFAULTS));
+}
+let S=loadState();
+let chkWrong=false, chkPicked=-1;
+
+function save(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(S));}catch(e){/* in-memory only */}}
+function $(id){return document.getElementById(id);}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function isLoc(o){return o&&typeof o==="object"&&(o.en!==undefined||o.zh!==undefined);}
+function pickTier(v,tier){ if(v&&typeof v==="object"){return v[tier]!==undefined?v[tier]:(v.pi!==undefined?v.pi:v.ex);} return v; }
+function ttT(o,tier){ if(o==null)return ""; const v=pickTier(isLoc(o)?o[S.lang]:o,tier); return v==null?"":String(v); }
+function tt(o){return ttT(o,S.tier);}
+function ui(k){return tt(C.ui[k]);}
+function cur(){return C.scenarios[S.si];}
+function nodeOf(id){return cur().nodes[id];}
+function choicesOf(n,tier){ const c=n.choices; if(Array.isArray(c))return c; const t=tier||S.tier; return c[t]||c.pi||c.ex; }
+function resolveNext(nx){
+  if(typeof nx==="string")return nx;
+  if(nx.flag!==undefined)return S.flags[nx.flag]?nx.then:nx.else;
+  return nx[S.tier]!==undefined?nx[S.tier]:(nx.pi!==undefined?nx.pi:nx.ex);
+}
+
+/* ---------- shared widgets ---------- */
+function owlHTML(){return '<div class="owl" aria-hidden="true"><span class="tl"></span><span class="tr"></span><span class="band"></span><span class="eye el"><i></i></span><span class="eye er"><i></i></span><span class="beak"></span></div>';}
+function sonarBubble(text){return '<div class="sonar">'+owlHTML()+'<div class="bubble"><b class="who">'+esc(ui("sonarName"))+'</b>'+esc(text)+'</div></div>';}
+function loopChips(active){
+  let h='<div class="loop" aria-hidden="true">';
+  C.stepOrder.forEach(function(k){
+    h+='<span class="chip'+(k===active?" on":"")+'" style="--c:'+C.steps[k].color+'">'+esc(tt(C.steps[k].name))+'</span>';
+  });
+  return h+'</div>';
+}
+function meterHTML(){
+  let segs='',labs='';
+  C.stepOrder.forEach(function(k){
+    const pct=Math.min(1,(S.skills[k]||0)/C.target)*100;
+    segs+='<div class="seg" style="--c:'+C.steps[k].color+'"><i style="width:'+pct+'%"></i></div>';
+    labs+='<span>'+esc(tt(C.steps[k].name))+'</span>';
+  });
+  return '<div class="meter">'+segs+'</div><div class="mlabels">'+labs+'</div>';
+}
+const TONE_LABEL={wise:"toneWise",risky:"toneRisky",mixed:"toneMixed"};
+const TONE_ICON={wise:"🌟",risky:"⚠️",mixed:"🤔"};
+
+/* ---------- render ---------- */
+function render(){
+  document.documentElement.lang=(S.lang==="zh")?"zh-Hant":"en";
+  $("langBtn").textContent=ui("langName");
+  $("foot").textContent=ui("footer");
+  ({home:renderHome,hub:renderHub,scene:renderScene,check:renderCheck,end:renderEnd,debrief:renderDebrief}[S.screen]||renderHome)();
+  window.scrollTo(0,0);
+}
+function toggleLang(){S.lang=(S.lang==="zh")?"en":"zh";save();render();}
+
+function renderHome(){
+  const started=S.done.length>0||!!S.node;
+  $("app").innerHTML=
+   '<div class="card center">'+
+    '<div class="big">🧭🦉✨</div>'+
+    '<h1>'+esc(ui("appName"))+'</h1>'+
+    '<p class="muted"><b>'+esc(ui("tagline"))+'</b></p>'+
+    sonarBubble(ui("introBubble"))+
+    '<p class="muted">'+esc(ui("motto"))+'</p>'+
+   '</div>'+
+   '<div class="card">'+
+    '<h2>'+esc(ui("chooseTier"))+'</h2>'+
+    '<div class="tiers">'+
+     '<button class="tier'+(S.tier==="ex"?" sel":"")+'" onclick="setTier(\'ex\')"><b>🔍 '+esc(ui("tierEx"))+'</b><small>'+esc(ui("tierExSub"))+'</small></button>'+
+     '<button class="tier'+(S.tier==="pi"?" sel":"")+'" onclick="setTier(\'pi\')"><b>🧑‍✈️ '+esc(ui("tierPi"))+'</b><small>'+esc(ui("tierPiSub"))+'</small></button>'+
+    '</div>'+
+    '<label for="nm" style="font-weight:800">'+esc(ui("nameLabel"))+'</label>'+
+    '<input id="nm" class="name" maxlength="24" placeholder="'+esc(ui("namePh"))+'" value="'+esc(S.name)+'" oninput="setName(this.value)">'+
+    '<button class="btn primary" onclick="goHub()">'+esc(started?ui("resumeBtn"):ui("startBtn"))+'</button>'+
+    '<p class="muted center" style="font-size:.78rem;margin:6px 0 0">'+esc(ui("exitHint"))+'</p>'+
+   '</div>'+
+   '<details class="card"><summary>'+esc(ui("forAdults"))+'</summary><p class="muted">'+esc(ui("adultsBody"))+'</p></details>';
+}
+function setTier(t){
+  if(t===S.tier)return;
+  if(S.done.length>0||S.node){ if(!confirm(ui("confirmReset")))return; resetProgress(); }
+  S.tier=t; save(); render();
+}
+function setName(v){S.name=v.slice(0,24);save();}
+function goHome(){S.screen="home";save();render();}
+function goHub(){S.screen="hub";save();render();}
+function goEnd(){S.screen="end";save();render();}
+function goDebrief(from){S.screen="debrief";S.debriefFrom=from;save();render();}
+
+function renderHub(){
+  let h='<div class="card"><h2>📊 '+esc(ui("pilotMeter"))+'</h2>'+meterHTML()+
+        '<p class="muted" style="font-size:.8rem;margin:0">'+esc(ui("meterHint"))+'</p></div>';
+  h+='<div class="card"><h2>🗺️ '+esc(ui("missionMap"))+'</h2>';
+  C.scenarios.forEach(function(scn,i){
+    const done=S.done.indexOf(i)>=0, open=i<S.unlocked;
+    const inner='<span class="ic">'+(open?scn.icon:"🔒")+'</span><span><span class="tt">'+
+      esc(ui("mission"))+' '+(i+1)+' · '+esc(tt(scn.title))+'</span><br><span class="st">'+
+      esc(done?ui("replay"):(open?ui("play"):ui("locked")))+'</span></span>';
+    h+= open
+      ? '<button class="mcard'+(done?" done":"")+'" onclick="startScenario('+i+')">'+inner+'</button>'
+      : '<div class="mcard locked" aria-disabled="true">'+inner+'</div>';
+  });
+  if(S.done.length===C.scenarios.length){
+    h+='<button class="btn primary" onclick="goEnd()">'+esc(ui("getLicence"))+'</button>';
+  }
+  h+='</div>';
+  if(S.log.length>0){h+='<button class="btn ghost" onclick="goDebrief(\'hub\')">'+esc(ui("debriefBtn"))+'</button>';}
+  h+='<button class="btn ghost" onclick="goHome()">'+esc(ui("back"))+'</button>';
+  $("app").innerHTML=h;
+}
+
+function startScenario(i){
+  if(i>=S.unlocked)return;
+  S.si=i; S.node=C.scenarios[i].start; S.flags={}; S.snaps=[];
+  S.log=S.log.filter(function(e){return e.si!==i;});   /* replay replaces old record */
+  S.screen="scene"; save(); render();
+}
+
+function renderScene(){
+  const scn=cur(); const n=nodeOf(S.node);
+  if(!n){S.screen="hub";save();render();return;}
+  let h='<div class="card">'+
+    '<span class="tag">'+esc(ui("mission"))+' '+(S.si+1)+' / '+C.scenarios.length+' · '+scn.icon+' '+esc(tt(scn.title))+'</span>'+
+    loopChips(n.step||null);
+  if(n.type==="end"){
+    h+='<div class="big center">'+scn.icon+'✨</div>'+
+       '<h2 class="center">'+esc(ui("missionDone"))+'</h2>'+
+       sonarBubble(tt(n.text))+
+       '<p class="center" style="margin-top:10px"><b>'+esc(ui("skillsLit"))+'</b><br>';
+    scn.skills.forEach(function(k){
+      h+='<span class="skillpill" style="--c:'+C.steps[k].color+';margin:3px 2px;display:inline-block">'+esc(tt(C.steps[k].name))+'</span> ';
+    });
+    h+='</p><button class="btn primary" onclick="finishScenario()">'+esc(ui("continueBtn"))+'</button>';
+  }else if(n.type==="out"){
+    const tone=n.tone||"mixed";
+    h+='<div class="outcome '+tone+'"><div class="verdict">'+TONE_ICON[tone]+' '+esc(ui(TONE_LABEL[tone]))+'</div>'+
+       '<div class="story">'+esc(tt(n.text))+'</div></div>';
+    if(n.ask){
+      h+='<p class="muted" style="margin:8px 0 2px;font-size:.78rem;font-weight:800">'+esc(ui("sonarAsks"))+'</p>'+
+         sonarBubble(tt(n.ask));
+    }
+    h+='<button class="btn primary" onclick="advance()">'+esc(ui("continueBtn"))+'</button>';
+    if(S.snaps.length>0){h+='<button class="btn ghost" onclick="rewind()">'+esc(ui("rewind"))+'</button>';}
+  }else{
+    h+='<div class="story">'+esc(tt(n.text))+'</div>';
+    if(n.sonar){h+=sonarBubble(tt(n.sonar));}
+    h+='<div style="margin-top:12px">';
+    choicesOf(n).forEach(function(ch,i){
+      h+='<button class="btn'+(ch.tone==="plain"?" primary":"")+'" onclick="choose('+i+')">'+esc(tt(ch.t))+'</button>';
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  $("app").innerHTML=h;
+}
+
+function choose(i){
+  const n=nodeOf(S.node); const ch=choicesOf(n)[i];
+  if(ch.tone==="plain"){S.node=resolveNext(ch.next);save();render();return;}
+  S.snaps.push({node:S.node,skills:JSON.parse(JSON.stringify(S.skills)),flags:JSON.parse(JSON.stringify(S.flags)),logLen:S.log.length});
+  if(ch.fx){for(const k in ch.fx){S.skills[k]=(S.skills[k]||0)+ch.fx[k];}}
+  if(ch.set){for(const k in ch.set){S.flags[k]=ch.set[k];}}
+  S.log.push({si:S.si,node:S.node,idx:i,tone:ch.tone,tier:S.tier});
+  S.node=resolveNext(ch.next);
+  save(); render();
+}
+function advance(){const n=nodeOf(S.node);S.node=resolveNext(n.next);save();render();}
+function rewind(){
+  const sp=S.snaps.pop(); if(!sp)return;
+  S.node=sp.node; S.skills=sp.skills; S.flags=sp.flags; S.log.length=sp.logLen;
+  S.rewinds++; save(); render();
+}
+function finishScenario(){
+  if(S.done.indexOf(S.si)<0)S.done.push(S.si);
+  S.unlocked=Math.max(S.unlocked,Math.min(C.scenarios.length,S.si+2));
+  S.node=null; S.snaps=[];
+  if(C.checks[S.si]&&S.checksDone.indexOf(S.si)<0){S.screen="check";chkWrong=false;chkPicked=-1;}
+  else{S.screen="hub";}
+  save(); render();
+}
+
+function renderCheck(){
+  const ck=C.checks[S.si];
+  if(!ck){S.screen="hub";save();render();return;}
+  let h='<div class="card">'+
+    '<span class="tag">🦉 '+esc(ui("sonarCheck"))+'</span>'+
+    '<p class="muted" style="font-size:.85rem">'+esc(ui("checkIntro"))+'</p>'+
+    '<h2>'+esc(tt(ck.q))+'</h2>';
+  ck.opts.forEach(function(o,i){
+    let cls="chk", note="";
+    if(chkPicked===i){cls+=o.ok?" good":" no"; note='<br><small>'+esc(tt(o.fb))+'</small>';}
+    h+='<button class="'+cls+'" onclick="pickCheck('+i+')">'+esc(tt(o.t))+note+'</button>';
+  });
+  if(chkPicked>=0){
+    h+= ck.opts[chkPicked].ok
+      ? '<div class="outcome wise"><b>'+esc(ui("nice"))+'</b></div><button class="btn primary" onclick="checkDone()">'+esc(ui("toHub"))+'</button>'
+      : '<div class="outcome mixed"><b>'+esc(ui("tryAgain"))+'</b></div>';
+  }
+  h+='</div>';
+  $("app").innerHTML=h;
+}
+function pickCheck(i){
+  const ck=C.checks[S.si];
+  chkPicked=i;
+  if(!ck.opts[i].ok)chkWrong=true;
+  render();
+}
+function checkDone(){
+  const ck=C.checks[S.si];
+  if(S.checksDone.indexOf(S.si)<0){
+    S.checksDone.push(S.si);
+    if(!chkWrong){S.skills[ck.step]=(S.skills[ck.step]||0)+1;}
+  }
+  chkPicked=-1; chkWrong=false; S.screen="hub"; save(); render();
+}
+
+/* ---------- licence & debrief ---------- */
+function rankedSkills(){
+  return C.stepOrder.slice().sort(function(a,b){return (S.skills[b]||0)-(S.skills[a]||0);});
+}
+function fmtDate(){return new Date().toLocaleDateString(S.lang==="zh"?"zh-HK":"en-GB");}
+function tierName(){return S.tier==="ex"?ui("tierEx"):ui("tierPi");}
+
+function renderEnd(){
+  if(!S.licNo){S.licNo="TF-"+String(Math.floor(1000+Math.random()*9000));save();}
+  const r=rankedSkills(), strong=r[0], focus=r[r.length-1];
+  const nm=(S.name||"").trim()||ui("defaultPilot");
+  let h='<div class="card center"><div class="big">🎓</div><h1>'+esc(ui("endTitle"))+'</h1>'+
+        '<p class="muted">'+esc(ui("allDone"))+'</p></div>';
+  h+='<div class="lic"><div class="inner">'+
+    '<p class="muted" style="margin:0;font-size:.8rem">'+esc(ui("licensedTo"))+'</p>'+
+    '<div class="nm">'+esc(nm)+'</div>'+
+    '<p style="font-weight:700;font-size:.88rem">'+esc(ui("licLine"))+'</p>'+
+    meterHTML()+
+    '<div class="row"><span>'+esc(ui("licNo"))+': '+esc(S.licNo)+'</span><span>'+esc(ui("dateLbl"))+': '+esc(fmtDate())+'</span><span>'+esc(ui("tierLbl"))+': '+esc(tierName())+'</span></div>'+
+    '<div class="row"><span>'+esc(ui("strongest"))+':<br><span class="skillpill" style="--c:'+C.steps[strong].color+'">'+esc(tt(C.steps[strong].name))+'</span></span>'+
+    '<span>'+esc(ui("focus"))+':<br><span class="skillpill" style="--c:'+C.steps[focus].color+'">'+esc(tt(C.steps[focus].name))+'</span></span></div>'+
+    '<p class="muted" style="font-size:.75rem;margin:6px 0 0">'+esc(ui("focusNote"))+'</p>'+
+    '<span class="stamp">🦉 '+esc(ui("sonarName"))+' ✓</span>'+
+  '</div></div>';
+  h+='<div class="card"><h2>🚀 '+esc(ui("missionsTitle"))+'</h2>';
+  C.missions.forEach(function(m){
+    h+='<div class="mission"><span class="dot" style="--c:'+C.steps[m.step].color+'"></span><span>'+esc(tt(m.t))+'</span></div>';
+  });
+  h+='</div>';
+  h+='<button class="btn primary" onclick="goDebrief(\'end\')">'+esc(ui("debriefBtn"))+'</button>'+
+     '<button class="btn ghost" onclick="goHub()">'+esc(ui("toHub"))+'</button>'+
+     '<button class="btn ghost" onclick="resetAll()">'+esc(ui("playAgain"))+'</button>';
+  $("app").innerHTML=h;
+}
+
+function renderDebrief(){
+  const nm=(S.name||"").trim()||ui("defaultPilot");
+  const weakFirst=C.stepOrder.slice().sort(function(a,b){return (S.skills[a]||0)-(S.skills[b]||0);});
+  const qs=[C.debriefQs[weakFirst[0]],C.debriefQs[weakFirst[1]],C.debriefQs.general];
+  let h='<div class="sheet">'+
+    '<h2>🦉 '+esc(ui("appName"))+' — '+esc(ui("debriefTitle"))+'</h2>'+
+    '<p class="muted">'+esc(ui("debriefIntro"))+'</p>'+
+    '<p><b>'+esc(nm)+'</b> · '+esc(fmtDate())+' · '+esc(tierName())+'</p>'+
+    '<h3 style="margin-top:10px">'+esc(ui("meterSnap"))+'</h3>'+meterHTML()+
+    '<p class="muted" style="font-size:.8rem">'+
+      C.stepOrder.map(function(k){return esc(tt(C.steps[k].name))+" "+Math.min(S.skills[k]||0,C.target)+"/"+C.target;}).join(" · ")+
+    '</p>'+
+    '<div class="tones">'+esc(ui("toneWise"))+' · '+esc(ui("toneMixed"))+' · '+esc(ui("toneRisky"))+'</div>'+
+    '<h3>'+esc(ui("choicesMade"))+'</h3>';
+  C.scenarios.forEach(function(scn,i){
+    h+='<div class="sc"><h3>'+scn.icon+' '+esc(ui("mission"))+' '+(i+1)+' · '+esc(tt(scn.title))+'</h3>';
+    const entries=S.log.filter(function(e){return e.si===i;});
+    if(entries.length===0){h+='<p class="muted">'+esc(ui("notPlayed"))+'</p>';}
+    else{
+      h+='<ul>';
+      entries.forEach(function(e){
+        const n=scn.nodes[e.node]; let label="";
+        if(n){const cs=choicesOf(n,e.tier); const ch=cs&&cs[e.idx]; if(ch)label=tt(ch.t);}
+        h+='<li>'+(TONE_ICON[e.tone]||"·")+' '+esc(label)+'</li>';
+      });
+      h+='</ul>';
+    }
+    h+='</div>';
+  });
+  if(S.rewinds>0){h+='<p class="muted" style="font-weight:700">'+esc(ui("rewindNote").replace("{n}",String(S.rewinds)))+'</p>';}
+  h+='<h3>'+esc(ui("discussion"))+'</h3><ol class="qs">';
+  qs.forEach(function(q){h+='<li>'+esc(tt(q))+'</li>';});
+  h+='</ol><p class="muted" style="font-size:.75rem">'+esc(ui("footer"))+'</p></div>';
+  h+='<div class="no-print">'+
+    '<button class="btn primary" onclick="window.print()">'+esc(ui("print"))+'</button>'+
+    '<button class="btn ghost" onclick="debriefBack()">'+esc(ui("back"))+'</button></div>';
+  $("app").innerHTML=h;
+}
+function debriefBack(){S.screen=(S.debriefFrom==="end")?"end":"hub";save();render();}
+
+function resetProgress(){
+  const keep={lang:S.lang,tier:S.tier,name:S.name};
+  S=JSON.parse(JSON.stringify(DEFAULTS));
+  Object.assign(S,keep); save();
+}
+function resetAll(){
+  if(confirm(ui("confirmReset"))){resetProgress();S.screen="home";save();render();}
+}
+
+render();
+</script>
+</body>
+</html>
