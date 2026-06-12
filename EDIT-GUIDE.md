@@ -117,12 +117,19 @@ never Captain.
 * **Typing dots**: give any story node `typing:true` and its message appears after a
   short chatbot-style typing animation (skipped under reduced motion; shown once per
   visit). Currently on the Luna (M2) and Kiki (M6) openings.
-* **Designer SVGs**: the asset catalog's artwork (Sonar poses, cast avatars, scene
-  backdrops, badges/stamps/seal) is *not yet inlined* — the catalog page references
-  an `assets/` folder that hasn't been delivered into this repo. When it arrives,
-  inline the chosen SVGs as JS template strings and swap them in at `owlHTML()`
-  (Sonar poses), the `.stampbox` (stamp-complete), the licence `.stamp` (seal) and
-  scenario headers (backdrops), keeping total size under 500 KB.
+* **Designer SVGs (v1.3)**: 35 artworks from the asset kit are inlined in the `ART`
+  registry (engine, just below the transient guards) and placed with the `art(name,
+  cls, width)` helper. Captain Sonar now uses the six pose SVGs context-sensitively
+  (thinking at decisions, celebrate on wise outcomes, worried on risky — never angry,
+  point on Sonar Checks, wink for the profile reveal). Scene backdrops show on each
+  mission's first node (`SCENE_ART`, index-aligned), cast avatars appear in the
+  header strip (`CAST`) and as the typing-dots avatar (`CHAT_AVATAR`). UI art:
+  stamp-complete on mission end, seal-licence on the licence, lock/unlock on the map,
+  sticker-wise / sticker-star rewards, sticker-rewind-hero + icon-rewind framing
+  rewind as re-thinking, icon-loop-ring on home/debrief. Avatar `clipPath` ids are
+  namespaced per avatar (the kit README's collision warning). Only
+  `sticker-thinking-cap` was left out (unused). To swap art, replace the string in
+  `ART` — same key, any viewBox-based SVG.
 
 ## 8. Self-test checklist (run after every edit)
 
