@@ -112,7 +112,30 @@ between `/*__CONTENT_START__*/` and `/*__CONTENT_END__*/`. Every string is
 Choices may be one array (both tiers) or `{ex:[…], pi:[…]}`. Non-coders edit only
 this block. Cantonese-flavoured dialogue, standard written Chinese for instructions.
 
-## 8. Tech summary
+## 8. Pilot Profiles (v1.1)
+
+A personality-style badge revealed by Captain Sonar on the end screen ("Interesting
+flight, pilot. Want to see your flight profile?") — explicitly a **snapshot, not a
+type**: every profile names one strength + one training focus, and the card says
+"this is your flight profile TODAY — replay later and it may change", with a
+"Fly again" replay hook. Five profiles over the trust spectrum:
+
+| Profile | 中文 | Trigger (deterministic, first match wins) |
+|---|---|---|
+| Captain 🧑‍✈️ | 機長 | all 5 skills ≥ 3 AND risky ≤ 2 AND trust-picks ≤ 2 AND guard-picks ≤ 2 (earned) |
+| Autopilot Rider 🛫 | 自動波機師 | trust-picks ≥ 4, or VERIFY ≤ 2 with risky ≥ 4 |
+| Ground Crew 🦺 | 地勤隊長 | guard-picks ≥ 3 (Pilot) / ≥ 2 (Explorer) and > trust-picks |
+| Wingmate 🤝 | 僚機夥伴 | ≥ 3 wise choices in missions 5–6 with VERIFY ≤ 3 |
+| Test Pilot 🧪 | 試飛員 | VERIFY+QUESTION ≥ 4 without the balance above; also the ambiguous-data fallback (with Wingmate) — never Captain |
+
+Inputs are the data already tracked (skill totals + choice log), plus lightweight
+`axis:"trust"` / `axis:"guard"` tags on the relevant choices. The kid-facing badge is
+identity-positive only; the blunt diagnostic (under-used loop steps, the signals that
+drove the classification, 2 profile-tailored discussion questions) appears solely on
+the adult Debrief Sheet. Rewinds restore the log, so the profile always reflects the
+final choices.
+
+## 9. Tech summary
 
 Single self-contained HTML (inline CSS + vanilla JS, `'use strict'`), no fonts/CDN/
 backend/build. Mobile-first, ≥44 px targets, semantic buttons, keyboard navigable,
