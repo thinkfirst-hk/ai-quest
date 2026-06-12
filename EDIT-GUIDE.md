@@ -103,7 +103,28 @@ the same way and the profiles keep working. Captain requires balance across all 
 loop steps and is checked first; ambiguous data falls back to Test Pilot or Wingmate,
 never Captain.
 
-## 7. Self-test checklist (run after every edit)
+## 7. Sound & motion (v1.2, from the designer's asset kit)
+
+* **Sounds** are fully synthesized in the inline `TFSFX` object (no audio files): `tap,
+  wise, risky, mixed, tick, sonar, correct, stamp, rewind, unlock, fanfare`. They're
+  wired to choices (by tone), meter gains, Sonar Checks, mission stamps, map unlocks,
+  rewinds and the licence fanfare. The 🔊/🔇 pill in the top bar toggles `S.muted`
+  (persisted). Audio starts only on user gestures, and every call no-ops if WebAudio
+  is unavailable.
+* **Motion classes** are `tf-` prefixed in the stylesheet (pop, stamp, bob, hop,
+  wiggle, enter, unlock, twinkle, typing, confetti). All are disabled automatically
+  by the global `prefers-reduced-motion` guard.
+* **Typing dots**: give any story node `typing:true` and its message appears after a
+  short chatbot-style typing animation (skipped under reduced motion; shown once per
+  visit). Currently on the Luna (M2) and Kiki (M6) openings.
+* **Designer SVGs**: the asset catalog's artwork (Sonar poses, cast avatars, scene
+  backdrops, badges/stamps/seal) is *not yet inlined* — the catalog page references
+  an `assets/` folder that hasn't been delivered into this repo. When it arrives,
+  inline the chosen SVGs as JS template strings and swap them in at `owlHTML()`
+  (Sonar poses), the `.stampbox` (stamp-complete), the licence `.stamp` (seal) and
+  scenario headers (backdrops), keeping total size under 500 KB.
+
+## 8. Self-test checklist (run after every edit)
 
 Automated (what was run before shipping v1.0 — all passing):
 

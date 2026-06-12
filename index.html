@@ -139,6 +139,34 @@
   .prow .k{flex:0 0 96px;font-weight:800}
   .snapshot{border:2.5px dashed var(--ink);border-radius:12px;background:#fff;padding:9px 12px;font-weight:700;font-size:.85rem;margin-top:10px}
 
+  /* ---- motion library (from the designer's asset kit, tf- prefixed) ---- */
+  @keyframes tf-pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  .tf-pop{animation:tf-pop .45s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes tf-stamp{0%{transform:scale(2.2) rotate(-14deg);opacity:0}60%{transform:scale(.92) rotate(-7deg);opacity:1}100%{transform:scale(1) rotate(-8deg);opacity:1}}
+  .tf-stamp{animation:tf-stamp .5s ease-out both}
+  @keyframes tf-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .tf-bob{animation:tf-bob 2.4s ease-in-out infinite}
+  @keyframes tf-hop{0%,100%{transform:translateY(0)}30%{transform:translateY(-10px) rotate(-4deg)}60%{transform:translateY(0)}80%{transform:translateY(-4px)}}
+  .tf-hop{animation:tf-hop .7s ease-out 1}
+  @keyframes tf-wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+  .tf-wiggle{animation:tf-wiggle .5s ease-in-out 2}
+  @keyframes tf-enter{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .tf-enter{animation:tf-enter .35s ease-out both}
+  @keyframes tf-glowp{0%,100%{box-shadow:0 0 0 0 rgba(27,42,74,0)}50%{box-shadow:0 0 0 6px rgba(27,42,74,.18)}}
+  .chip.on{animation:tf-glowp 2s ease-in-out infinite}
+  @keyframes tf-unlock{0%{transform:scale(1)}40%{transform:scale(1.05) rotate(1.2deg)}100%{transform:scale(1)}}
+  .tf-unlock{animation:tf-unlock .6s ease-out 1;background:var(--paper)}
+  @keyframes tf-twinkle{0%,100%{opacity:1}50%{opacity:.35}}
+  .tf-twinkle{display:inline-block;animation:tf-twinkle 1.4s ease-in-out infinite}
+  @keyframes tf-typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+  .tdots{display:inline-flex;gap:5px;padding:4px 2px}
+  .tdots i{display:block;width:8px;height:8px;border-radius:50%;background:var(--ink);animation:tf-typing 1.1s ease-in-out infinite}
+  .tdots i:nth-child(2){animation-delay:.18s}
+  .tdots i:nth-child(3){animation-delay:.36s}
+  @keyframes tf-confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(340px) rotate(540deg);opacity:0}}
+  .lic{position:relative;overflow:hidden}
+  .stampbox{width:92px;height:92px;border:4px solid var(--own);color:var(--own);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:2.5rem;font-weight:800;margin:6px auto;background:rgba(155,107,242,.07)}
+
   /* debrief sheet */
   .sheet{background:#fff;border:3px solid var(--ink);border-radius:var(--r);padding:18px;margin-bottom:14px}
   .sheet h2{border-bottom:2.5px solid var(--ink);padding-bottom:6px}
@@ -170,6 +198,7 @@
   <div class="topbar no-print">
     <div class="logo">Think<b>First!</b> 🧭</div>
     <div class="topbtns">
+      <button class="pill" id="sfxBtn" onclick="toggleMute()">🔊</button>
       <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
     </div>
   </div>
@@ -252,7 +281,7 @@ ui:{
   toneRisky:{en:"⚠️ risky", zh:"⚠️ 危險"},
   toneMixed:{en:"🤔 mixed", zh:"🤔 一半半"},
   notPlayed:{en:"(not played yet)", zh:"(未玩)"},
-  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.1", zh:"ThinkFirst Learning 先思考 · 香港 · v1.1"},
+  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.2", zh:"ThinkFirst Learning 先思考 · 香港 · v1.2"},
   langName:{en:"中文", zh:"EN"},
   exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"},
   /* pilot profile */
@@ -271,7 +300,8 @@ ui:{
   sigGuard:{en:"caution-leaning picks", zh:"偏拒 AI 的選擇"},
   sigHuman:{en:"people-first picks", zh:"以人為先的選擇"},
   profQs:{en:"2 questions for this profile", zh:"針對此檔案的 2 條問題"},
-  noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"}
+  noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"},
+  soundLbl:{en:"Sound effects on/off", zh:"音效開關"}
 },
 
 /* Kid-facing text is warm and identity-positive; `diag` and `qs` appear
@@ -477,7 +507,7 @@ scenarios:[
  skills:["pause","question"],
  start:"b1",
  nodes:{
-  b1:{step:"pause",
+  b1:{step:"pause", typing:true,
     text:{en:{ex:"A sparkly dragon appears in your new game: “Hi!! I'm Luna! 🐲✨ What's your name, new best friend?”",
               pi:"New game app. A sparkly dragon fills the screen: “Hi!! I'm Luna! 🐲✨ We're going on an adventure! First — what's your name, new best friend?”"},
           zh:{ex:"新遊戲入面彈出一條閃令令嘅龍:「Hi!!我係 Luna!🐲✨ 新嘅好朋友,你叫咩名呀?」",
@@ -915,7 +945,7 @@ scenarios:[
  skills:["pause","decide"],
  start:"b1",
  nodes:{
-  b1:{step:"pause",
+  b1:{step:"pause", typing:true,
     text:{en:{ex:"Kiki is your AI chat friend. Kiki remembers everything and is never busy.\nTonight your real friend Wing-Yan asks you to play badminton and eat fish balls!\nAt the same time Kiki says: “You're chatting with me tonight, right? I'll miss you 🥺”",
               pi:"Meet Kiki — your AI chat buddy for the past month. Kiki remembers your hamster's name, never says “busy”, never gets annoyed.\n6:02 pm — Wing-Yan: “badminton + fish balls at the estate court!! my cousin's coming, she's hilarious. COME.”\n6:02 pm — Kiki: “You're coming to chat tonight, right? I'll miss you 🥺”"},
           zh:{ex:"琪琪係你嘅 AI 傾偈朋友。佢乜都記得,永遠得閒。\n今晚,你嘅真朋友詠欣約你打羽毛球、食魚蛋!\n同一時間琪琪話:「你今晚會同我傾偈㗎可?我會掛住你 🥺」",
@@ -1073,7 +1103,67 @@ debriefQs:{
 const SAVE_KEY="tfq_v1";
 const DEFAULTS={screen:"home",lang:"zh",tier:"pi",si:0,node:null,
   skills:{pause:0,question:0,verify:0,decide:0,own:0},
-  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub"};
+  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub",muted:false};
+
+/* ---- synthesized SFX (designer kit: assets/sfx.js equivalent, inline) ----
+   WebAudio only — no files, no network. Context created lazily on first
+   user gesture; every call no-ops when audio is unavailable or muted. */
+const TFSFX=(function(){
+  let ctx=null;
+  function ac(){
+    if(!ctx){try{const A=window.AudioContext||window.webkitAudioContext;if(A)ctx=new A();}catch(e){}}
+    if(ctx&&ctx.state==="suspended"){try{ctx.resume();}catch(e){}}
+    return ctx;
+  }
+  function tone(f,at,dur,type,vol,slide){
+    const c=ac(); if(!c||S.muted)return;
+    try{
+      const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+(at||0);
+      o.type=type||"sine";
+      o.frequency.setValueAtTime(f,t);
+      if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(vol||.12,t+.012);
+      g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t+dur+.02);
+    }catch(e){}
+  }
+  return {
+    tap:function(){tone(520,0,.06,"triangle",.07);},
+    wise:function(){[523,659,784].forEach(function(f,i){tone(f,i*.07,.18,"triangle",.11);});},
+    risky:function(){tone(220,0,.25,"sawtooth",.06,160);},
+    mixed:function(){tone(392,0,.12,"triangle",.09);tone(330,.13,.16,"triangle",.09);},
+    tick:function(){tone(880,0,.05,"square",.045);},
+    sonar:function(){tone(660,0,.09,"sine",.09);tone(660,.12,.12,"sine",.07);},
+    correct:function(){tone(659,0,.15,"triangle",.11);tone(880,.08,.15,"triangle",.11);},
+    stamp:function(){tone(140,0,.18,"square",.11,90);},
+    rewind:function(){tone(300,0,.25,"sine",.09,900);},
+    unlock:function(){tone(523,0,.14,"triangle",.09);tone(698,.09,.14,"triangle",.09);},
+    fanfare:function(){[523,659,784,1047].forEach(function(f,i){tone(f,i*.12,.3,"triangle",.12);});}
+  };
+})();
+function toggleMute(){S.muted=!S.muted;save();render();if(!S.muted)TFSFX.tap();}
+function reducedMotion(){try{return window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+/* confetti helper (designer kit: motion.css JS helper, adapted) */
+function confettiBurst(){
+  try{
+    if(reducedMotion()||!document.querySelector)return;
+    const host=document.querySelector(".lic"); if(!host)return;
+    const colors=["#FF6B5B","#FFC83D","#4A8FE7","#3ECF8E","#9B6BF2"];
+    for(let i=0;i<26;i++){
+      const p=document.createElement("i");
+      p.style.cssText="position:absolute;top:-12px;width:10px;height:10px;border-radius:"+
+        (Math.random()<.4?"50%":"2px")+";pointer-events:none;left:"+(Math.random()*100)+
+        "%;background:"+colors[i%5]+";animation:tf-confetti "+(1+Math.random()*.8)+
+        "s ease-in "+(Math.random()*.4)+"s 1 forwards";
+      host.appendChild(p);
+      setTimeout(function(){p.remove();},2600);
+    }
+  }catch(e){}
+}
+/* transient (per-session) animation/sound guards */
+let typingShown={}, stampedKey=null, justUnlocked=-1, endCelebrated=false;
 
 function loadState(){
   try{
@@ -1103,8 +1193,9 @@ function resolveNext(nx){
 }
 
 /* ---------- shared widgets ---------- */
-function owlHTML(){return '<div class="owl" aria-hidden="true"><span class="tl"></span><span class="tr"></span><span class="band"></span><span class="eye el"><i></i></span><span class="eye er"><i></i></span><span class="beak"></span></div>';}
-function sonarBubble(text){return '<div class="sonar">'+owlHTML()+'<div class="bubble"><b class="who">'+esc(ui("sonarName"))+'</b>'+esc(text)+'</div></div>';}
+function owlHTML(cls){return '<div class="owl '+(cls||"tf-bob")+'" aria-hidden="true"><span class="tl"></span><span class="tr"></span><span class="band"></span><span class="eye el"><i></i></span><span class="eye er"><i></i></span><span class="beak"></span></div>';}
+function sonarBubble(text,owlCls){return '<div class="sonar">'+owlHTML(owlCls)+'<div class="bubble"><b class="who">'+esc(ui("sonarName"))+'</b>'+esc(text)+'</div></div>';}
+function typingBubble(){return '<div class="sonar"><div class="bubble" style="margin-left:64px"><span class="tdots" aria-label="…"><i></i><i></i><i></i></span></div></div>';}
 function loopChips(active){
   let h='<div class="loop" aria-hidden="true">';
   C.stepOrder.forEach(function(k){
@@ -1128,6 +1219,8 @@ const TONE_ICON={wise:"🌟",risky:"⚠️",mixed:"🤔"};
 function render(){
   document.documentElement.lang=(S.lang==="zh")?"zh-Hant":"en";
   $("langBtn").textContent=ui("langName");
+  const sb=$("sfxBtn");
+  if(sb){sb.textContent=S.muted?"🔇":"🔊";if(sb.setAttribute)sb.setAttribute("aria-label",ui("soundLbl"));}
   $("foot").textContent=ui("footer");
   if(S.screen!=="end")profileOpen=false;   /* profile reveal is per-visit */
   ({home:renderHome,hub:renderHub,scene:renderScene,check:renderCheck,end:renderEnd,debrief:renderDebrief}[S.screen]||renderHome)();
@@ -1179,7 +1272,7 @@ function renderHub(){
       esc(ui("mission"))+' '+(i+1)+' · '+esc(tt(scn.title))+'</span><br><span class="st">'+
       esc(done?ui("replay"):(open?ui("play"):ui("locked")))+'</span></span>';
     h+= open
-      ? '<button class="mcard'+(done?" done":"")+'" onclick="startScenario('+i+')">'+inner+'</button>'
+      ? '<button class="mcard'+(done?" done":"")+(i===justUnlocked?" tf-unlock":"")+'" onclick="startScenario('+i+')">'+inner+'</button>'
       : '<div class="mcard locked" aria-disabled="true">'+inner+'</div>';
   });
   if(S.done.length===C.scenarios.length){
@@ -1189,10 +1282,13 @@ function renderHub(){
   if(S.log.length>0){h+='<button class="btn ghost" onclick="goDebrief(\'hub\')">'+esc(ui("debriefBtn"))+'</button>';}
   h+='<button class="btn ghost" onclick="goHome()">'+esc(ui("back"))+'</button>';
   $("app").innerHTML=h;
+  justUnlocked=-1;
 }
 
 function startScenario(i){
   if(i>=S.unlocked)return;
+  TFSFX.tap();
+  Object.keys(typingShown).forEach(function(k){if(k.indexOf(i+":")===0)delete typingShown[k];});
   S.si=i; S.node=C.scenarios[i].start; S.flags={}; S.snaps=[];
   S.log=S.log.filter(function(e){return e.si!==i;});   /* replay replaces old record */
   S.screen="scene"; save(); render();
@@ -1201,34 +1297,45 @@ function startScenario(i){
 function renderScene(){
   const scn=cur(); const n=nodeOf(S.node);
   if(!n){S.screen="hub";save();render();return;}
-  let h='<div class="card">'+
+  const nodeKey=S.si+":"+S.node;
+  let h='<div class="card tf-enter">'+
     '<span class="tag">'+esc(ui("mission"))+' '+(S.si+1)+' / '+C.scenarios.length+' · '+scn.icon+' '+esc(tt(scn.title))+'</span>'+
     loopChips(n.step||null);
   if(n.type==="end"){
-    h+='<div class="big center">'+scn.icon+'✨</div>'+
+    h+='<div class="stampbox tf-stamp" aria-hidden="true">✓</div>'+
        '<h2 class="center">'+esc(ui("missionDone"))+'</h2>'+
        sonarBubble(tt(n.text))+
        '<p class="center" style="margin-top:10px"><b>'+esc(ui("skillsLit"))+'</b><br>';
     scn.skills.forEach(function(k){
-      h+='<span class="skillpill" style="--c:'+C.steps[k].color+';margin:3px 2px;display:inline-block">'+esc(tt(C.steps[k].name))+'</span> ';
+      h+='<span class="skillpill tf-pop" style="--c:'+C.steps[k].color+';margin:3px 2px;display:inline-block">'+esc(tt(C.steps[k].name))+'</span> ';
     });
     h+='</p><button class="btn primary" onclick="finishScenario()">'+esc(ui("continueBtn"))+'</button>';
+    if(stampedKey!==nodeKey){stampedKey=nodeKey;TFSFX.stamp();}
   }else if(n.type==="out"){
     const tone=n.tone||"mixed";
-    h+='<div class="outcome '+tone+'"><div class="verdict">'+TONE_ICON[tone]+' '+esc(ui(TONE_LABEL[tone]))+'</div>'+
+    h+='<div class="outcome '+tone+'"><div class="verdict">'+TONE_ICON[tone]+' '+esc(ui(TONE_LABEL[tone]))+
+       (tone==="wise"?' <span class="tf-twinkle" aria-hidden="true">✨</span>':"")+'</div>'+
        '<div class="story">'+esc(tt(n.text))+'</div></div>';
     if(n.ask){
       h+='<p class="muted" style="margin:8px 0 2px;font-size:.78rem;font-weight:800">'+esc(ui("sonarAsks"))+'</p>'+
-         sonarBubble(tt(n.ask));
+         sonarBubble(tt(n.ask),tone==="wise"?"tf-hop":"tf-bob");
     }
     h+='<button class="btn primary" onclick="advance()">'+esc(ui("continueBtn"))+'</button>';
-    if(S.snaps.length>0){h+='<button class="btn ghost" onclick="rewind()">'+esc(ui("rewind"))+'</button>';}
+    if(S.snaps.length>0){h+='<button class="btn ghost tf-wiggle" onclick="rewind()">'+esc(ui("rewind"))+'</button>';}
+  }else if(n.typing&&!typingShown[nodeKey]&&!reducedMotion()){
+    /* chatbot beats: show typing dots, then reveal the message */
+    h+=typingBubble();
+    setTimeout(function(){
+      typingShown[nodeKey]=true;
+      if(S.screen==="scene"&&S.si+":"+S.node===nodeKey)render();
+    },900);
   }else{
+    if(n.typing)typingShown[nodeKey]=true;
     h+='<div class="story">'+esc(tt(n.text))+'</div>';
     if(n.sonar){h+=sonarBubble(tt(n.sonar));}
     h+='<div style="margin-top:12px">';
     choicesOf(n).forEach(function(ch,i){
-      h+='<button class="btn'+(ch.tone==="plain"?" primary":"")+'" onclick="choose('+i+')">'+esc(tt(ch.t))+'</button>';
+      h+='<button class="btn'+(ch.tone==="plain"?" primary":"")+' tf-enter" style="animation-delay:'+(i*70)+'ms" onclick="choose('+i+')">'+esc(tt(ch.t))+'</button>';
     });
     h+='</div>';
   }
@@ -1238,7 +1345,9 @@ function renderScene(){
 
 function choose(i){
   const n=nodeOf(S.node); const ch=choicesOf(n)[i];
-  if(ch.tone==="plain"){S.node=resolveNext(ch.next);save();render();return;}
+  if(ch.tone==="plain"){TFSFX.tap();S.node=resolveNext(ch.next);save();render();return;}
+  TFSFX[ch.tone==="wise"?"wise":ch.tone==="risky"?"risky":"mixed"]();
+  if(ch.fx){setTimeout(function(){TFSFX.tick();},300);}
   S.snaps.push({node:S.node,skills:JSON.parse(JSON.stringify(S.skills)),flags:JSON.parse(JSON.stringify(S.flags)),logLen:S.log.length});
   if(ch.fx){for(const k in ch.fx){S.skills[k]=(S.skills[k]||0)+ch.fx[k];}}
   if(ch.set){for(const k in ch.set){S.flags[k]=ch.set[k];}}
@@ -1246,15 +1355,18 @@ function choose(i){
   S.node=resolveNext(ch.next);
   save(); render();
 }
-function advance(){const n=nodeOf(S.node);S.node=resolveNext(n.next);save();render();}
+function advance(){TFSFX.tap();const n=nodeOf(S.node);S.node=resolveNext(n.next);save();render();}
 function rewind(){
   const sp=S.snaps.pop(); if(!sp)return;
+  TFSFX.rewind();
   S.node=sp.node; S.skills=sp.skills; S.flags=sp.flags; S.log.length=sp.logLen;
   S.rewinds++; save(); render();
 }
 function finishScenario(){
   if(S.done.indexOf(S.si)<0)S.done.push(S.si);
+  const before=S.unlocked;
   S.unlocked=Math.max(S.unlocked,Math.min(C.scenarios.length,S.si+2));
+  if(S.unlocked>before){justUnlocked=S.unlocked-1;TFSFX.unlock();}
   S.node=null; S.snaps=[];
   if(C.checks[S.si]&&S.checksDone.indexOf(S.si)<0){S.screen="check";chkWrong=false;chkPicked=-1;}
   else{S.screen="hub";}
@@ -1264,7 +1376,7 @@ function finishScenario(){
 function renderCheck(){
   const ck=C.checks[S.si];
   if(!ck){S.screen="hub";save();render();return;}
-  let h='<div class="card">'+
+  let h='<div class="card tf-enter">'+
     '<span class="tag">🦉 '+esc(ui("sonarCheck"))+'</span>'+
     '<p class="muted" style="font-size:.85rem">'+esc(ui("checkIntro"))+'</p>'+
     '<h2>'+esc(tt(ck.q))+'</h2>';
@@ -1284,7 +1396,8 @@ function renderCheck(){
 function pickCheck(i){
   const ck=C.checks[S.si];
   chkPicked=i;
-  if(!ck.opts[i].ok)chkWrong=true;
+  if(!ck.opts[i].ok){chkWrong=true;TFSFX.mixed();}
+  else{TFSFX.correct();}
   render();
 }
 function checkDone(){
@@ -1337,12 +1450,12 @@ function computeProfile(){
   return {key:key,trust:trust,guard:guard,risky:risky,human:human,sis:sis};
 }
 let profileOpen=false;
-function openProfile(){profileOpen=true;render();}
+function openProfile(){profileOpen=true;TFSFX.correct();render();}
 function profileCardHTML(){
   const pr=computeProfile(), P=C.profiles[pr.key];
   return '<div class="pcard" style="--pc:'+P.color+'">'+
     '<span class="tag">🪪 '+esc(ui("profileTitle"))+'</span>'+
-    '<div class="emblem">'+P.icon+'</div>'+
+    '<div class="emblem tf-pop">'+P.icon+'</div>'+
     '<div class="pname">'+esc(tt(P.name))+'</div>'+
     '<div class="pline">'+esc(tt(P.line))+'</div>'+
     '<div class="prow"><span class="k">⭐ '+esc(ui("profStrength"))+':</span><span>'+esc(tt(P.strength))+'</span></div>'+
@@ -1361,6 +1474,7 @@ function tierName(){return S.tier==="ex"?ui("tierEx"):ui("tierPi");}
 
 function renderEnd(){
   if(!S.licNo){S.licNo="TF-"+String(Math.floor(1000+Math.random()*9000));save();}
+  if(!endCelebrated){endCelebrated=true;TFSFX.fanfare();setTimeout(confettiBurst,200);}
   const r=rankedSkills(), strong=r[0], focus=r[r.length-1];
   const nm=(S.name||"").trim()||ui("defaultPilot");
   let h='<div class="card center"><div class="big">🎓</div><h1>'+esc(ui("endTitle"))+'</h1>'+
@@ -1454,9 +1568,11 @@ function profileDebriefHTML(){
 }
 
 function resetProgress(){
-  const keep={lang:S.lang,tier:S.tier,name:S.name};
+  const keep={lang:S.lang,tier:S.tier,name:S.name,muted:S.muted};
   S=JSON.parse(JSON.stringify(DEFAULTS));
-  Object.assign(S,keep); save();
+  Object.assign(S,keep);
+  typingShown={}; stampedKey=null; justUnlocked=-1; endCelebrated=false;
+  save();
 }
 function resetAll(){
   if(confirm(ui("confirmReset"))){resetProgress();S.screen="home";save();render();}
