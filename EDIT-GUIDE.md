@@ -103,7 +103,35 @@ the same way and the profiles keep working. Captain requires balance across all 
 loop steps and is checked first; ambiguous data falls back to Test Pilot or Wingmate,
 never Captain.
 
-## 7. Self-test checklist (run after every edit)
+## 7. Sound & motion (v1.2, from the designer's asset kit)
+
+* **Sounds** are fully synthesized in the inline `TFSFX` object (no audio files): `tap,
+  wise, risky, mixed, tick, sonar, correct, stamp, rewind, unlock, fanfare`. They're
+  wired to choices (by tone), meter gains, Sonar Checks, mission stamps, map unlocks,
+  rewinds and the licence fanfare. The 🔊/🔇 pill in the top bar toggles `S.muted`
+  (persisted). Audio starts only on user gestures, and every call no-ops if WebAudio
+  is unavailable.
+* **Motion classes** are `tf-` prefixed in the stylesheet (pop, stamp, bob, hop,
+  wiggle, enter, unlock, twinkle, typing, confetti). All are disabled automatically
+  by the global `prefers-reduced-motion` guard.
+* **Typing dots**: give any story node `typing:true` and its message appears after a
+  short chatbot-style typing animation (skipped under reduced motion; shown once per
+  visit). Currently on the Luna (M2) and Kiki (M6) openings.
+* **Designer SVGs (v1.3)**: 35 artworks from the asset kit are inlined in the `ART`
+  registry (engine, just below the transient guards) and placed with the `art(name,
+  cls, width)` helper. Captain Sonar now uses the six pose SVGs context-sensitively
+  (thinking at decisions, celebrate on wise outcomes, worried on risky — never angry,
+  point on Sonar Checks, wink for the profile reveal). Scene backdrops show on each
+  mission's first node (`SCENE_ART`, index-aligned), cast avatars appear in the
+  header strip (`CAST`) and as the typing-dots avatar (`CHAT_AVATAR`). UI art:
+  stamp-complete on mission end, seal-licence on the licence, lock/unlock on the map,
+  sticker-wise / sticker-star rewards, sticker-rewind-hero + icon-rewind framing
+  rewind as re-thinking, icon-loop-ring on home/debrief. Avatar `clipPath` ids are
+  namespaced per avatar (the kit README's collision warning). Only
+  `sticker-thinking-cap` was left out (unused). To swap art, replace the string in
+  `ART` — same key, any viewBox-based SVG.
+
+## 8. Self-test checklist (run after every edit)
 
 Automated (what was run before shipping v1.0 — all passing):
 

@@ -65,17 +65,19 @@
   .btn.ghost{background:none;border:none;box-shadow:none;opacity:.6;text-align:center;font-size:.88rem;min-height:44px}
   .btn.ghost:hover{opacity:1;text-decoration:underline}
 
-  /* Captain Sonar */
+  /* Captain Sonar (designer pose SVGs) + inline art */
   .sonar{display:flex;gap:10px;align-items:flex-start;margin:12px 0}
-  .owl{position:relative;flex:0 0 54px;width:54px;height:58px;background:#8E7BFF;border:3px solid var(--ink);border-radius:50% 50% 46% 46%}
-  .owl span{position:absolute}
-  .owl .tl,.owl .tr{top:-9px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:14px solid var(--ink)}
-  .owl .tl{left:5px;transform:rotate(-18deg)} .owl .tr{right:5px;transform:rotate(18deg)}
-  .owl .band{left:-3px;right:-3px;top:11px;height:8px;background:var(--ink);border-radius:4px}
-  .owl .eye{top:8px;width:19px;height:19px;background:#fff;border:2.5px solid var(--ink);border-radius:50%}
-  .owl .eye i{position:absolute;left:5px;top:5px;width:6px;height:6px;background:var(--ink);border-radius:50%}
-  .owl .el{left:5px} .owl .er{right:5px}
-  .owl .beak{left:50%;top:28px;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:9px solid #FFA94D;filter:drop-shadow(0 1px 0 var(--ink))}
+  .owlart{flex:0 0 58px;width:58px}
+  .owlart svg{width:100%;height:auto;display:block}
+  .artw{display:inline-block;vertical-align:middle}
+  .artw svg{width:100%;height:auto;display:block}
+  .scenebox{border:2.5px solid var(--ink);border-radius:12px;overflow:hidden;margin:2px 0 12px;background:#fff}
+  .scenebox svg{display:block;width:100%;height:auto}
+  .shead{display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+  .shead .tag{margin-bottom:0}
+  .cast{display:flex;margin-left:auto}
+  .cast .artw{width:30px;height:30px;border-radius:50%;border:2px solid var(--ink);overflow:hidden;background:#fff;margin-left:-8px}
+  .cast .artw svg{width:100%;height:100%}
   .bubble{position:relative;background:var(--soft);border:2.5px solid var(--ink);border-radius:14px;padding:10px 13px;font-weight:600;font-size:.92rem}
   .bubble::before{content:"";position:absolute;left:-15px;top:16px;border:7px solid transparent;border-right-color:var(--ink)}
   .bubble b.who{display:block;font-size:.72rem;letter-spacing:.4px;opacity:.65;margin-bottom:2px}
@@ -139,6 +141,33 @@
   .prow .k{flex:0 0 96px;font-weight:800}
   .snapshot{border:2.5px dashed var(--ink);border-radius:12px;background:#fff;padding:9px 12px;font-weight:700;font-size:.85rem;margin-top:10px}
 
+  /* ---- motion library (from the designer's asset kit, tf- prefixed) ---- */
+  @keyframes tf-pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+  .tf-pop{animation:tf-pop .45s cubic-bezier(.34,1.56,.64,1) both}
+  @keyframes tf-stamp{0%{transform:scale(2.2) rotate(-14deg);opacity:0}60%{transform:scale(.92) rotate(-7deg);opacity:1}100%{transform:scale(1) rotate(-8deg);opacity:1}}
+  .tf-stamp{animation:tf-stamp .5s ease-out both}
+  @keyframes tf-bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .tf-bob{animation:tf-bob 2.4s ease-in-out infinite}
+  @keyframes tf-hop{0%,100%{transform:translateY(0)}30%{transform:translateY(-10px) rotate(-4deg)}60%{transform:translateY(0)}80%{transform:translateY(-4px)}}
+  .tf-hop{animation:tf-hop .7s ease-out 1}
+  @keyframes tf-wiggle{0%,100%{transform:rotate(0)}25%{transform:rotate(-6deg)}75%{transform:rotate(6deg)}}
+  .tf-wiggle{animation:tf-wiggle .5s ease-in-out 2}
+  @keyframes tf-enter{from{transform:translateY(14px);opacity:0}to{transform:translateY(0);opacity:1}}
+  .tf-enter{animation:tf-enter .35s ease-out both}
+  @keyframes tf-glowp{0%,100%{box-shadow:0 0 0 0 rgba(27,42,74,0)}50%{box-shadow:0 0 0 6px rgba(27,42,74,.18)}}
+  .chip.on{animation:tf-glowp 2s ease-in-out infinite}
+  @keyframes tf-unlock{0%{transform:scale(1)}40%{transform:scale(1.05) rotate(1.2deg)}100%{transform:scale(1)}}
+  .tf-unlock{animation:tf-unlock .6s ease-out 1;background:var(--paper)}
+  @keyframes tf-twinkle{0%,100%{opacity:1}50%{opacity:.35}}
+  .tf-twinkle{display:inline-block;animation:tf-twinkle 1.4s ease-in-out infinite}
+  @keyframes tf-typing{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
+  .tdots{display:inline-flex;gap:5px;padding:4px 2px}
+  .tdots i{display:block;width:8px;height:8px;border-radius:50%;background:var(--ink);animation:tf-typing 1.1s ease-in-out infinite}
+  .tdots i:nth-child(2){animation-delay:.18s}
+  .tdots i:nth-child(3){animation-delay:.36s}
+  @keyframes tf-confetti{0%{transform:translateY(0) rotate(0);opacity:1}100%{transform:translateY(340px) rotate(540deg);opacity:0}}
+  .lic{position:relative;overflow:hidden}
+
   /* debrief sheet */
   .sheet{background:#fff;border:3px solid var(--ink);border-radius:var(--r);padding:18px;margin-bottom:14px}
   .sheet h2{border-bottom:2.5px solid var(--ink);padding-bottom:6px}
@@ -170,6 +199,7 @@
   <div class="topbar no-print">
     <div class="logo">Think<b>First!</b> 🧭</div>
     <div class="topbtns">
+      <button class="pill" id="sfxBtn" onclick="toggleMute()">🔊</button>
       <button class="pill" id="langBtn" onclick="toggleLang()">EN</button>
     </div>
   </div>
@@ -252,7 +282,7 @@ ui:{
   toneRisky:{en:"⚠️ risky", zh:"⚠️ 危險"},
   toneMixed:{en:"🤔 mixed", zh:"🤔 一半半"},
   notPlayed:{en:"(not played yet)", zh:"(未玩)"},
-  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.1", zh:"ThinkFirst Learning 先思考 · 香港 · v1.1"},
+  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.3", zh:"ThinkFirst Learning 先思考 · 香港 · v1.3"},
   langName:{en:"中文", zh:"EN"},
   exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"},
   /* pilot profile */
@@ -271,7 +301,9 @@ ui:{
   sigGuard:{en:"caution-leaning picks", zh:"偏拒 AI 的選擇"},
   sigHuman:{en:"people-first picks", zh:"以人為先的選擇"},
   profQs:{en:"2 questions for this profile", zh:"針對此檔案的 2 條問題"},
-  noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"}
+  noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"},
+  soundLbl:{en:"Sound effects on/off", zh:"音效開關"},
+  rewindPraise:{en:"Rewinding = re-thinking. Pilot move!", zh:"識回帶=識反思,機師先至會咁做!"}
 },
 
 /* Kid-facing text is warm and identity-positive; `diag` and `qs` appear
@@ -477,7 +509,7 @@ scenarios:[
  skills:["pause","question"],
  start:"b1",
  nodes:{
-  b1:{step:"pause",
+  b1:{step:"pause", typing:true,
     text:{en:{ex:"A sparkly dragon appears in your new game: “Hi!! I'm Luna! 🐲✨ What's your name, new best friend?”",
               pi:"New game app. A sparkly dragon fills the screen: “Hi!! I'm Luna! 🐲✨ We're going on an adventure! First — what's your name, new best friend?”"},
           zh:{ex:"新遊戲入面彈出一條閃令令嘅龍:「Hi!!我係 Luna!🐲✨ 新嘅好朋友,你叫咩名呀?」",
@@ -915,7 +947,7 @@ scenarios:[
  skills:["pause","decide"],
  start:"b1",
  nodes:{
-  b1:{step:"pause",
+  b1:{step:"pause", typing:true,
     text:{en:{ex:"Kiki is your AI chat friend. Kiki remembers everything and is never busy.\nTonight your real friend Wing-Yan asks you to play badminton and eat fish balls!\nAt the same time Kiki says: “You're chatting with me tonight, right? I'll miss you 🥺”",
               pi:"Meet Kiki — your AI chat buddy for the past month. Kiki remembers your hamster's name, never says “busy”, never gets annoyed.\n6:02 pm — Wing-Yan: “badminton + fish balls at the estate court!! my cousin's coming, she's hilarious. COME.”\n6:02 pm — Kiki: “You're coming to chat tonight, right? I'll miss you 🥺”"},
           zh:{ex:"琪琪係你嘅 AI 傾偈朋友。佢乜都記得,永遠得閒。\n今晚,你嘅真朋友詠欣約你打羽毛球、食魚蛋!\n同一時間琪琪話:「你今晚會同我傾偈㗎可?我會掛住你 🥺」",
@@ -1073,7 +1105,114 @@ debriefQs:{
 const SAVE_KEY="tfq_v1";
 const DEFAULTS={screen:"home",lang:"zh",tier:"pi",si:0,node:null,
   skills:{pause:0,question:0,verify:0,decide:0,own:0},
-  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub"};
+  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub",muted:false};
+
+/* ---- synthesized SFX (designer kit: assets/sfx.js equivalent, inline) ----
+   WebAudio only — no files, no network. Context created lazily on first
+   user gesture; every call no-ops when audio is unavailable or muted. */
+const TFSFX=(function(){
+  let ctx=null;
+  function ac(){
+    if(!ctx){try{const A=window.AudioContext||window.webkitAudioContext;if(A)ctx=new A();}catch(e){}}
+    if(ctx&&ctx.state==="suspended"){try{ctx.resume();}catch(e){}}
+    return ctx;
+  }
+  function tone(f,at,dur,type,vol,slide){
+    const c=ac(); if(!c||S.muted)return;
+    try{
+      const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+(at||0);
+      o.type=type||"sine";
+      o.frequency.setValueAtTime(f,t);
+      if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+      g.gain.setValueAtTime(0,t);
+      g.gain.linearRampToValueAtTime(vol||.12,t+.012);
+      g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+      o.connect(g); g.connect(c.destination);
+      o.start(t); o.stop(t+dur+.02);
+    }catch(e){}
+  }
+  return {
+    tap:function(){tone(520,0,.06,"triangle",.07);},
+    wise:function(){[523,659,784].forEach(function(f,i){tone(f,i*.07,.18,"triangle",.11);});},
+    risky:function(){tone(220,0,.25,"sawtooth",.06,160);},
+    mixed:function(){tone(392,0,.12,"triangle",.09);tone(330,.13,.16,"triangle",.09);},
+    tick:function(){tone(880,0,.05,"square",.045);},
+    sonar:function(){tone(660,0,.09,"sine",.09);tone(660,.12,.12,"sine",.07);},
+    correct:function(){tone(659,0,.15,"triangle",.11);tone(880,.08,.15,"triangle",.11);},
+    stamp:function(){tone(140,0,.18,"square",.11,90);},
+    rewind:function(){tone(300,0,.25,"sine",.09,900);},
+    unlock:function(){tone(523,0,.14,"triangle",.09);tone(698,.09,.14,"triangle",.09);},
+    fanfare:function(){[523,659,784,1047].forEach(function(f,i){tone(f,i*.12,.3,"triangle",.12);});}
+  };
+})();
+function toggleMute(){S.muted=!S.muted;save();render();if(!S.muted)TFSFX.tap();}
+function reducedMotion(){try{return window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches;}catch(e){return false;}}
+/* confetti helper (designer kit: motion.css JS helper, adapted) */
+function confettiBurst(){
+  try{
+    if(reducedMotion()||!document.querySelector)return;
+    const host=document.querySelector(".lic"); if(!host)return;
+    const colors=["#FF6B5B","#FFC83D","#4A8FE7","#3ECF8E","#9B6BF2"];
+    for(let i=0;i<26;i++){
+      const p=document.createElement("i");
+      p.style.cssText="position:absolute;top:-12px;width:10px;height:10px;border-radius:"+
+        (Math.random()<.4?"50%":"2px")+";pointer-events:none;left:"+(Math.random()*100)+
+        "%;background:"+colors[i%5]+";animation:tf-confetti "+(1+Math.random()*.8)+
+        "s ease-in "+(Math.random()*.4)+"s 1 forwards";
+      host.appendChild(p);
+      setTimeout(function(){p.remove();},2600);
+    }
+  }catch(e){}
+}
+/* transient (per-session) animation/sound guards */
+let typingShown={}, stampedKey=null, justUnlocked=-1, endCelebrated=false, rewindPraise=false;
+
+/* ---- designer artwork (inlined SVGs from the asset kit) ---- */
+const ART={
+"sonar-neutral":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 150\"><ellipse cx=\"70\" cy=\"88\" rx=\"46\" ry=\"50\" fill=\"#8E7BFF\" stroke=\"#1B2A4A\" stroke-width=\"5\"></ellipse><ellipse cx=\"70\" cy=\"110\" rx=\"25\" ry=\"18\" fill=\"#B9ABFF\"></ellipse><polygon points=\"36,48 47,16 61,42\" fill=\"#1B2A4A\"></polygon><polygon points=\"104,48 93,16 79,42\" fill=\"#1B2A4A\"></polygon><rect x=\"21\" y=\"50\" width=\"98\" height=\"13\" rx=\"6.5\" fill=\"#1B2A4A\"></rect><ellipse cx=\"26\" cy=\"98\" rx=\"11\" ry=\"25\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(14 26 98)\"></ellipse><ellipse cx=\"114\" cy=\"98\" rx=\"11\" ry=\"25\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(-14 114 98)\"></ellipse><circle cx=\"51\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"89\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"51\" cy=\"57\" r=\"5\" fill=\"#1B2A4A\"></circle><circle cx=\"89\" cy=\"57\" r=\"5\" fill=\"#1B2A4A\"></circle><polygon points=\"61,78 79,78 70,92\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><ellipse cx=\"57\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><ellipse cx=\"83\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse></svg>",
+"sonar-thinking":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 150\"><text x=\"116\" y=\"30\" font-family=\"system-ui,sans-serif\" font-size=\"34\" font-weight=\"800\" fill=\"#1B2A4A\">?</text><ellipse cx=\"70\" cy=\"88\" rx=\"46\" ry=\"50\" fill=\"#8E7BFF\" stroke=\"#1B2A4A\" stroke-width=\"5\"></ellipse><ellipse cx=\"70\" cy=\"110\" rx=\"25\" ry=\"18\" fill=\"#B9ABFF\"></ellipse><polygon points=\"36,48 47,16 61,42\" fill=\"#1B2A4A\"></polygon><polygon points=\"104,48 93,16 79,42\" fill=\"#1B2A4A\"></polygon><rect x=\"21\" y=\"50\" width=\"98\" height=\"13\" rx=\"6.5\" fill=\"#1B2A4A\"></rect><ellipse cx=\"114\" cy=\"98\" rx=\"11\" ry=\"25\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(-14 114 98)\"></ellipse><circle cx=\"51\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"89\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"48\" cy=\"53\" r=\"5\" fill=\"#1B2A4A\"></circle><circle cx=\"86\" cy=\"53\" r=\"5\" fill=\"#1B2A4A\"></circle><polygon points=\"61,78 79,78 70,92\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><ellipse cx=\"52\" cy=\"92\" rx=\"10\" ry=\"22\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(48 52 92)\"></ellipse><ellipse cx=\"57\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><ellipse cx=\"83\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse></svg>",
+"sonar-celebrate":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 150\"><rect x=\"14\" y=\"14\" width=\"9\" height=\"9\" rx=\"2\" fill=\"#FF6B5B\" transform=\"rotate(20 18 18)\"></rect><circle cx=\"124\" cy=\"16\" r=\"5\" fill=\"#3ECF8E\"></circle><rect x=\"120\" y=\"40\" width=\"8\" height=\"8\" rx=\"2\" fill=\"#FFC83D\" transform=\"rotate(-25 124 44)\"></rect><circle cx=\"12\" cy=\"44\" r=\"4\" fill=\"#4A8FE7\"></circle><rect x=\"66\" y=\"6\" width=\"8\" height=\"8\" rx=\"2\" fill=\"#9B6BF2\" transform=\"rotate(45 70 10)\"></rect><ellipse cx=\"70\" cy=\"88\" rx=\"46\" ry=\"50\" fill=\"#8E7BFF\" stroke=\"#1B2A4A\" stroke-width=\"5\"></ellipse><ellipse cx=\"70\" cy=\"110\" rx=\"25\" ry=\"18\" fill=\"#B9ABFF\"></ellipse><polygon points=\"36,48 47,16 61,42\" fill=\"#1B2A4A\"></polygon><polygon points=\"104,48 93,16 79,42\" fill=\"#1B2A4A\"></polygon><rect x=\"21\" y=\"50\" width=\"98\" height=\"13\" rx=\"6.5\" fill=\"#1B2A4A\"></rect><ellipse cx=\"20\" cy=\"60\" rx=\"10\" ry=\"24\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(35 20 60)\"></ellipse><ellipse cx=\"120\" cy=\"60\" rx=\"10\" ry=\"24\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(-35 120 60)\"></ellipse><circle cx=\"51\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"89\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><path d=\"M42 61 Q51 48 60 61\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"5\" stroke-linecap=\"round\"></path><path d=\"M80 61 Q89 48 98 61\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"5\" stroke-linecap=\"round\"></path><polygon points=\"61,78 79,78 70,90\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><path d=\"M63 93 Q70 101 77 93\" fill=\"#7A3C2E\" stroke=\"#1B2A4A\" stroke-width=\"3\"></path><ellipse cx=\"57\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><ellipse cx=\"83\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse></svg>",
+"sonar-worried":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 150\"><path d=\"M118 28 q6 9 0 14 q-6 -5 0 -14\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"2.5\"></path><ellipse cx=\"70\" cy=\"88\" rx=\"46\" ry=\"50\" fill=\"#8E7BFF\" stroke=\"#1B2A4A\" stroke-width=\"5\"></ellipse><ellipse cx=\"70\" cy=\"110\" rx=\"25\" ry=\"18\" fill=\"#B9ABFF\"></ellipse><polygon points=\"36,48 47,16 61,42\" fill=\"#1B2A4A\"></polygon><polygon points=\"104,48 93,16 79,42\" fill=\"#1B2A4A\"></polygon><rect x=\"21\" y=\"50\" width=\"98\" height=\"13\" rx=\"6.5\" fill=\"#1B2A4A\"></rect><circle cx=\"51\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"89\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><line x1=\"41\" y1=\"40\" x2=\"61\" y2=\"46\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linecap=\"round\"></line><line x1=\"79\" y1=\"46\" x2=\"99\" y2=\"40\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linecap=\"round\"></line><circle cx=\"51\" cy=\"60\" r=\"5\" fill=\"#1B2A4A\"></circle><circle cx=\"89\" cy=\"60\" r=\"5\" fill=\"#1B2A4A\"></circle><polygon points=\"61,78 79,78 70,92\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><ellipse cx=\"58\" cy=\"114\" rx=\"9\" ry=\"18\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(20 58 114)\"></ellipse><ellipse cx=\"82\" cy=\"114\" rx=\"9\" ry=\"18\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(-20 82 114)\"></ellipse><ellipse cx=\"57\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><ellipse cx=\"83\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse></svg>",
+"sonar-point":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 150\"><ellipse cx=\"70\" cy=\"88\" rx=\"46\" ry=\"50\" fill=\"#8E7BFF\" stroke=\"#1B2A4A\" stroke-width=\"5\"></ellipse><ellipse cx=\"70\" cy=\"110\" rx=\"25\" ry=\"18\" fill=\"#B9ABFF\"></ellipse><polygon points=\"36,48 47,16 61,42\" fill=\"#1B2A4A\"></polygon><polygon points=\"104,48 93,16 79,42\" fill=\"#1B2A4A\"></polygon><rect x=\"21\" y=\"50\" width=\"98\" height=\"13\" rx=\"6.5\" fill=\"#1B2A4A\"></rect><ellipse cx=\"26\" cy=\"98\" rx=\"11\" ry=\"25\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(14 26 98)\"></ellipse><circle cx=\"51\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"89\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"55\" cy=\"57\" r=\"5\" fill=\"#1B2A4A\"></circle><circle cx=\"93\" cy=\"57\" r=\"5\" fill=\"#1B2A4A\"></circle><polygon points=\"61,78 79,78 70,90\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><path d=\"M63 93 Q70 101 77 93\" fill=\"#7A3C2E\" stroke=\"#1B2A4A\" stroke-width=\"3\"></path><ellipse cx=\"118\" cy=\"82\" rx=\"23\" ry=\"10\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(-12 118 82)\"></ellipse><ellipse cx=\"57\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><ellipse cx=\"83\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse></svg>",
+"sonar-wink":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 150\"><polygon points=\"124,18 128,28 138,29 130,36 133,46 124,40 115,46 118,36 110,29 120,28\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"2.5\" stroke-linejoin=\"round\"></polygon><ellipse cx=\"70\" cy=\"88\" rx=\"46\" ry=\"50\" fill=\"#8E7BFF\" stroke=\"#1B2A4A\" stroke-width=\"5\"></ellipse><ellipse cx=\"70\" cy=\"110\" rx=\"25\" ry=\"18\" fill=\"#B9ABFF\"></ellipse><polygon points=\"36,48 47,16 61,42\" fill=\"#1B2A4A\"></polygon><polygon points=\"104,48 93,16 79,42\" fill=\"#1B2A4A\"></polygon><rect x=\"21\" y=\"50\" width=\"98\" height=\"13\" rx=\"6.5\" fill=\"#1B2A4A\"></rect><ellipse cx=\"26\" cy=\"98\" rx=\"11\" ry=\"25\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(14 26 98)\"></ellipse><ellipse cx=\"120\" cy=\"60\" rx=\"10\" ry=\"24\" fill=\"#7A66E8\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(-35 120 60)\"></ellipse><circle cx=\"51\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"89\" cy=\"57\" r=\"16\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"51\" cy=\"57\" r=\"5\" fill=\"#1B2A4A\"></circle><path d=\"M80 61 Q89 48 98 61\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"5\" stroke-linecap=\"round\"></path><polygon points=\"61,78 79,78 70,90\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><path d=\"M63 93 Q70 101 77 93\" fill=\"#7A3C2E\" stroke=\"#1B2A4A\" stroke-width=\"3\"></path><ellipse cx=\"57\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><ellipse cx=\"83\" cy=\"137\" rx=\"8\" ry=\"4.5\" fill=\"#FFA94D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse></svg>",
+"avatar-player":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-player\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#EAF4FF\"></circle><g clip-path=\"url(#c-player)\"><ellipse cx=\"50\" cy=\"106\" rx=\"34\" ry=\"30\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><circle cx=\"50\" cy=\"46\" r=\"25\" fill=\"#FFD9B3\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><path d=\"M26 46 Q26 22 50 22 Q74 22 74 46 Q64 30 50 32 Q36 30 26 46 Z\" fill=\"#5A4632\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><circle cx=\"42\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><circle cx=\"58\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><path d=\"M44 56 Q50 62 56 56\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path><circle cx=\"35\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><circle cx=\"65\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><polygon points=\"50,82 53,89 60,89 55,94 57,101 50,97 43,101 45,94 40,89 47,89\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"2\" stroke-linejoin=\"round\"></polygon></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-hayden":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-hayden\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#E3EFFF\"></circle><g clip-path=\"url(#c-hayden)\"><ellipse cx=\"50\" cy=\"106\" rx=\"34\" ry=\"30\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><circle cx=\"50\" cy=\"46\" r=\"25\" fill=\"#FFD9B3\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><path d=\"M26 44 L30 26 L37 38 L43 22 L50 34 L57 22 L63 38 L70 26 L74 44 Q62 30 50 32 Q38 30 26 44 Z\" fill=\"#23304F\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><path d=\"M26 46 Q50 24 74 46 L74 40 Q50 18 26 40 Z\" fill=\"#23304F\"></path><circle cx=\"42\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><circle cx=\"58\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><path d=\"M44 56 Q50 62 56 56\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path><circle cx=\"35\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><circle cx=\"65\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-mei":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-mei\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#FFE9E6\"></circle><g clip-path=\"url(#c-mei)\"><ellipse cx=\"50\" cy=\"106\" rx=\"34\" ry=\"30\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><circle cx=\"50\" cy=\"46\" r=\"25\" fill=\"#FFE0C2\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><circle cx=\"22\" cy=\"40\" r=\"11\" fill=\"#3A2A20\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"78\" cy=\"40\" r=\"11\" fill=\"#3A2A20\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><path d=\"M25 46 Q28 24 50 23 Q72 24 75 46 Q70 32 50 33 Q30 32 25 46 Z\" fill=\"#3A2A20\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><circle cx=\"42\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><circle cx=\"58\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><path d=\"M44 56 Q50 62 56 56\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path><circle cx=\"35\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><circle cx=\"65\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><circle cx=\"22\" cy=\"34\" r=\"4\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"2\"></circle></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-ka-ming":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-ka-ming\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#E7FAF1\"></circle><g clip-path=\"url(#c-ka-ming)\"><ellipse cx=\"50\" cy=\"106\" rx=\"34\" ry=\"30\" fill=\"#FF9E5E\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><circle cx=\"50\" cy=\"46\" r=\"25\" fill=\"#FFD9B3\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><path d=\"M27 42 Q28 22 50 22 Q72 22 73 42 Z\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><rect x=\"18\" y=\"39\" width=\"50\" height=\"7\" rx=\"3.5\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><circle cx=\"50\" cy=\"20\" r=\"4\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"2.5\"></circle><circle cx=\"42\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><circle cx=\"58\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><path d=\"M44 56 Q50 62 56 56\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path><circle cx=\"35\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><circle cx=\"65\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-wing-yan":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-wing-yan\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#F1EAFE\"></circle><g clip-path=\"url(#c-wing-yan)\"><ellipse cx=\"50\" cy=\"106\" rx=\"34\" ry=\"30\" fill=\"#3ECF8E\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><circle cx=\"50\" cy=\"46\" r=\"25\" fill=\"#FFE0C2\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><path d=\"M26 46 Q26 22 50 22 Q74 22 74 46 Q66 30 50 31 Q34 30 26 46 Z\" fill=\"#4A3023\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><path d=\"M70 30 Q88 26 84 52 Q78 70 70 64 Q78 50 70 30 Z\" fill=\"#4A3023\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><rect x=\"28\" y=\"28\" width=\"44\" height=\"7\" rx=\"3.5\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"2.5\" transform=\"rotate(-4 50 31)\"></rect><circle cx=\"42\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><circle cx=\"58\" cy=\"47\" r=\"2.8\" fill=\"#1B2A4A\"></circle><path d=\"M44 56 Q50 62 56 56\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path><circle cx=\"35\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle><circle cx=\"65\" cy=\"54\" r=\"4\" fill=\"#FFB3A8\" opacity=\".7\"></circle></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-miss-chan":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-miss-chan\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#FFF3D6\"></circle><g clip-path=\"url(#c-miss-chan)\"><ellipse cx=\"50\" cy=\"108\" rx=\"36\" ry=\"32\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><path d=\"M38 80 L50 92 L62 80 L62 74 L38 74 Z\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><circle cx=\"50\" cy=\"46\" r=\"25\" fill=\"#FFE0C2\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><circle cx=\"50\" cy=\"18\" r=\"9\" fill=\"#2B2B3F\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><path d=\"M25 48 Q24 22 50 22 Q76 22 75 48 Q70 31 50 31 Q30 31 25 48 Z\" fill=\"#2B2B3F\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><circle cx=\"41\" cy=\"48\" r=\"7.5\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"59\" cy=\"48\" r=\"7.5\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><line x1=\"48\" y1=\"48\" x2=\"52\" y2=\"48\" stroke=\"#1B2A4A\" stroke-width=\"3\"></line><circle cx=\"41\" cy=\"49\" r=\"2.5\" fill=\"#1B2A4A\"></circle><circle cx=\"59\" cy=\"49\" r=\"2.5\" fill=\"#1B2A4A\"></circle><path d=\"M45 60 Q50 64 55 60\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-smarty":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-smarty\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#FFF3D6\"></circle><g clip-path=\"url(#c-smarty)\"><line x1=\"50\" y1=\"14\" x2=\"50\" y2=\"26\" stroke=\"#1B2A4A\" stroke-width=\"4\"></line><circle cx=\"50\" cy=\"12\" r=\"5\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><rect x=\"22\" y=\"26\" width=\"56\" height=\"46\" rx=\"14\" fill=\"#E8F1FF\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"30\" y=\"36\" width=\"40\" height=\"26\" rx=\"8\" fill=\"#1B2A4A\"></rect><circle cx=\"42\" cy=\"47\" r=\"4.5\" fill=\"#5FE0FF\"></circle><circle cx=\"58\" cy=\"47\" r=\"4.5\" fill=\"#5FE0FF\"></circle><path d=\"M44 55 Q50 59 56 55\" fill=\"none\" stroke=\"#5FE0FF\" stroke-width=\"3\" stroke-linecap=\"round\"></path><rect x=\"14\" y=\"42\" width=\"8\" height=\"14\" rx=\"4\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"78\" y=\"42\" width=\"8\" height=\"14\" rx=\"4\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"30\" y=\"78\" width=\"40\" height=\"30\" rx=\"10\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><polygon points=\"50,84 52.5,90 59,90 54,94 56,100 50,96 44,100 46,94 41,90 47.5,90\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"2\"></polygon></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-luna":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-luna\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#E7FAF1\"></circle><g clip-path=\"url(#c-luna)\"><path d=\"M28 30 Q24 12 38 16 Q42 24 36 30 Z\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><path d=\"M72 30 Q76 12 62 16 Q58 24 64 30 Z\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></path><ellipse cx=\"50\" cy=\"56\" rx=\"30\" ry=\"28\" fill=\"#5FD9A7\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><ellipse cx=\"50\" cy=\"68\" rx=\"16\" ry=\"12\" fill=\"#CFF6E6\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><circle cx=\"38\" cy=\"48\" r=\"8\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"62\" cy=\"48\" r=\"8\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"39\" cy=\"49\" r=\"3.5\" fill=\"#1B2A4A\"></circle><circle cx=\"61\" cy=\"49\" r=\"3.5\" fill=\"#1B2A4A\"></circle><circle cx=\"41\" cy=\"47\" r=\"1.3\" fill=\"#fff\"></circle><circle cx=\"63\" cy=\"47\" r=\"1.3\" fill=\"#fff\"></circle><circle cx=\"44\" cy=\"66\" r=\"1.8\" fill=\"#1B2A4A\"></circle><circle cx=\"56\" cy=\"66\" r=\"1.8\" fill=\"#1B2A4A\"></circle><path d=\"M46 72 Q50 75 54 72\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"2.5\" stroke-linecap=\"round\"></path><polygon points=\"84,58 92,52 90,62 96,64 86,68 86,60\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"2\" stroke-linejoin=\"round\"></polygon></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"avatar-kiki":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><clipPath id=\"c-kiki\"><circle cx=\"50\" cy=\"50\" r=\"44\"></circle></clipPath></defs><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#F4EFFF\"></circle><g clip-path=\"url(#c-kiki)\"><path d=\"M30 36 L26 18 L42 28 Z\" fill=\"#FFB3D9\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></path><path d=\"M70 36 L74 18 L58 28 Z\" fill=\"#FFB3D9\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></path><ellipse cx=\"50\" cy=\"60\" rx=\"31\" ry=\"29\" fill=\"#FFB3D9\" stroke=\"#1B2A4A\" stroke-width=\"4\"></ellipse><path d=\"M34 54 Q40 46 46 54\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"></path><path d=\"M54 54 Q60 46 66 54\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"></path><path d=\"M46 64 Q50 68 54 64\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linecap=\"round\"></path><circle cx=\"33\" cy=\"62\" r=\"4\" fill=\"#FF8FC2\" opacity=\".8\"></circle><circle cx=\"67\" cy=\"62\" r=\"4\" fill=\"#FF8FC2\" opacity=\".8\"></circle><path d=\"M78 28 c3 -5 10 -3 10 2 c0 5 -10 10 -10 10 c0 0 -10 -5 -10 -10 c0 -5 7 -7 10 -2 Z\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"2.5\"></path></g><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"s1-homework-night":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 220\"><rect width=\"560\" height=\"220\" fill=\"#2E3A63\"></rect><rect x=\"40\" y=\"22\" width=\"120\" height=\"92\" rx=\"8\" fill=\"#1F2A4D\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><line x1=\"100\" y1=\"22\" x2=\"100\" y2=\"114\" stroke=\"#1B2A4A\" stroke-width=\"4\"></line><line x1=\"40\" y1=\"68\" x2=\"160\" y2=\"68\" stroke=\"#1B2A4A\" stroke-width=\"4\"></line><circle cx=\"130\" cy=\"48\" r=\"14\" fill=\"#FFF6DE\"></circle><circle cx=\"124\" cy=\"44\" r=\"12\" fill=\"#1F2A4D\"></circle><circle cx=\"66\" cy=\"40\" r=\"2.5\" fill=\"#fff\"></circle><circle cx=\"84\" cy=\"92\" r=\"2\" fill=\"#fff\"></circle><circle cx=\"142\" cy=\"86\" r=\"2\" fill=\"#fff\"></circle><circle cx=\"300\" cy=\"50\" r=\"26\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><line x1=\"300\" y1=\"50\" x2=\"300\" y2=\"34\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"></line><line x1=\"300\" y1=\"50\" x2=\"288\" y2=\"58\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"></line><text x=\"300\" y=\"102\" font-family=\"system-ui,sans-serif\" font-size=\"15\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">8:47 PM</text><rect x=\"0\" y=\"150\" width=\"560\" height=\"14\" fill=\"#8A5A3B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"30\" y=\"164\" width=\"16\" height=\"56\" fill=\"#6E4730\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"500\" y=\"164\" width=\"16\" height=\"56\" fill=\"#6E4730\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"210\" y=\"96\" width=\"150\" height=\"56\" rx=\"6\" fill=\"#1B2A4A\"></rect><rect x=\"218\" y=\"103\" width=\"134\" height=\"42\" rx=\"4\" fill=\"#BFE3FF\"></rect><text x=\"285\" y=\"124\" font-family=\"system-ui,sans-serif\" font-size=\"12\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">醒目仔 Smarty</text><text x=\"285\" y=\"138\" font-family=\"system-ui,sans-serif\" font-size=\"10\" font-weight=\"700\" fill=\"#4A8FE7\" text-anchor=\"middle\">我幫你寫晒佢!</text><rect x=\"196\" y=\"150\" width=\"178\" height=\"9\" rx=\"4\" fill=\"#3A476E\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"448\" y=\"92\" width=\"10\" height=\"60\" fill=\"#1B2A4A\"></rect><path d=\"M424 96 L482 96 L466 66 L440 66 Z\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></path><polygon points=\"430,96 476,96 500,150 406,150\" fill=\"#FFC83D\" opacity=\".18\"></polygon><circle cx=\"120\" cy=\"142\" r=\"9\" fill=\"#FFF6DE\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"146\" cy=\"146\" r=\"7\" fill=\"#FFF6DE\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><rect x=\"62\" y=\"138\" width=\"40\" height=\"7\" rx=\"3\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"2.5\" transform=\"rotate(-12 82 141)\"></rect></svg>",
+"s2-luna-game-world":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 220\"><rect width=\"560\" height=\"220\" fill=\"#BFE3FF\"></rect><circle cx=\"470\" cy=\"44\" r=\"22\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><path d=\"M0 170 Q140 110 280 160 Q420 200 560 150 L560 220 L0 220 Z\" fill=\"#9FE8C8\" stroke=\"#1B2A4A\" stroke-width=\"4\"></path><path d=\"M0 200 Q180 160 360 196 Q470 214 560 196 L560 220 L0 220 Z\" fill=\"#3ECF8E\" stroke=\"#1B2A4A\" stroke-width=\"4\"></path><rect x=\"230\" y=\"78\" width=\"100\" height=\"84\" fill=\"#C9B6FF\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"214\" y=\"64\" width=\"28\" height=\"98\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"318\" y=\"64\" width=\"28\" height=\"98\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><polygon points=\"214,64 228,38 242,64\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></polygon><polygon points=\"318,64 332,38 346,64\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></polygon><rect x=\"266\" y=\"118\" width=\"28\" height=\"44\" rx=\"14\" fill=\"#1B2A4A\"></rect><rect x=\"272\" y=\"60\" width=\"4\" height=\"22\" fill=\"#1B2A4A\"></rect><polygon points=\"276,60 300,66 276,74\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></polygon><rect x=\"60\" y=\"50\" width=\"118\" height=\"44\" rx=\"14\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><polygon points=\"92,94 104,94 88,110\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></polygon><rect x=\"92\" y=\"94\" width=\"14\" height=\"5\" fill=\"#fff\"></rect><text x=\"119\" y=\"70\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">你叫咩名呀?</text><text x=\"119\" y=\"86\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"600\" fill=\"#1B2A4A\" text-anchor=\"middle\">What is your name?</text><polygon points=\"420,96 424,106 434,107 426,113 429,123 420,117 411,123 414,113 406,107 416,106\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"2.5\" stroke-linejoin=\"round\"></polygon><circle cx=\"160\" cy=\"140\" r=\"5\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"2.5\"></circle><circle cx=\"500\" cy=\"120\" r=\"6\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"2.5\"></circle></svg>",
+"s3-group-chat":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 220\"><rect width=\"560\" height=\"220\" fill=\"#EAF4FF\"></rect><rect x=\"0\" y=\"0\" width=\"560\" height=\"44\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><text x=\"50\" y=\"30\" font-family=\"system-ui,sans-serif\" font-size=\"18\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">🐝</text><text x=\"80\" y=\"30\" font-family=\"system-ui,sans-serif\" font-size=\"16\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"start\">6B 班群 Class 6B</text><text x=\"520\" y=\"30\" font-family=\"system-ui,sans-serif\" font-size=\"12\" font-weight=\"700\" fill=\"#1B2A4A\" text-anchor=\"middle\">42 人</text><rect x=\"24\" y=\"62\" width=\"200\" height=\"120\" rx=\"14\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"36\" y=\"74\" width=\"176\" height=\"74\" rx=\"8\" fill=\"#1B2A4A\"></rect><circle cx=\"124\" cy=\"111\" r=\"20\" fill=\"#fff\" opacity=\".92\"></circle><polygon points=\"118,101 138,111 118,121\" fill=\"#1B2A4A\"></polygon><rect x=\"40\" y=\"132\" width=\"34\" height=\"12\" rx=\"4\" fill=\"#FF6B5B\"></rect><text x=\"57\" y=\"141.5\" font-family=\"system-ui,sans-serif\" font-size=\"8\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">0:14</text><text x=\"124\" y=\"166\" font-family=\"system-ui,sans-serif\" font-size=\"12\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">睇下阿軒講咩!!</text><rect x=\"240\" y=\"70\" width=\"120\" height=\"34\" rx=\"12\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><text x=\"300\" y=\"92\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">真係佢嚟?!</text><rect x=\"240\" y=\"112\" width=\"150\" height=\"34\" rx=\"12\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><text x=\"315\" y=\"134\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">快啲 forward 俾 6A!</text><rect x=\"404\" y=\"86\" width=\"132\" height=\"34\" rx=\"12\" fill=\"#D6F5E7\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><text x=\"470\" y=\"108\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">等等……係咪真㗎?</text><circle cx=\"492\" cy=\"176\" r=\"22\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><text x=\"492\" y=\"182\" font-family=\"system-ui,sans-serif\" font-size=\"14\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">+19</text><rect x=\"240\" y=\"158\" width=\"96\" height=\"30\" rx=\"12\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><text x=\"288\" y=\"178\" font-family=\"system-ui,sans-serif\" font-size=\"12\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">😂😂😂</text></svg>",
+"s4-mtr-underground":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 220\"><rect width=\"560\" height=\"110\" fill=\"#EAF4FF\"></rect><rect x=\"30\" y=\"20\" width=\"56\" height=\"74\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"96\" y=\"38\" width=\"44\" height=\"56\" fill=\"#C9DCF5\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"40\" y=\"30\" width=\"10\" height=\"10\" fill=\"#4A8FE7\"></rect><rect x=\"58\" y=\"30\" width=\"10\" height=\"10\" fill=\"#4A8FE7\"></rect><rect x=\"40\" y=\"48\" width=\"10\" height=\"10\" fill=\"#4A8FE7\"></rect><rect x=\"58\" y=\"48\" width=\"10\" height=\"10\" fill=\"#4A8FE7\"></rect><rect x=\"430\" y=\"14\" width=\"60\" height=\"80\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"440\" y=\"24\" width=\"40\" height=\"8\" fill=\"#FF6B5B\"></rect><rect x=\"440\" y=\"40\" width=\"40\" height=\"8\" fill=\"#FF6B5B\"></rect><rect x=\"0\" y=\"94\" width=\"560\" height=\"12\" fill=\"#7A8BB5\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"240\" y=\"58\" width=\"90\" height=\"36\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><text x=\"285\" y=\"82\" font-family=\"system-ui,sans-serif\" font-size=\"17\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">MTR</text><rect x=\"0\" y=\"106\" width=\"560\" height=\"114\" fill=\"#8A6B4F\"></rect><rect x=\"0\" y=\"150\" width=\"560\" height=\"70\" fill=\"#6E5340\"></rect><line x1=\"528\" y1=\"106\" x2=\"528\" y2=\"206\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"6 5\"></line><text x=\"528\" y=\"128\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">30m</text><text x=\"528\" y=\"170\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">50m</text><text x=\"528\" y=\"202\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">70m</text><polygon points=\"280,106 310,106 420,176 390,176\" fill=\"#FFD9A8\" stroke=\"#1B2A4A\" stroke-width=\"4\"></polygon><rect x=\"60,?\" width=\"0\" height=\"0\"></rect><rect x=\"60\" y=\"176\" width=\"360\" height=\"30\" fill=\"#39466E\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"80\" y=\"146\" width=\"200\" height=\"30\" rx=\"8\" fill=\"#E8EDF6\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"80\" y=\"155\" width=\"200\" height=\"7\" fill=\"#FF6B5B\"></rect><rect x=\"96\" y=\"151\" width=\"22\" height=\"13\" rx=\"3\" fill=\"#1B2A4A\"></rect><rect x=\"132\" y=\"151\" width=\"22\" height=\"13\" rx=\"3\" fill=\"#1B2A4A\"></rect><rect x=\"168\" y=\"151\" width=\"22\" height=\"13\" rx=\"3\" fill=\"#1B2A4A\"></rect><rect x=\"204\" y=\"151\" width=\"22\" height=\"13\" rx=\"3\" fill=\"#1B2A4A\"></rect><rect x=\"240\" y=\"151\" width=\"22\" height=\"13\" rx=\"3\" fill=\"#1B2A4A\"></rect><text x=\"180\" y=\"198\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">香港大學 HKU · 深約70米</text></svg>",
+"s5-art-room":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 220\"><rect width=\"560\" height=\"220\" fill=\"#FFF6DE\"></rect><rect x=\"0\" y=\"178\" width=\"560\" height=\"42\" fill=\"#E8D9B5\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><line x1=\"150\" y1=\"60\" x2=\"106\" y2=\"200\" stroke=\"#8A5A3B\" stroke-width=\"8\" stroke-linecap=\"round\"></line><line x1=\"330\" y1=\"60\" x2=\"374\" y2=\"200\" stroke=\"#8A5A3B\" stroke-width=\"8\" stroke-linecap=\"round\"></line><line x1=\"240\" y1=\"80\" x2=\"240\" y2=\"200\" stroke=\"#8A5A3B\" stroke-width=\"8\" stroke-linecap=\"round\"></line><rect x=\"130\" y=\"40\" width=\"220\" height=\"130\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"5\"></rect><rect x=\"140\" y=\"50\" width=\"200\" height=\"110\" fill=\"#FFE3F1\"></rect><circle cx=\"320\" cy=\"70\" r=\"13\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><rect x=\"150\" y=\"92\" width=\"22\" height=\"68\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"180\" y=\"74\" width=\"26\" height=\"86\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"214\" y=\"100\" width=\"20\" height=\"60\" fill=\"#3ECF8E\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"242\" y=\"64\" width=\"28\" height=\"96\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><rect x=\"278\" y=\"88\" width=\"22\" height=\"72\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><ellipse cx=\"240\" cy=\"60\" rx=\"20\" ry=\"7\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><path d=\"M140 160 Q240 140 340 160\" fill=\"none\" stroke=\"#3ECF8E\" stroke-width=\"5\"></path><rect x=\"30\" y=\"150\" width=\"26\" height=\"30\" rx=\"5\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><rect x=\"62\" y=\"150\" width=\"26\" height=\"30\" rx=\"5\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><rect x=\"30\" y=\"150\" width=\"0\" height=\"0\"></rect><rect x=\"94\" y=\"150\" width=\"26\" height=\"30\" rx=\"5\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"3.5\"></rect><rect x=\"40\" y=\"136\" width=\"6\" height=\"22\" fill=\"#8A5A3B\" stroke=\"#1B2A4A\" stroke-width=\"2.5\"></rect><rect x=\"420\" y=\"36\" width=\"110\" height=\"86\" rx=\"8\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><text x=\"475\" y=\"62\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">繪畫比賽</text><text x=\"475\" y=\"80\" font-family=\"system-ui,sans-serif\" font-size=\"10\" font-weight=\"700\" fill=\"#1B2A4A\" text-anchor=\"middle\">My Hong Kong 2050</text><polygon points=\"475,88 478,96 487,96 480,101 483,110 475,104 467,110 470,101 463,96 472,96\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"2.5\" stroke-linejoin=\"round\"></polygon><circle cx=\"400\" cy=\"160\" r=\"18\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><polygon points=\"392,174 388,200 400,190 412,200 408,174\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linejoin=\"round\"></polygon><text x=\"400\" y=\"166\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">2</text></svg>",
+"s6-evening-out":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 560 220\"><rect width=\"560\" height=\"220\" fill=\"#FFB98A\"></rect><circle cx=\"100\" cy=\"60\" r=\"26\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle><path d=\"M0 130 L90 130 L120 100 L200 100 L230 130 L560 130 L560 220 L0 220 Z\" fill=\"#5E6FA3\" stroke=\"#1B2A4A\" stroke-width=\"4\"></path><rect x=\"300\" y=\"70\" width=\"36\" height=\"60\" fill=\"#5E6FA3\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"420\" y=\"56\" width=\"44\" height=\"74\" fill=\"#5E6FA3\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"306\" y=\"80\" width=\"8\" height=\"8\" fill=\"#FFC83D\"></rect><rect x=\"320\" y=\"80\" width=\"8\" height=\"8\" fill=\"#FFC83D\"></rect><rect x=\"306\" y=\"96\" width=\"8\" height=\"8\" fill=\"#FFC83D\"></rect><rect x=\"430\" y=\"66\" width=\"8\" height=\"8\" fill=\"#FFC83D\"></rect><rect x=\"446\" y=\"66\" width=\"8\" height=\"8\" fill=\"#FFC83D\"></rect><rect x=\"430\" y=\"82\" width=\"8\" height=\"8\" fill=\"#FFC83D\"></rect><rect x=\"0\" y=\"160\" width=\"560\" height=\"60\" fill=\"#3ECF8E\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><line x1=\"0\" y1=\"190\" x2=\"560\" y2=\"190\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"14 10\"></line><line x1=\"250\" y1=\"124\" x2=\"250\" y2=\"190\" stroke=\"#1B2A4A\" stroke-width=\"5\"></line><line x1=\"362\" y1=\"124\" x2=\"362\" y2=\"190\" stroke=\"#1B2A4A\" stroke-width=\"5\"></line><rect x=\"250\" y=\"128\" width=\"112\" height=\"26\" fill=\"#fff\" opacity=\".85\" stroke=\"#1B2A4A\" stroke-width=\"3\"></rect><line x1=\"264\" y1=\"128\" x2=\"264\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><line x1=\"278\" y1=\"128\" x2=\"278\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><line x1=\"292\" y1=\"128\" x2=\"292\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><line x1=\"306\" y1=\"128\" x2=\"306\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><line x1=\"320\" y1=\"128\" x2=\"320\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><line x1=\"334\" y1=\"128\" x2=\"334\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><line x1=\"348\" y1=\"128\" x2=\"348\" y2=\"154\" stroke=\"#1B2A4A\" stroke-width=\"1.5\"></line><g transform=\"rotate(24 200 90)\"><ellipse cx=\"200\" cy=\"100\" rx=\"8\" ry=\"7\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3\"></ellipse><polygon points=\"193,96 207,96 212,74 188,74\" fill=\"#FFF6DE\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></polygon></g><rect x=\"60\" y=\"138\" width=\"110\" height=\"52\" rx=\"6\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><rect x=\"60\" y=\"120\" width=\"110\" height=\"22\" rx=\"6\" fill=\"#FFF6DE\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><text x=\"115\" y=\"136\" font-family=\"system-ui,sans-serif\" font-size=\"12\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">魚蛋 FISH BALLS</text><circle cx=\"86\" cy=\"196\" r=\"11\" fill=\"#1B2A4A\"></circle><circle cx=\"144\" cy=\"196\" r=\"11\" fill=\"#1B2A4A\"></circle><line x1=\"190\" y1=\"108\" x2=\"190\" y2=\"140\" stroke=\"#8A5A3B\" stroke-width=\"4\"></line><circle cx=\"190\" cy=\"104\" r=\"6\" fill=\"#C98A4B\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"190\" cy=\"118\" r=\"6\" fill=\"#C98A4B\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><circle cx=\"190\" cy=\"131\" r=\"6\" fill=\"#C98A4B\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><path d=\"M60 110 q8 -10 16 0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" opacity=\".9\"></path><path d=\"M150 106 q8 -10 16 0\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" opacity=\".9\"></path><rect x=\"470\" y=\"142\" width=\"66\" height=\"68\" rx=\"10\" fill=\"#1B2A4A\"></rect><rect x=\"476\" y=\"150\" width=\"54\" height=\"52\" rx=\"6\" fill=\"#F4EFFF\"></rect><text x=\"503\" y=\"172\" font-family=\"system-ui,sans-serif\" font-size=\"10\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">Kiki 琪琪</text><text x=\"503\" y=\"188\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"700\" fill=\"#1B2A4A\" text-anchor=\"middle\">我會掛住你 🥺</text></svg>",
+"badge-pause":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\" opacity=\".85\"></circle><path d=\"M36 58 V40 a4 4 0 0 1 8 0 V36 a4 4 0 0 1 8 0 V38 a4 4 0 0 1 8 0 V44 a4 4 0 0 1 8 0 V60 a18 14 0 0 1 -18 16 h-2 a14 14 0 0 1 -12 -8 l-7 -12 a4.5 4.5 0 0 1 8 -4 z\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></path></svg>",
+"badge-question":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\" opacity=\".85\"></circle><path d=\"M38 42 q0 -14 13 -14 q13 0 13 12 q0 8 -8 12 q-5 3 -5 9\" fill=\"none\" stroke=\"#fff\" stroke-width=\"9\" stroke-linecap=\"round\"></path><path d=\"M38 42 q0 -14 13 -14 q13 0 13 12 q0 8 -8 12 q-5 3 -5 9\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"4.5\" stroke-linecap=\"round\"></path><circle cx=\"51\" cy=\"74\" r=\"6\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\"></circle></svg>",
+"badge-verify":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#4A8FE7\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\" opacity=\".85\"></circle><circle cx=\"45\" cy=\"45\" r=\"17\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4.5\"></circle><circle cx=\"45\" cy=\"45\" r=\"9\" fill=\"#BFE3FF\" stroke=\"#1B2A4A\" stroke-width=\"3\"></circle><rect x=\"57\" y=\"54\" width=\"22\" height=\"11\" rx=\"5.5\" fill=\"#FFF6DE\" stroke=\"#1B2A4A\" stroke-width=\"4\" transform=\"rotate(45 68 59.5)\"></rect></svg>",
+"badge-decide":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#3ECF8E\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\" opacity=\".85\"></circle><path d=\"M30 52 L46 68 L74 36\" fill=\"none\" stroke=\"#fff\" stroke-width=\"12\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path><path d=\"M30 52 L46 68 L74 36\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path></svg>",
+"badge-own":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"50\" cy=\"50\" r=\"35\" fill=\"none\" stroke=\"#fff\" stroke-width=\"3\" stroke-dasharray=\"2 7\" stroke-linecap=\"round\" opacity=\".85\"></circle><path d=\"M50 40 c4 -8 16 -7 16 2 c0 8 -16 17 -16 17 c0 0 -16 -9 -16 -17 c0 -9 12 -10 16 -2 Z\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></path><path d=\"M30 66 h40 a5 5 0 0 1 0 10 h-40 a5 5 0 0 1 0 -10 Z\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></path></svg>",
+"stamp-complete":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 140 140\"><g transform=\"rotate(-8 70 70)\"><circle cx=\"70\" cy=\"70\" r=\"60\" fill=\"none\" stroke=\"#3ECF8E\" stroke-width=\"7\"></circle><circle cx=\"70\" cy=\"70\" r=\"46\" fill=\"none\" stroke=\"#3ECF8E\" stroke-width=\"3\"></circle><text x=\"70\" y=\"62\" font-family=\"system-ui,sans-serif\" font-size=\"17\" font-weight=\"800\" fill=\"#2BA873\" text-anchor=\"middle\">任務完成</text><text x=\"70\" y=\"84\" font-family=\"system-ui,sans-serif\" font-size=\"12\" font-weight=\"800\" fill=\"#2BA873\" text-anchor=\"middle\">MISSION COMPLETE</text><polygon points=\"70,18 73,26 81,26 75,31 77,39 70,34 63,39 65,31 59,26 67,26\" fill=\"#3ECF8E\"></polygon><polygon points=\"70,101 73,109 81,109 75,114 77,122 70,117 63,122 65,114 59,109 67,109\" fill=\"#3ECF8E\"></polygon></g></svg>",
+"seal-licence":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 180 110\"><path d=\"M52 56 Q10 50 6 28 Q28 34 44 30 Q24 24 20 8 Q44 16 58 34 Z\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></path><path d=\"M128 56 Q170 50 174 28 Q152 34 136 30 Q156 24 160 8 Q136 16 122 34 Z\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></path><circle cx=\"90\" cy=\"52\" r=\"36\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><circle cx=\"90\" cy=\"52\" r=\"28\" fill=\"none\" stroke=\"#fff\" stroke-width=\"2.5\" stroke-dasharray=\"2 6\"></circle><polygon points=\"90,32 96,46 111,47 100,57 103,72 90,64 77,72 80,57 69,47 84,46\" fill=\"#fff\" stroke=\"#1B2A4A\" stroke-width=\"3\" stroke-linejoin=\"round\"></polygon><rect x=\"48\" y=\"84\" width=\"84\" height=\"20\" rx=\"10\" fill=\"#FF6B5B\" stroke=\"#1B2A4A\" stroke-width=\"4\"></rect><text x=\"90\" y=\"98.5\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">PILOT 機師</text></svg>",
+"icon-rewind":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"44\" fill=\"#FFF6DE\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><polygon points=\"48,32 48,68 24,50\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></polygon><polygon points=\"76,32 76,68 52,50\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"4\" stroke-linejoin=\"round\"></polygon></svg>",
+"sticker-rewind-hero":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 120\"><circle cx=\"60\" cy=\"60\" r=\"52\" fill=\"#9B6BF2\" stroke=\"#1B2A4A\" stroke-width=\"5\"></circle><path d=\"M38 70 a24 24 0 1 1 8 18\" fill=\"none\" stroke=\"#fff\" stroke-width=\"8\" stroke-linecap=\"round\"></path><polygon points=\"30,58 50,64 36,80\" fill=\"#fff\"></polygon><text x=\"60\" y=\"114\" font-family=\"system-ui,sans-serif\" font-size=\"11\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">諗多次 RE-THINK</text></svg>",
+"sticker-star":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><polygon points=\"50,6 61,36 93,37 68,57 77,88 50,70 23,88 32,57 7,37 39,36\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"5\" stroke-linejoin=\"round\"></polygon><circle cx=\"42\" cy=\"48\" r=\"3.5\" fill=\"#1B2A4A\"></circle><circle cx=\"58\" cy=\"48\" r=\"3.5\" fill=\"#1B2A4A\"></circle><path d=\"M44 58 Q50 63 56 58\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"3.5\" stroke-linecap=\"round\"></path></svg>",
+"sticker-wise":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 120\"><polygon points=\"60,4 71,22 92,14 90,36 112,40 97,56 112,72 90,76 92,98 71,90 60,116 49,90 28,98 30,76 8,72 23,56 8,40 30,36 28,14 49,22\" fill=\"#3ECF8E\" stroke=\"#1B2A4A\" stroke-width=\"4.5\" stroke-linejoin=\"round\"></polygon><text x=\"60\" y=\"56\" font-family=\"system-ui,sans-serif\" font-size=\"16\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">明智!</text><text x=\"60\" y=\"76\" font-family=\"system-ui,sans-serif\" font-size=\"14\" font-weight=\"800\" fill=\"#fff\" text-anchor=\"middle\">WISE!</text></svg>",
+"icon-lock":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect x=\"24\" y=\"44\" width=\"52\" height=\"44\" rx=\"10\" fill=\"#C7CFE2\" stroke=\"#1B2A4A\" stroke-width=\"5\"></rect><path d=\"M34 44 v-8 a16 16 0 0 1 32 0 v8\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"6\"></path><circle cx=\"50\" cy=\"62\" r=\"7\" fill=\"#1B2A4A\"></circle><rect x=\"46.5\" y=\"64\" width=\"7\" height=\"13\" rx=\"3.5\" fill=\"#1B2A4A\"></rect></svg>",
+"icon-unlock":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><rect x=\"24\" y=\"44\" width=\"52\" height=\"44\" rx=\"10\" fill=\"#FFC83D\" stroke=\"#1B2A4A\" stroke-width=\"5\"></rect><path d=\"M34 44 v-10 a16 16 0 0 1 31 -5\" fill=\"none\" stroke=\"#1B2A4A\" stroke-width=\"6\" stroke-linecap=\"round\"></path><circle cx=\"50\" cy=\"62\" r=\"7\" fill=\"#1B2A4A\"></circle><rect x=\"46.5\" y=\"64\" width=\"7\" height=\"13\" rx=\"3.5\" fill=\"#1B2A4A\"></rect></svg>",
+"icon-loop-ring":"<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 120 120\"><g stroke=\"#1B2A4A\" stroke-width=\"4\" fill=\"none\"><path d=\"M60 14 a46 46 0 0 1 43.7 31.8\" stroke=\"#FF6B5B\" stroke-width=\"13\"></path><path d=\"M103.7 45.8 a46 46 0 0 1 -16 51.4\" stroke=\"#FFC83D\" stroke-width=\"13\"></path><path d=\"M87.7 97.2 a46 46 0 0 1 -55.4 0\" stroke=\"#4A8FE7\" stroke-width=\"13\"></path><path d=\"M32.3 97.2 a46 46 0 0 1 -16 -51.4\" stroke=\"#3ECF8E\" stroke-width=\"13\"></path><path d=\"M16.3 45.8 a46 46 0 0 1 43.7 -31.8\" stroke=\"#9B6BF2\" stroke-width=\"13\"></path></g><polygon points=\"60,6 74,14 60,22\" fill=\"#1B2A4A\"></polygon><text x=\"60\" y=\"66\" font-family=\"system-ui,sans-serif\" font-size=\"13\" font-weight=\"800\" fill=\"#1B2A4A\" text-anchor=\"middle\">先思考</text></svg>"
+};
+function art(name,cls,w){
+  const s=ART[name]; if(!s)return "";
+  return '<span class="artw'+(cls?" "+cls:"")+'"'+(w?' style="width:'+w+'px"':"")+' aria-hidden="true">'+s+'</span>';
+}
+/* per-mission backdrop + cast strip (index-aligned with C.scenarios) */
+const SCENE_ART=["s1-homework-night","s2-luna-game-world","s3-group-chat","s4-mtr-underground","s5-art-room","s6-evening-out"];
+const CAST=[["smarty","miss-chan","ka-ming"],["luna"],["hayden","mei","miss-chan"],["mei","miss-chan"],["mei"],["wing-yan","kiki"]];
+const CHAT_AVATAR={1:"avatar-luna",5:"avatar-kiki"};
 
 function loadState(){
   try{
@@ -1103,8 +1242,13 @@ function resolveNext(nx){
 }
 
 /* ---------- shared widgets ---------- */
-function owlHTML(){return '<div class="owl" aria-hidden="true"><span class="tl"></span><span class="tr"></span><span class="band"></span><span class="eye el"><i></i></span><span class="eye er"><i></i></span><span class="beak"></span></div>';}
-function sonarBubble(text){return '<div class="sonar">'+owlHTML()+'<div class="bubble"><b class="who">'+esc(ui("sonarName"))+'</b>'+esc(text)+'</div></div>';}
+function owlHTML(pose,cls){return '<span class="owlart '+(cls||"tf-bob")+'" aria-hidden="true">'+(ART[pose]||ART["sonar-neutral"]||"🦉")+'</span>';}
+function sonarBubble(text,pose,owlCls){return '<div class="sonar">'+owlHTML(pose,owlCls)+'<div class="bubble"><b class="who">'+esc(ui("sonarName"))+'</b>'+esc(text)+'</div></div>';}
+function typingBubble(){
+  const av=ART[CHAT_AVATAR[S.si]];
+  return '<div class="sonar">'+(av?'<span class="owlart tf-bob" aria-hidden="true">'+av+'</span>':"")+
+    '<div class="bubble"><span class="tdots" aria-label="…"><i></i><i></i><i></i></span></div></div>';
+}
 function loopChips(active){
   let h='<div class="loop" aria-hidden="true">';
   C.stepOrder.forEach(function(k){
@@ -1128,6 +1272,8 @@ const TONE_ICON={wise:"🌟",risky:"⚠️",mixed:"🤔"};
 function render(){
   document.documentElement.lang=(S.lang==="zh")?"zh-Hant":"en";
   $("langBtn").textContent=ui("langName");
+  const sb=$("sfxBtn");
+  if(sb){sb.textContent=S.muted?"🔇":"🔊";if(sb.setAttribute)sb.setAttribute("aria-label",ui("soundLbl"));}
   $("foot").textContent=ui("footer");
   if(S.screen!=="end")profileOpen=false;   /* profile reveal is per-visit */
   ({home:renderHome,hub:renderHub,scene:renderScene,check:renderCheck,end:renderEnd,debrief:renderDebrief}[S.screen]||renderHome)();
@@ -1139,10 +1285,11 @@ function renderHome(){
   const started=S.done.length>0||!!S.node;
   $("app").innerHTML=
    '<div class="card center">'+
-    '<div class="big">🧭🦉✨</div>'+
+    '<div style="display:flex;justify-content:center;align-items:center;gap:16px;margin-bottom:8px">'+
+      art("icon-loop-ring",null,92)+art("sonar-celebrate","tf-bob",86)+'</div>'+
     '<h1>'+esc(ui("appName"))+'</h1>'+
     '<p class="muted"><b>'+esc(ui("tagline"))+'</b></p>'+
-    sonarBubble(ui("introBubble"))+
+    sonarBubble(ui("introBubble"),"sonar-neutral")+
     '<p class="muted">'+esc(ui("motto"))+'</p>'+
    '</div>'+
    '<div class="card">'+
@@ -1175,11 +1322,12 @@ function renderHub(){
   h+='<div class="card"><h2>🗺️ '+esc(ui("missionMap"))+'</h2>';
   C.scenarios.forEach(function(scn,i){
     const done=S.done.indexOf(i)>=0, open=i<S.unlocked;
-    const inner='<span class="ic">'+(open?scn.icon:"🔒")+'</span><span><span class="tt">'+
+    const icArt=!open?art("icon-lock",null,26):(i===justUnlocked?art("icon-unlock","tf-pop",28):"");
+    const inner='<span class="ic">'+(icArt||scn.icon)+'</span><span><span class="tt">'+
       esc(ui("mission"))+' '+(i+1)+' · '+esc(tt(scn.title))+'</span><br><span class="st">'+
       esc(done?ui("replay"):(open?ui("play"):ui("locked")))+'</span></span>';
     h+= open
-      ? '<button class="mcard'+(done?" done":"")+'" onclick="startScenario('+i+')">'+inner+'</button>'
+      ? '<button class="mcard'+(done?" done":"")+(i===justUnlocked?" tf-unlock":"")+'" onclick="startScenario('+i+')">'+inner+'</button>'
       : '<div class="mcard locked" aria-disabled="true">'+inner+'</div>';
   });
   if(S.done.length===C.scenarios.length){
@@ -1189,10 +1337,13 @@ function renderHub(){
   if(S.log.length>0){h+='<button class="btn ghost" onclick="goDebrief(\'hub\')">'+esc(ui("debriefBtn"))+'</button>';}
   h+='<button class="btn ghost" onclick="goHome()">'+esc(ui("back"))+'</button>';
   $("app").innerHTML=h;
+  justUnlocked=-1;
 }
 
 function startScenario(i){
   if(i>=S.unlocked)return;
+  TFSFX.tap();
+  Object.keys(typingShown).forEach(function(k){if(k.indexOf(i+":")===0)delete typingShown[k];});
   S.si=i; S.node=C.scenarios[i].start; S.flags={}; S.snaps=[];
   S.log=S.log.filter(function(e){return e.si!==i;});   /* replay replaces old record */
   S.screen="scene"; save(); render();
@@ -1201,34 +1352,55 @@ function startScenario(i){
 function renderScene(){
   const scn=cur(); const n=nodeOf(S.node);
   if(!n){S.screen="hub";save();render();return;}
-  let h='<div class="card">'+
-    '<span class="tag">'+esc(ui("mission"))+' '+(S.si+1)+' / '+C.scenarios.length+' · '+scn.icon+' '+esc(tt(scn.title))+'</span>'+
+  const nodeKey=S.si+":"+S.node;
+  const cast=(CAST[S.si]||[]).map(function(nm){return art("avatar-"+nm);}).join("");
+  let h='<div class="card tf-enter">'+
+    '<div class="shead"><span class="tag">'+esc(ui("mission"))+' '+(S.si+1)+' / '+C.scenarios.length+' · '+scn.icon+' '+esc(tt(scn.title))+'</span>'+
+    (cast?'<span class="cast">'+cast+'</span>':"")+'</div>'+
     loopChips(n.step||null);
+  if(S.node===scn.start&&ART[SCENE_ART[S.si]]){
+    h+='<div class="scenebox tf-enter">'+ART[SCENE_ART[S.si]]+'</div>';
+  }
   if(n.type==="end"){
-    h+='<div class="big center">'+scn.icon+'✨</div>'+
+    h+='<div class="center">'+art("stamp-complete","tf-stamp",128)+'</div>'+
        '<h2 class="center">'+esc(ui("missionDone"))+'</h2>'+
-       sonarBubble(tt(n.text))+
+       sonarBubble(tt(n.text),"sonar-celebrate")+
        '<p class="center" style="margin-top:10px"><b>'+esc(ui("skillsLit"))+'</b><br>';
     scn.skills.forEach(function(k){
-      h+='<span class="skillpill" style="--c:'+C.steps[k].color+';margin:3px 2px;display:inline-block">'+esc(tt(C.steps[k].name))+'</span> ';
+      h+='<span class="skillpill tf-pop" style="--c:'+C.steps[k].color+';margin:3px 2px;display:inline-block">'+esc(tt(C.steps[k].name))+'</span> ';
     });
     h+='</p><button class="btn primary" onclick="finishScenario()">'+esc(ui("continueBtn"))+'</button>';
+    if(stampedKey!==nodeKey){stampedKey=nodeKey;TFSFX.stamp();}
   }else if(n.type==="out"){
     const tone=n.tone||"mixed";
-    h+='<div class="outcome '+tone+'"><div class="verdict">'+TONE_ICON[tone]+' '+esc(ui(TONE_LABEL[tone]))+'</div>'+
+    h+='<div class="outcome '+tone+'"><div class="verdict">'+TONE_ICON[tone]+' '+esc(ui(TONE_LABEL[tone]))+
+       (tone==="wise"?" "+art("sticker-wise","tf-pop",34):"")+'</div>'+
        '<div class="story">'+esc(tt(n.text))+'</div></div>';
     if(n.ask){
+      const pose=tone==="wise"?"sonar-celebrate":tone==="risky"?"sonar-worried":"sonar-thinking";
       h+='<p class="muted" style="margin:8px 0 2px;font-size:.78rem;font-weight:800">'+esc(ui("sonarAsks"))+'</p>'+
-         sonarBubble(tt(n.ask));
+         sonarBubble(tt(n.ask),pose,tone==="wise"?"tf-hop":"tf-bob");
     }
     h+='<button class="btn primary" onclick="advance()">'+esc(ui("continueBtn"))+'</button>';
-    if(S.snaps.length>0){h+='<button class="btn ghost" onclick="rewind()">'+esc(ui("rewind"))+'</button>';}
+    if(S.snaps.length>0){h+='<button class="btn ghost tf-wiggle" onclick="rewind()">'+art("icon-rewind",null,20)+' '+esc(ui("rewind"))+'</button>';}
+  }else if(n.typing&&!typingShown[nodeKey]&&!reducedMotion()){
+    /* chatbot beats: show typing dots, then reveal the message */
+    h+=typingBubble();
+    setTimeout(function(){
+      typingShown[nodeKey]=true;
+      if(S.screen==="scene"&&S.si+":"+S.node===nodeKey)render();
+    },900);
   }else{
+    if(n.typing)typingShown[nodeKey]=true;
+    if(rewindPraise){
+      h+='<div class="tip" style="display:flex;gap:10px;align-items:center">'+art("sticker-rewind-hero",null,46)+'<span>'+esc(ui("rewindPraise"))+'</span></div>';
+      rewindPraise=false;
+    }
     h+='<div class="story">'+esc(tt(n.text))+'</div>';
-    if(n.sonar){h+=sonarBubble(tt(n.sonar));}
+    if(n.sonar){h+=sonarBubble(tt(n.sonar),"sonar-thinking");}
     h+='<div style="margin-top:12px">';
     choicesOf(n).forEach(function(ch,i){
-      h+='<button class="btn'+(ch.tone==="plain"?" primary":"")+'" onclick="choose('+i+')">'+esc(tt(ch.t))+'</button>';
+      h+='<button class="btn'+(ch.tone==="plain"?" primary":"")+' tf-enter" style="animation-delay:'+(i*70)+'ms" onclick="choose('+i+')">'+esc(tt(ch.t))+'</button>';
     });
     h+='</div>';
   }
@@ -1238,7 +1410,9 @@ function renderScene(){
 
 function choose(i){
   const n=nodeOf(S.node); const ch=choicesOf(n)[i];
-  if(ch.tone==="plain"){S.node=resolveNext(ch.next);save();render();return;}
+  if(ch.tone==="plain"){TFSFX.tap();S.node=resolveNext(ch.next);save();render();return;}
+  TFSFX[ch.tone==="wise"?"wise":ch.tone==="risky"?"risky":"mixed"]();
+  if(ch.fx){setTimeout(function(){TFSFX.tick();},300);}
   S.snaps.push({node:S.node,skills:JSON.parse(JSON.stringify(S.skills)),flags:JSON.parse(JSON.stringify(S.flags)),logLen:S.log.length});
   if(ch.fx){for(const k in ch.fx){S.skills[k]=(S.skills[k]||0)+ch.fx[k];}}
   if(ch.set){for(const k in ch.set){S.flags[k]=ch.set[k];}}
@@ -1246,15 +1420,18 @@ function choose(i){
   S.node=resolveNext(ch.next);
   save(); render();
 }
-function advance(){const n=nodeOf(S.node);S.node=resolveNext(n.next);save();render();}
+function advance(){TFSFX.tap();const n=nodeOf(S.node);S.node=resolveNext(n.next);save();render();}
 function rewind(){
   const sp=S.snaps.pop(); if(!sp)return;
+  TFSFX.rewind();
   S.node=sp.node; S.skills=sp.skills; S.flags=sp.flags; S.log.length=sp.logLen;
-  S.rewinds++; save(); render();
+  S.rewinds++; rewindPraise=true; save(); render();
 }
 function finishScenario(){
   if(S.done.indexOf(S.si)<0)S.done.push(S.si);
+  const before=S.unlocked;
   S.unlocked=Math.max(S.unlocked,Math.min(C.scenarios.length,S.si+2));
+  if(S.unlocked>before){justUnlocked=S.unlocked-1;TFSFX.unlock();}
   S.node=null; S.snaps=[];
   if(C.checks[S.si]&&S.checksDone.indexOf(S.si)<0){S.screen="check";chkWrong=false;chkPicked=-1;}
   else{S.screen="hub";}
@@ -1264,9 +1441,10 @@ function finishScenario(){
 function renderCheck(){
   const ck=C.checks[S.si];
   if(!ck){S.screen="hub";save();render();return;}
-  let h='<div class="card">'+
-    '<span class="tag">🦉 '+esc(ui("sonarCheck"))+'</span>'+
-    '<p class="muted" style="font-size:.85rem">'+esc(ui("checkIntro"))+'</p>'+
+  let h='<div class="card tf-enter">'+
+    '<div class="shead"><span class="tag">🦉 '+esc(ui("sonarCheck"))+'</span>'+
+    '<span style="margin-left:auto">'+art("badge-"+ck.step,null,40)+'</span></div>'+
+    sonarBubble(ui("checkIntro"),"sonar-point")+
     '<h2>'+esc(tt(ck.q))+'</h2>';
   ck.opts.forEach(function(o,i){
     let cls="chk", note="";
@@ -1275,7 +1453,7 @@ function renderCheck(){
   });
   if(chkPicked>=0){
     h+= ck.opts[chkPicked].ok
-      ? '<div class="outcome wise"><b>'+esc(ui("nice"))+'</b></div><button class="btn primary" onclick="checkDone()">'+esc(ui("toHub"))+'</button>'
+      ? '<div class="outcome wise">'+art("sticker-star","tf-pop",34)+' <b>'+esc(ui("nice"))+'</b></div><button class="btn primary" onclick="checkDone()">'+esc(ui("toHub"))+'</button>'
       : '<div class="outcome mixed"><b>'+esc(ui("tryAgain"))+'</b></div>';
   }
   h+='</div>';
@@ -1284,7 +1462,8 @@ function renderCheck(){
 function pickCheck(i){
   const ck=C.checks[S.si];
   chkPicked=i;
-  if(!ck.opts[i].ok)chkWrong=true;
+  if(!ck.opts[i].ok){chkWrong=true;TFSFX.mixed();}
+  else{TFSFX.correct();}
   render();
 }
 function checkDone(){
@@ -1337,12 +1516,12 @@ function computeProfile(){
   return {key:key,trust:trust,guard:guard,risky:risky,human:human,sis:sis};
 }
 let profileOpen=false;
-function openProfile(){profileOpen=true;render();}
+function openProfile(){profileOpen=true;TFSFX.correct();render();}
 function profileCardHTML(){
   const pr=computeProfile(), P=C.profiles[pr.key];
   return '<div class="pcard" style="--pc:'+P.color+'">'+
     '<span class="tag">🪪 '+esc(ui("profileTitle"))+'</span>'+
-    '<div class="emblem">'+P.icon+'</div>'+
+    '<div class="emblem tf-pop">'+P.icon+'</div>'+
     '<div class="pname">'+esc(tt(P.name))+'</div>'+
     '<div class="pline">'+esc(tt(P.line))+'</div>'+
     '<div class="prow"><span class="k">⭐ '+esc(ui("profStrength"))+':</span><span>'+esc(tt(P.strength))+'</span></div>'+
@@ -1361,11 +1540,13 @@ function tierName(){return S.tier==="ex"?ui("tierEx"):ui("tierPi");}
 
 function renderEnd(){
   if(!S.licNo){S.licNo="TF-"+String(Math.floor(1000+Math.random()*9000));save();}
+  if(!endCelebrated){endCelebrated=true;TFSFX.fanfare();setTimeout(confettiBurst,200);}
   const r=rankedSkills(), strong=r[0], focus=r[r.length-1];
   const nm=(S.name||"").trim()||ui("defaultPilot");
   let h='<div class="card center"><div class="big">🎓</div><h1>'+esc(ui("endTitle"))+'</h1>'+
         '<p class="muted">'+esc(ui("allDone"))+'</p></div>';
   h+='<div class="lic"><div class="inner">'+
+    '<div class="center">'+art("seal-licence","tf-pop",150)+'</div>'+
     '<p class="muted" style="margin:0;font-size:.8rem">'+esc(ui("licensedTo"))+'</p>'+
     '<div class="nm">'+esc(nm)+'</div>'+
     '<p style="font-weight:700;font-size:.88rem">'+esc(ui("licLine"))+'</p>'+
@@ -1376,7 +1557,7 @@ function renderEnd(){
     '<p class="muted" style="font-size:.75rem;margin:6px 0 0">'+esc(ui("focusNote"))+'</p>'+
     '<span class="stamp">🦉 '+esc(ui("sonarName"))+' ✓</span>'+
   '</div></div>';
-  h+=sonarBubble(ui("profileAsk"));
+  h+=sonarBubble(ui("profileAsk"),"sonar-wink");
   h+= profileOpen ? profileCardHTML()
                   : '<button class="btn primary" onclick="openProfile()">'+esc(ui("showProfile"))+'</button>';
   h+='<div class="card"><h2>🚀 '+esc(ui("missionsTitle"))+'</h2>';
@@ -1395,7 +1576,7 @@ function renderDebrief(){
   const weakFirst=C.stepOrder.slice().sort(function(a,b){return (S.skills[a]||0)-(S.skills[b]||0);});
   const qs=[C.debriefQs[weakFirst[0]],C.debriefQs[weakFirst[1]],C.debriefQs.general];
   let h='<div class="sheet">'+
-    '<h2>🦉 '+esc(ui("appName"))+' — '+esc(ui("debriefTitle"))+'</h2>'+
+    '<h2>'+art("icon-loop-ring",null,38)+' '+esc(ui("appName"))+' — '+esc(ui("debriefTitle"))+'</h2>'+
     '<p class="muted">'+esc(ui("debriefIntro"))+'</p>'+
     '<p><b>'+esc(nm)+'</b> · '+esc(fmtDate())+' · '+esc(tierName())+'</p>'+
     '<h3 style="margin-top:10px">'+esc(ui("meterSnap"))+'</h3>'+meterHTML()+
@@ -1454,9 +1635,11 @@ function profileDebriefHTML(){
 }
 
 function resetProgress(){
-  const keep={lang:S.lang,tier:S.tier,name:S.name};
+  const keep={lang:S.lang,tier:S.tier,name:S.name,muted:S.muted};
   S=JSON.parse(JSON.stringify(DEFAULTS));
-  Object.assign(S,keep); save();
+  Object.assign(S,keep);
+  typingShown={}; stampedKey=null; justUnlocked=-1; endCelebrated=false; rewindPraise=false;
+  save();
 }
 function resetAll(){
   if(confirm(ui("confirmReset"))){resetProgress();S.screen="home";save();render();}
