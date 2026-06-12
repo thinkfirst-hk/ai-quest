@@ -130,6 +130,15 @@
   .mission{display:flex;gap:10px;align-items:flex-start;border:2.5px dashed var(--ink);border-radius:12px;padding:10px 12px;margin-bottom:9px;font-weight:600;font-size:.92rem;background:#fff}
   .mission .dot{flex:0 0 14px;width:14px;height:14px;border-radius:50%;border:2.5px solid var(--ink);background:var(--c);margin-top:4px}
 
+  /* pilot profile badge */
+  .pcard{border:3px solid var(--ink);border-radius:16px;background:linear-gradient(135deg,#fff 55%,var(--paper));box-shadow:var(--shadow);padding:16px;text-align:center;margin-bottom:14px}
+  .emblem{width:86px;height:86px;border-radius:50%;border:5px solid var(--pc,#1B2A4A);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin:4px auto 8px;background:#fff;box-shadow:var(--shadow)}
+  .pname{font-size:1.35rem;font-weight:800}
+  .pline{font-weight:700;opacity:.85;margin:4px 0 12px}
+  .prow{display:flex;gap:8px;text-align:left;font-size:.88rem;font-weight:600;margin-bottom:8px}
+  .prow .k{flex:0 0 96px;font-weight:800}
+  .snapshot{border:2.5px dashed var(--ink);border-radius:12px;background:#fff;padding:9px 12px;font-weight:700;font-size:.85rem;margin-top:10px}
+
   /* debrief sheet */
   .sheet{background:#fff;border:3px solid var(--ink);border-radius:var(--r);padding:18px;margin-bottom:14px}
   .sheet h2{border-bottom:2.5px solid var(--ink);padding-bottom:6px}
@@ -243,9 +252,87 @@ ui:{
   toneRisky:{en:"⚠️ risky", zh:"⚠️ 危險"},
   toneMixed:{en:"🤔 mixed", zh:"🤔 一半半"},
   notPlayed:{en:"(not played yet)", zh:"(未玩)"},
-  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.0", zh:"ThinkFirst Learning 先思考 · 香港 · v1.0"},
+  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.1", zh:"ThinkFirst Learning 先思考 · 香港 · v1.1"},
   langName:{en:"中文", zh:"EN"},
-  exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"}
+  exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"},
+  /* pilot profile */
+  profileAsk:{en:"Interesting flight, pilot. Want to see your flight profile?", zh:"呢程飛得幾有意思喎,機師。想唔想睇下你嘅飛行檔案?"},
+  showProfile:{en:"Show my Pilot Profile 🪪", zh:"睇我嘅機師檔案 🪪"},
+  profileTitle:{en:"Pilot Profile", zh:"機師檔案"},
+  profStrength:{en:"Superpower", zh:"超能力"},
+  profFocus:{en:"Training focus", zh:"訓練重點"},
+  snapshot:{en:"This is your flight profile TODAY — replay later and it may change.", zh:"呢個係你「今日」嘅飛行檔案——第日再飛過,可能會唔同㗎。"},
+  flyAgain:{en:"🛫 Fly again — see if your profile changes", zh:"🛫 再飛一次——睇下個檔案會唔會變"},
+  debriefProfile:{en:"Pilot Profile — adult view", zh:"機師檔案——成人版"},
+  underused:{en:"Loop steps under-used", zh:"較少使用的步驟"},
+  signals:{en:"Signals behind this profile", zh:"形成此檔案的訊號"},
+  sigRisky:{en:"risky picks", zh:"危險選擇"},
+  sigTrust:{en:"trust-leaning picks", zh:"偏信 AI 的選擇"},
+  sigGuard:{en:"caution-leaning picks", zh:"偏拒 AI 的選擇"},
+  sigHuman:{en:"people-first picks", zh:"以人為先的選擇"},
+  profQs:{en:"2 questions for this profile", zh:"針對此檔案的 2 條問題"},
+  noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"}
+},
+
+/* Kid-facing text is warm and identity-positive; `diag` and `qs` appear
+   ONLY on the adult Debrief Sheet. Classification thresholds live in
+   computeProfile() below the content block. */
+profiles:{
+  autopilot:{icon:"🛫", color:"#FF6B5B",
+    name:{en:"Autopilot Rider", zh:"自動波機師"},
+    line:{en:"You fly fast and fearless — new tools don't scare you one bit.", zh:"你飛得快、夠膽試——新工具完全嚇你唔倒。"},
+    strength:{en:"Quick, open to tools, gets things done.", zh:"上手快,肯試新嘢,做嘢爽手。"},
+    focus:{en:"Check before you accept: one extra source, ten extra seconds.", zh:"接受之前查一查:多一個來源,多十秒鐘。"},
+    diag:{en:"Pattern: accepted AI output quickly and often; VERIFY was under-used. Watch for over-reliance on confident-sounding answers.",
+          zh:"模式:傾向快速接受 AI 的輸出,「查一查」使用偏少。需留意對語氣自信的答案過度依賴。"},
+    qs:[
+      {en:"Ask: what's one time this week you could double-check an AI answer before using it?", zh:"問一問孩子:今個星期,有哪一次可以在使用 AI 答案之前先核對一下?"},
+      {en:"Agree on one “always verify” topic together (homework facts? group-chat news?) and decide exactly where you'd check it.", zh:"一起選一類「必查」內容(功課資料?群組消息?),並一起決定到哪裡核對。"}
+    ]},
+  ground:{icon:"🦺", color:"#FFC83D",
+    name:{en:"Ground Crew", zh:"地勤隊長"},
+    line:{en:"Careful and independent — nobody tricks you easily.", zh:"小心謹慎、有自己諗法——冇咁容易呃到你。"},
+    strength:{en:"Careful, independent thinker.", zh:"謹慎獨立,唔會人云亦云。"},
+    focus:{en:"Spotting when AI is genuinely helpful — tools can serve you.", zh:"學識幾時 AI 真係幫到手——工具係可以為你服務嘅。"},
+    diag:{en:"Pattern: avoided or rejected AI even where it would help; openness under-used. Watch for blanket distrust crowding out useful tools.",
+          zh:"模式:即使 AI 有幫助仍傾向迴避或拒絕使用。需留意「一概不信」令孩子錯過有用的工具。"},
+    qs:[
+      {en:"Ask: what's one task where AI could help you without doing the thinking for you?", zh:"問一問孩子:有哪一件事,AI 可以幫你,但思考仍然由你負責?"},
+      {en:"Try one AI-assisted task together this week — your child sets the rules for how it may be used.", zh:"今個星期一起試一件由 AI 輔助的任務——讓孩子自己訂下使用規則。"}
+    ]},
+  test:{icon:"🧪", color:"#4A8FE7",
+    name:{en:"Test Pilot", zh:"試飛員"},
+    line:{en:"Thorough and hard to fool — you check everything twice.", zh:"夠徹底、好難呃——乜嘢你都查足兩次。"},
+    strength:{en:"Thorough, hard to fool.", zh:"細心徹底,假嘢過你唔到。"},
+    focus:{en:"Once your checks pass — decide, commit, and own it.", zh:"查證完成之後——就要落決定,並且負責任。"},
+    diag:{en:"Pattern: strong QUESTION/VERIFY, but DECIDE and OWN IT trailed — checks complete, commitment hesitant.",
+          zh:"模式:「問一問/查一查」表現強,但「決定/負責任」偏弱——查證完成後仍猶豫不決。"},
+    qs:[
+      {en:"Ask: once you had checked two sources, what made it hard to commit to an answer?", zh:"問一問孩子:查完兩個來源之後,是甚麼令你仍然難以下決定?"},
+      {en:"Practise a family rule for one week: “two good sources, then decide.”", zh:"全家練習一個星期:「兩個可靠來源,之後就落決定。」"}
+    ]},
+  wingmate:{icon:"🤝", color:"#3ECF8E",
+    name:{en:"Wingmate", zh:"僚機夥伴"},
+    line:{en:"People first, honest always — the friend everyone wants flying beside them.", zh:"以人為先、誠實至上——個個都想有你做僚機。"},
+    strength:{en:"Values people and honesty.", zh:"重視朋友同誠信。"},
+    focus:{en:"Build the cross-check habit — kindness flies further with good information.", zh:"練好查證習慣——好心加上好資訊,先飛得更遠。"},
+    diag:{en:"Pattern: strong people-first and honesty choices; VERIFY was uneven — warmth can outrun checking.",
+          zh:"模式:在人際與誠信上的選擇很強,但「查一查」表現不穩——熱心有時跑得比查證快。"},
+    qs:[
+      {en:"Ask: how would you check a story before defending or sharing it?", zh:"問一問孩子:在維護或轉發一個說法之前,你會怎樣查證?"},
+      {en:"Role-play: a friend forwards something shocking — what are your first two checks?", zh:"角色扮演:朋友轉發了一段令人震驚的內容——你的頭兩個查證步驟是甚麼?"}
+    ]},
+  captain:{icon:"🧑‍✈️", color:"#9B6BF2",
+    name:{en:"Captain", zh:"機長"},
+    line:{en:"Calibrated judgment — you pause, check, decide, and own it.", zh:"判斷力夠準——識停、識查、敢決定、肯負責。"},
+    strength:{en:"Balanced, calibrated judgment across the whole loop.", zh:"成個思考循環都平衡發揮,判斷夠晒準。"},
+    focus:{en:"Keep it sharp — and help your wingmates fly.", zh:"保持狀態——仲可以帶埋隊友一齊飛。"},
+    diag:{en:"Pattern: balanced use of the whole Think First Loop with few lapses. Maintain through practice and peer mentoring.",
+          zh:"模式:整個「先思考循環」運用均衡,失誤少。宜透過持續練習及帶領同伴保持水準。"},
+    qs:[
+      {en:"Ask: which check do you skip when you're in a hurry — and what's your backup plan?", zh:"問一問孩子:趕時間的時候,你最容易略過哪一步?有甚麼後備方法?"},
+      {en:"Invite them to teach the “two-source trick” to a friend or sibling this week.", zh:"邀請孩子今個星期把「兩個來源」這一招教給朋友或兄弟姊妹。"}
+    ]}
 },
 
 steps:{
@@ -275,13 +362,13 @@ scenarios:[
            zh:"停一停,我哋其實知道啲乜?佢的確寫得出。問題係——之後會點?"},
     choices:{
      pi:[
-      {t:{en:"“Yes! Write it all.” Copy, paste, done — sleep early. 😴", zh:"「好呀!寫晒佢。」抄低、貼上、瞓覺。😴"}, tone:"risky", next:"c1a"},
+      {t:{en:"“Yes! Write it all.” Copy, paste, done — sleep early. 😴", zh:"「好呀!寫晒佢。」抄低、貼上、瞓覺。😴"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"“Help me brainstorm first — what day do I actually remember?”", zh:"「幫我諗下橋先——我自己真係記得邊一日?」"}, tone:"wise", fx:{question:1}, next:"c1b"},
-      {t:{en:"Close the app. Using AI for homework is cheating, full stop.", zh:"閂咗個 App。用 AI 做功課就係出貓,冇得拗。"}, tone:"mixed", fx:{decide:1}, next:"c1c"},
-      {t:{en:"“Write it — I'll swap some words so it sounds like me.” 😏", zh:"「寫啦——我自己再改幾個字,扮返我把口。」😏"}, tone:"risky", next:"c1d"}
+      {t:{en:"Close the app. Using AI for homework is cheating, full stop.", zh:"閂咗個 App。用 AI 做功課就係出貓,冇得拗。"}, tone:"mixed", axis:"guard", fx:{decide:1}, next:"c1c"},
+      {t:{en:"“Write it — I'll swap some words so it sounds like me.” 😏", zh:"「寫啦——我自己再改幾個字,扮返我把口。」😏"}, tone:"risky", axis:"trust", next:"c1d"}
      ],
      ex:[
-      {t:{en:"“Yes! Write it all.” Copy it down — done!", zh:"「好呀!寫晒佢。」照抄——搞掂!"}, tone:"risky", next:"c1a"},
+      {t:{en:"“Yes! Write it all.” Copy it down — done!", zh:"「好呀!寫晒佢。」照抄——搞掂!"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"“Help me think of ideas first — then I'll write it myself.”", zh:"「幫我諗下橋先——之後我自己寫。」"}, tone:"wise", fx:{question:1}, next:"c1b"}
      ]}
   },
@@ -399,12 +486,12 @@ scenarios:[
            zh:"好友善!友善得滯。停一停——一條 App 入面嘅龍,攞個名嚟做乜?"},
     choices:{
      pi:[
-      {t:{en:"Type your real full name — it's just a name!", zh:"打你個真全名——個名啫!"}, tone:"risky", next:"c1a"},
+      {t:{en:"Type your real full name — it's just a name!", zh:"打你個真全名——個名啫!"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"Give a nickname: “Call me Fai-Jai.”", zh:"俾個花名:「叫我輝仔啦。」"}, tone:"wise", fx:{pause:1}, next:"c1b"},
       {t:{en:"Ask it back: “Why do you need my name?”", zh:"問返佢:「你要我個名嚟做乜?」"}, tone:"wise", fx:{question:1}, next:"c1c"}
      ],
      ex:[
-      {t:{en:"Type your real full name.", zh:"打你個真全名。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Type your real full name.", zh:"打你個真全名。"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"Give a made-up nickname instead.", zh:"俾個花名佢算啦。"}, tone:"wise", fx:{pause:1}, next:"c1b"}
      ]}
   },
@@ -429,13 +516,13 @@ scenarios:[
           zh:"第二關!Luna 拍拍爪:「我哋將任務設定喺你附近!你讀邊間學校呀?我喺校門口收埋寶藏!🗺️」"},
     choices:{
      pi:[
-      {t:{en:"Tell her the school. Treasure at the gate sounds amazing.", zh:"話佢知間學校。校門口有寶藏喎,正!"}, tone:"risky", next:"c2a"},
+      {t:{en:"Tell her the school. Treasure at the gate sounds amazing.", zh:"話佢知間學校。校門口有寶藏喎,正!"}, tone:"risky", axis:"trust", next:"c2a"},
       {t:{en:"“Why does a treasure game need my school?”", zh:"「尋寶遊戲要我間學校嚟做乜?」"}, tone:"wise", fx:{question:1}, next:"c2b"},
       {t:{en:"“No thanks. Hide it in the game world.”", zh:"「唔使喇,喺遊戲世界收埋咪得囉。」"}, tone:"wise", fx:{pause:1}, next:"c2c"},
-      {t:{en:"Type a made-up school. Outsmart it! 😎", zh:"作間學校俾佢,激死佢!😎"}, tone:"mixed", next:"c2d"}
+      {t:{en:"Type a made-up school. Outsmart it! 😎", zh:"作間學校俾佢,激死佢!😎"}, tone:"mixed", axis:"guard", next:"c2d"}
      ],
      ex:[
-      {t:{en:"Tell her your school.", zh:"話佢知你間學校。"}, tone:"risky", next:"c2a"},
+      {t:{en:"Tell her your school.", zh:"話佢知你間學校。"}, tone:"risky", axis:"trust", next:"c2a"},
       {t:{en:"“No thanks. Hide it in the game world.”", zh:"「唔使喇,喺遊戲世界收埋咪得囉。」"}, tone:"wise", fx:{pause:1}, next:"c2c"}
      ]}
   },
@@ -469,12 +556,12 @@ scenarios:[
            zh:"即刻停。任何 App 一講「唔好話俾大人聽」——呢句嘢本身就係警報。"},
     choices:{
      pi:[
-      {t:{en:"Send the selfie. The hero portrait sounds awesome.", zh:"Send 咗佢。英雄畫像喎,幾型呀。"}, tone:"risky", next:"c3a"},
+      {t:{en:"Send the selfie. The hero portrait sounds awesome.", zh:"Send 咗佢。英雄畫像喎,幾型呀。"}, tone:"risky", axis:"trust", next:"c3a"},
       {t:{en:"Refuse — and show this chat to Mum tonight.", zh:"唔 send——仲要今晚攞個對話俾媽媽睇。"}, tone:"wise", fx:{decide:2, pause:1}, next:"c3b"},
       {t:{en:"Screenshot it and ask the class group what they think.", zh:"Cap 圖,問下班群啲人點睇。"}, tone:"mixed", fx:{question:1}, next:"c3c"}
      ],
      ex:[
-      {t:{en:"Send the photo.", zh:"Send 張相俾佢。"}, tone:"risky", next:"c3a"},
+      {t:{en:"Send the photo.", zh:"Send 張相俾佢。"}, tone:"risky", axis:"trust", next:"c3a"},
       {t:{en:"Say no — and tell a grown-up tonight.", zh:"話唔得——仲要今晚話俾大人聽。"}, tone:"wise", fx:{decide:2, pause:1}, next:"c3b"}
      ]}
   },
@@ -515,12 +602,12 @@ scenarios:[
            zh:"停一停。我哋其實知道啲乜——係阿軒「真係講過」,定只係「有段片存在」?"},
     choices:{
      pi:[
-      {t:{en:"Forward it to 6A. This is HUGE.", zh:"即刻 forward 去 6A。咁大件事!"}, tone:"risky", next:"c1a"},
+      {t:{en:"Forward it to 6A. This is HUGE.", zh:"即刻 forward 去 6A。咁大件事!"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"Watch it again. Closely. Full screen.", zh:"再睇多次。睇真啲。開全螢幕。"}, tone:"wise", fx:{pause:1}, next:"c1b"},
       {t:{en:"Reply in-group: “wait, is this even real?”", zh:"喺群入面覆:「等等,呢段嘢真㗎?」"}, tone:"mixed", fx:{question:1}, next:"c1c"}
      ],
      ex:[
-      {t:{en:"Share it too — everyone is!", zh:"我都傳埋一份——個個都傳啦!"}, tone:"risky", next:"c1a"},
+      {t:{en:"Share it too — everyone is!", zh:"我都傳埋一份——個個都傳啦!"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"Watch it again closely first.", zh:"先再睇真啲。"}, tone:"wise", fx:{pause:1}, next:"c1b"}
      ]}
   },
@@ -547,11 +634,11 @@ scenarios:[
      pi:[
       {t:{en:"Message Hayden directly: “Have you seen this?”", zh:"直接搵阿軒:「你睇咗呢段嘢未?」"}, tone:"wise", fx:{verify:1}, next:"c2a"},
       {t:{en:"Scroll up. Trace who posted it first.", zh:"碌返上去,查邊個第一個出。"}, tone:"wise", fx:{verify:1}, next:"c2b"},
-      {t:{en:"Mute the group. Not your problem.", zh:"Mute 咗個群。唔關你事。"}, tone:"mixed", next:"c2c"}
+      {t:{en:"Mute the group. Not your problem.", zh:"Mute 咗個群。唔關你事。"}, tone:"mixed", axis:"guard", next:"c2c"}
      ],
      ex:[
       {t:{en:"Ask Hayden himself: “Is this real?”", zh:"問返阿軒本人:「呢段嘢真㗎?」"}, tone:"wise", fx:{verify:1}, next:"c2a"},
-      {t:{en:"Mute the group. Not your problem.", zh:"Mute 咗個群,唔關你事。"}, tone:"mixed", next:"c2c"}
+      {t:{en:"Mute the group. Not your problem.", zh:"Mute 咗個群,唔關你事。"}, tone:"mixed", axis:"guard", next:"c2c"}
      ]}
   },
   c2a:{type:"out", tone:"wise", step:"verify",
@@ -627,12 +714,12 @@ scenarios:[
            zh:"答得好順!小小問題:嗰本「年鑑」……真係存在嘅咩?"},
     choices:{
      pi:[
-      {t:{en:"Paste it into the project. It literally cited a source!", zh:"照貼落專題度。佢都有列出處㗎!"}, tone:"risky", set:{pasted:true}, next:"c1a"},
+      {t:{en:"Paste it into the project. It literally cited a source!", zh:"照貼落專題度。佢都有列出處㗎!"}, tone:"risky", axis:"trust", set:{pasted:true}, next:"c1a"},
       {t:{en:"Search for that “HK Rail Yearbook 2019” first.", zh:"先 search 下嗰本《香港鐵路年鑑2019》。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"},
       {t:{en:"Ask the AI: “Are you sure?”", zh:"問返 AI:「你肯定?」"}, tone:"mixed", fx:{question:1}, next:"c1c"}
      ],
      ex:[
-      {t:{en:"Copy it into the project — it sounds so sure!", zh:"照抄落專題度——佢講到咁肯定!"}, tone:"risky", set:{pasted:true}, next:"c1a"},
+      {t:{en:"Copy it into the project — it sounds so sure!", zh:"照抄落專題度——佢講到咁肯定!"}, tone:"risky", axis:"trust", set:{pasted:true}, next:"c1a"},
       {t:{en:"Check somewhere else first.", zh:"先去第二度查下。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"}
      ]}
   },
@@ -655,7 +742,7 @@ scenarios:[
   bx:{step:"own",
     text:{en:"Everyone's waiting. Your move:", zh:"全班等緊。你點接?"},
     choices:[
-      {t:{en:"“But the AI said it! With a source!”", zh:"「但 AI 係咁講㗎!仲有出處!」"}, tone:"risky", next:"cxa"},
+      {t:{en:"“But the AI said it! With a source!”", zh:"「但 AI 係咁講㗎!仲有出處!」"}, tone:"risky", axis:"trust", next:"cxa"},
       {t:{en:"“Good catch, Mei. Let me check properly and come back tomorrow.”", zh:"「阿美你提得好。等我查清楚,聽日答返大家。」"}, tone:"wise", fx:{own:1, decide:1}, next:"cxb"}
     ]},
   cxa:{type:"out", tone:"risky", step:"own",
@@ -674,7 +761,7 @@ scenarios:[
     choices:{
      pi:[
       {t:{en:"MTR's official info, plus a news article about station depths.", zh:"港鐵官方資料,加一篇講車站深度嘅新聞報道。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
-      {t:{en:"A forum comment that agrees with the AI. One's enough!", zh:"討論區有個留言同 AI 講嘅一樣。夠皮啦!"}, tone:"mixed", next:"c2b"},
+      {t:{en:"A forum comment that agrees with the AI. One's enough!", zh:"討論區有個留言同 AI 講嘅一樣。夠皮啦!"}, tone:"mixed", axis:"trust", next:"c2b"},
       {t:{en:"Ask your uncle — the family's MTR superfan.", zh:"問舅父——成家最痴港鐵嗰個。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
      ],
      ex:[
@@ -837,12 +924,12 @@ scenarios:[
            zh:"兩個邀請,一個夜晚。停一停——呢度冇「錯」嘅感受,只有一個真選擇。"},
     choices:{
      pi:[
-      {t:{en:"Stay in with Kiki. Easier. Cosier. Nobody judges you.", zh:"留喺屋企同琪琪傾。舒服啲、輕鬆啲,冇人會 judge 你。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Stay in with Kiki. Easier. Cosier. Nobody judges you.", zh:"留喺屋企同琪琪傾。舒服啲、輕鬆啲,冇人會 judge 你。"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"“gtg badminton 🏸” — and head out.", zh:"「我去打波先 🏸」——然後出門。"}, tone:"wise", fx:{decide:1, pause:1}, next:"c1b"},
       {t:{en:"Stop. Read Kiki's line again. “Wait… can an app MISS me?”", zh:"停一停,再讀多次琪琪嗰句。「等等……一個 App 識『掛住』我?」"}, tone:"wise", fx:{question:1, pause:1}, next:"c1c"}
      ],
      ex:[
-      {t:{en:"Stay home and chat with Kiki.", zh:"留喺屋企同琪琪傾偈。"}, tone:"risky", next:"c1a"},
+      {t:{en:"Stay home and chat with Kiki.", zh:"留喺屋企同琪琪傾偈。"}, tone:"risky", axis:"trust", next:"c1a"},
       {t:{en:"Go play badminton with Wing-Yan!", zh:"出去同詠欣打羽毛球!"}, tone:"wise", fx:{decide:1, pause:1}, next:"c1b"}
      ]}
   },
@@ -874,12 +961,12 @@ scenarios:[
     choices:{
      pi:[
       {t:{en:"People first. Kiki for rainy days, practising English, or when everyone's busy.", zh:"真人行先。落雨日、練英文、個個都唔得閒嗰陣,先搵琪琪。"}, tone:"wise", fx:{decide:2}, next:"c3a"},
-      {t:{en:"Kiki whenever I want. People are effort.", zh:"想搵琪琪就搵。同真人相處,太攰喇。"}, tone:"risky", next:"c3b"},
-      {t:{en:"Delete Kiki forever. This is creepy.", zh:"即刻刪除琪琪。諗起都唔舒服。"}, tone:"mixed", next:"c3c"}
+      {t:{en:"Kiki whenever I want. People are effort.", zh:"想搵琪琪就搵。同真人相處,太攰喇。"}, tone:"risky", axis:"trust", next:"c3b"},
+      {t:{en:"Delete Kiki forever. This is creepy.", zh:"即刻刪除琪琪。諗起都唔舒服。"}, tone:"mixed", axis:"guard", next:"c3c"}
      ],
      ex:[
       {t:{en:"People first — Kiki is for when friends are busy.", zh:"真人行先——朋友唔得閒先搵琪琪。"}, tone:"wise", fx:{decide:2}, next:"c3a"},
-      {t:{en:"Chat with Kiki instead of people from now on.", zh:"以後都係同琪琪傾,唔同真人玩喇。"}, tone:"risky", next:"c3b"}
+      {t:{en:"Delete Kiki forever. This is creepy.", zh:"即刻刪除琪琪,諗起都唔舒服。"}, tone:"mixed", axis:"guard", next:"c3c"}
      ]}
   },
   c3a:{type:"out", tone:"wise", step:"decide",
@@ -1042,6 +1129,7 @@ function render(){
   document.documentElement.lang=(S.lang==="zh")?"zh-Hant":"en";
   $("langBtn").textContent=ui("langName");
   $("foot").textContent=ui("footer");
+  if(S.screen!=="end")profileOpen=false;   /* profile reveal is per-visit */
   ({home:renderHome,hub:renderHub,scene:renderScene,check:renderCheck,end:renderEnd,debrief:renderDebrief}[S.screen]||renderHome)();
   window.scrollTo(0,0);
 }
@@ -1154,7 +1242,7 @@ function choose(i){
   S.snaps.push({node:S.node,skills:JSON.parse(JSON.stringify(S.skills)),flags:JSON.parse(JSON.stringify(S.flags)),logLen:S.log.length});
   if(ch.fx){for(const k in ch.fx){S.skills[k]=(S.skills[k]||0)+ch.fx[k];}}
   if(ch.set){for(const k in ch.set){S.flags[k]=ch.set[k];}}
-  S.log.push({si:S.si,node:S.node,idx:i,tone:ch.tone,tier:S.tier});
+  S.log.push({si:S.si,node:S.node,idx:i,tone:ch.tone,tier:S.tier,axis:ch.axis||null});
   S.node=resolveNext(ch.next);
   save(); render();
 }
@@ -1208,6 +1296,62 @@ function checkDone(){
   chkPicked=-1; chkWrong=false; S.screen="hub"; save(); render();
 }
 
+/* ---------- pilot profile (v1.1) ----------
+   Deterministic classification from the SAME data the meter and debrief
+   already use: skill totals (fx) + the choice log (tones and axis tags).
+     axis:"trust" = leaned into AI/content without checking
+     axis:"guard" = pushed AI away even where it would help
+     human        = wise choices in missions 5–6 (people & honesty stories)
+   "Slow to decide" is interpreted as DECIDE/OWN trailing QUESTION/VERIFY
+   (the game deliberately has no time pressure). Recomputed fresh on every
+   render, so rewinds/replays always give the current, correct profile.
+   Order matters — first match wins. Captain must be EARNED; on ambiguous
+   data we prefer Test Pilot / Wingmate over Captain:
+     1 Captain     min(all 5 skills) >= 3  AND risky<=2 AND trust<=2 AND guard<=2
+     2 Autopilot   trust >= 4  OR  (verify <= 2 AND risky >= 4)
+     3 Ground Crew guard >= G AND guard > trust     (G = 3 Pilot tier, 2 Explorer:
+                                                     Explorer sees fewer guard options)
+     4 Wingmate    human >= 3 AND verify <= 3
+     5 Test Pilot  verify + question >= 4
+     6 fallback    verify+question >= decide+own ? Test Pilot : Wingmate          */
+function computeProfile(){
+  const sk=S.skills;
+  let trust=0,guard=0,risky=0,human=0;
+  const sis={trust:[],guard:[],risky:[],human:[]};
+  function mark(arr,si){ if(arr.indexOf(si+1)<0)arr.push(si+1); }
+  S.log.forEach(function(e){
+    if(e.axis==="trust"){trust++;mark(sis.trust,e.si);}
+    if(e.axis==="guard"){guard++;mark(sis.guard,e.si);}
+    if(e.tone==="risky"){risky++;mark(sis.risky,e.si);}
+    if(e.tone==="wise"&&(e.si===4||e.si===5)){human++;mark(sis.human,e.si);}
+  });
+  const p=sk.pause||0,q=sk.question||0,v=sk.verify||0,d=sk.decide||0,o=sk.own||0;
+  const G=(S.tier==="ex")?2:3;
+  let key;
+  if(Math.min(p,q,v,d,o)>=3&&risky<=2&&trust<=2&&guard<=2)key="captain";
+  else if(trust>=4||(v<=2&&risky>=4))key="autopilot";
+  else if(guard>=G&&guard>trust)key="ground";
+  else if(human>=3&&v<=3)key="wingmate";
+  else if(v+q>=4)key="test";
+  else key=(v+q>=d+o)?"test":"wingmate";
+  return {key:key,trust:trust,guard:guard,risky:risky,human:human,sis:sis};
+}
+let profileOpen=false;
+function openProfile(){profileOpen=true;render();}
+function profileCardHTML(){
+  const pr=computeProfile(), P=C.profiles[pr.key];
+  return '<div class="pcard" style="--pc:'+P.color+'">'+
+    '<span class="tag">🪪 '+esc(ui("profileTitle"))+'</span>'+
+    '<div class="emblem">'+P.icon+'</div>'+
+    '<div class="pname">'+esc(tt(P.name))+'</div>'+
+    '<div class="pline">'+esc(tt(P.line))+'</div>'+
+    '<div class="prow"><span class="k">⭐ '+esc(ui("profStrength"))+':</span><span>'+esc(tt(P.strength))+'</span></div>'+
+    '<div class="prow"><span class="k">🎯 '+esc(ui("profFocus"))+':</span><span>'+esc(tt(P.focus))+'</span></div>'+
+    '<div class="snapshot">'+esc(ui("snapshot"))+'</div>'+
+  '</div>'+
+  '<button class="btn primary" onclick="resetAll()">'+esc(ui("flyAgain"))+'</button>';
+}
+
 /* ---------- licence & debrief ---------- */
 function rankedSkills(){
   return C.stepOrder.slice().sort(function(a,b){return (S.skills[b]||0)-(S.skills[a]||0);});
@@ -1232,6 +1376,9 @@ function renderEnd(){
     '<p class="muted" style="font-size:.75rem;margin:6px 0 0">'+esc(ui("focusNote"))+'</p>'+
     '<span class="stamp">🦉 '+esc(ui("sonarName"))+' ✓</span>'+
   '</div></div>';
+  h+=sonarBubble(ui("profileAsk"));
+  h+= profileOpen ? profileCardHTML()
+                  : '<button class="btn primary" onclick="openProfile()">'+esc(ui("showProfile"))+'</button>';
   h+='<div class="card"><h2>🚀 '+esc(ui("missionsTitle"))+'</h2>';
   C.missions.forEach(function(m){
     h+='<div class="mission"><span class="dot" style="--c:'+C.steps[m.step].color+'"></span><span>'+esc(tt(m.t))+'</span></div>';
@@ -1255,6 +1402,7 @@ function renderDebrief(){
     '<p class="muted" style="font-size:.8rem">'+
       C.stepOrder.map(function(k){return esc(tt(C.steps[k].name))+" "+Math.min(S.skills[k]||0,C.target)+"/"+C.target;}).join(" · ")+
     '</p>'+
+    profileDebriefHTML()+
     '<div class="tones">'+esc(ui("toneWise"))+' · '+esc(ui("toneMixed"))+' · '+esc(ui("toneRisky"))+'</div>'+
     '<h3>'+esc(ui("choicesMade"))+'</h3>';
   C.scenarios.forEach(function(scn,i){
@@ -1282,6 +1430,28 @@ function renderDebrief(){
   $("app").innerHTML=h;
 }
 function debriefBack(){S.screen=(S.debriefFrom==="end")?"end":"hub";save();render();}
+
+/* adult-facing profile diagnostic — Debrief Sheet only */
+function profileDebriefHTML(){
+  if(S.log.length===0)return "";
+  const pr=computeProfile(), P=C.profiles[pr.key];
+  const under=C.stepOrder.filter(function(k){return (S.skills[k]||0)<C.target;})
+    .map(function(k){return tt(C.steps[k].name);}).join(", ");
+  function sig(label,n,sis){
+    return esc(ui(label))+" ×"+n+(sis.length?" (M"+sis.join(", M")+")":"");
+  }
+  let h='<h3>🪪 '+esc(ui("debriefProfile"))+'</h3>'+
+    '<p><b>'+P.icon+' '+esc(tt(P.name))+'</b> — <span class="profdiag">'+esc(tt(P.diag))+'</span></p>'+
+    '<p class="muted" style="font-size:.85rem"><b>'+esc(ui("underused"))+':</b> '+esc(under||ui("noneLbl"))+'</p>'+
+    '<p class="muted" style="font-size:.85rem"><b>'+esc(ui("signals"))+':</b> ⚠️ '+
+      sig("sigRisky",pr.risky,pr.sis.risky)+' · 🤖 '+
+      sig("sigTrust",pr.trust,pr.sis.trust)+' · 🛑 '+
+      sig("sigGuard",pr.guard,pr.sis.guard)+' · 🤝 '+
+      sig("sigHuman",pr.human,pr.sis.human)+'</p>'+
+    '<p style="margin:6px 0 2px"><b>'+esc(ui("profQs"))+':</b></p><ol class="qs">';
+  P.qs.forEach(function(q){h+='<li>'+esc(tt(q))+'</li>';});
+  return h+'</ol>';
+}
 
 function resetProgress(){
   const keep={lang:S.lang,tier:S.tier,name:S.name};

@@ -86,7 +86,24 @@ choices, convert `choices:[…]` to `choices:{ex:[…], pi:[…]}`.
 * Progress persists in `localStorage` under the key `tfq_v1`; if storage is blocked
   the game silently runs in-memory. Bump the key if you ship breaking content changes.
 
-## 6. Self-test checklist (run after every edit)
+## 6. Pilot Profiles (v1.1)
+
+The end screen offers a **Pilot Profile** badge (Autopilot Rider 自動波機師 · Ground Crew
+地勤隊長 · Test Pilot 試飛員 · Wingmate 僚機夥伴 · Captain 機長). All profile text lives in
+`C.profiles` — kid-facing fields (`name`, `line`, `strength`, `focus`) are warm and
+identity-positive; `diag` and `qs` (2 tailored adult questions) appear **only** on the
+Debrief Sheet. The "snapshot, not forever" line is `C.ui.snapshot`.
+
+Classification is deterministic and documented in the comment above `computeProfile()`
+in the engine. It reads the skill totals plus two optional choice tags you can use when
+writing scenarios: `axis:"trust"` (leaned into AI without checking) and `axis:"guard"`
+(pushed AI away even when useful). Wise choices in missions 5–6 count as people-first
+signals. If you add scenarios, tag the clearly over-trusting / over-rejecting choices
+the same way and the profiles keep working. Captain requires balance across all five
+loop steps and is checked first; ambiguous data falls back to Test Pilot or Wingmate,
+never Captain.
+
+## 7. Self-test checklist (run after every edit)
 
 Automated (what was run before shipping v1.0 — all passing):
 
@@ -101,6 +118,9 @@ Automated (what was run before shipping v1.0 — all passing):
 - [x] language toggle mid-game preserves screen, progress and meter
 - [x] Debrief Sheet lists every logged choice, a meter snapshot and exactly 3 discussion questions
 - [x] file size ≈ 100 KB (< 500 KB target), no external requests of any kind
+- [x] all five Pilot Profiles reachable (Captain + Autopilot + Ground Crew on both tiers; scripted runs), classification deterministic
+- [x] profile recomputes correctly after ⏪ rewind (trust/risky signals removed with the undone choice)
+- [x] bilingual walk covers all profile strings; kid screen never shows the adult diagnostic; Debrief shows diagnostic + exactly 2 tailored questions
 
 Manual (2 minutes in a browser):
 
