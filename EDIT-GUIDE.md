@@ -57,7 +57,11 @@ Three node types:
 ```
 
 Rules of thumb that keep the pedagogy intact:
-* risky choices: **no `fx`** — the consequence text is the teaching, never a penalty;
+* risky choices: **no `fx`** — and they automatically subtract `C.riskyPenalty`
+  (default 1) from the decision node's own loop `step`, floored at 0, so a risky
+  pick visibly costs a point on the bar without ever going negative. The consequence
+  text + Captain Sonar's reflection stay the main teaching; the tone never punishes.
+  Set `C.riskyPenalty:0` to restore the original "no meter effect" behaviour;
 * every outcome reconverges eventually; the "memory" of a risky path lives in its text;
 * Explorer arrays max 2 choices; keep one clearly tempting option in every decision.
 
@@ -80,6 +84,10 @@ choices, convert `choices:[…]` to `choices:{ex:[…], pi:[…]}`.
 ## 5. Meter & licence logic (in case you need it)
 
 * `C.target` (= 4) is the points needed to fill one meter segment.
+* Wise/mixed `fx` add points; a risky choice subtracts `C.riskyPenalty` (= 1) from
+  its decision node's loop `step`, clamped to `0…`. A small "▼ STEP −1" cue shows on
+  that risky outcome; rewinding restores the points (the snapshot is taken before the
+  deduction).
 * The licence's **strongest skill** = highest score; **training focus** = lowest
   (ties resolve in loop order). Sonar Checks give +1 to their step when answered
   right first try.
@@ -143,6 +151,7 @@ Automated (what was run before shipping v1.0 — all passing):
 - [x] 5 Sonar Checks, exactly one correct option each
 - [x] 16 full headless playthroughs (en/zh × Explorer/Pilot × 4 choice strategies), including a rewind in every scenario and a wrong-then-right answer on every check — all reach the licence
 - [x] all five skills reach the meter target on a wise-choices run
+- [x] risky choices deduct 1 from their loop step, floor at 0, show the cue once, and rewind restores the points
 - [x] language toggle mid-game preserves screen, progress and meter
 - [x] Debrief Sheet lists every logged choice, a meter snapshot and exactly 3 discussion questions
 - [x] file size ≈ 100 KB (< 500 KB target), no external requests of any kind

@@ -88,6 +88,7 @@
   .outcome.risky{background:#FFE9E6;animation:shake .5s ease-in-out 1}
   .outcome.mixed{background:var(--paper);animation:tilt .55s ease-in-out 1}
   .verdict{font-weight:800;margin-bottom:4px}
+  .meterdrop{display:inline-block;margin-left:6px;border:2.5px solid var(--ink);border-radius:999px;background:var(--c,#FF6B5B);color:#fff;font-size:.66rem;font-weight:800;padding:2px 9px;vertical-align:middle;letter-spacing:.2px}
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
   @keyframes glowp{0%{box-shadow:0 0 0 0 rgba(62,207,142,.65)}100%{box-shadow:0 0 0 18px rgba(62,207,142,0)}}
   @keyframes tilt{0%,100%{transform:rotate(0)}30%{transform:rotate(-1.2deg)}70%{transform:rotate(1.2deg)}}
@@ -238,7 +239,7 @@ ui:{
              zh:"這個遊戲訓練的是「AI 判斷力」,不是編程:停一停 → 問一問 → 查一查 → 決定 → 負責任。在遊戲裡選錯是安全的——後果會在故事中呈現,思拿隊長會問一條反思問題,玩家也可以回帶重選。完結後有一張可列印的「總結表」,記錄孩子的每個選擇,並附三條討論問題;一節 40 分鐘的課堂可以只靠這張表進行。"},
   missionMap:{en:"Mission Map", zh:"任務地圖"},
   pilotMeter:{en:"Pilot Meter", zh:"機師儀錶"},
-  meterHint:{en:"Light up all five Think-First skills.", zh:"點亮五個「先思考」技能。"},
+  meterHint:{en:"Light up all five Think-First skills. Risky choices cost a point.", zh:"點亮五個「先思考」技能。危險選擇會扣分。"},
   mission:{en:"Mission", zh:"任務"},
   locked:{en:"Locked", zh:"未解鎖"},
   done:{en:"Complete ✓", zh:"完成 ✓"},
@@ -282,7 +283,7 @@ ui:{
   toneRisky:{en:"⚠️ risky", zh:"⚠️ 危險"},
   toneMixed:{en:"🤔 mixed", zh:"🤔 一半半"},
   notPlayed:{en:"(not played yet)", zh:"(未玩)"},
-  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.3", zh:"ThinkFirst Learning 先思考 · 香港 · v1.3"},
+  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.4", zh:"ThinkFirst Learning 先思考 · 香港 · v1.4"},
   langName:{en:"中文", zh:"EN"},
   exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"},
   /* pilot profile */
@@ -303,7 +304,8 @@ ui:{
   profQs:{en:"2 questions for this profile", zh:"針對此檔案的 2 條問題"},
   noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"},
   soundLbl:{en:"Sound effects on/off", zh:"音效開關"},
-  rewindPraise:{en:"Rewinding = re-thinking. Pilot move!", zh:"識回帶=識反思,機師先至會咁做!"}
+  rewindPraise:{en:"Rewinding = re-thinking. Pilot move!", zh:"識回帶=識反思,機師先至會咁做!"},
+  meterDrop:{en:"−1 · skipped this step", zh:"−1 · 略過咗呢一步"}
 },
 
 /* Kid-facing text is warm and identity-positive; `diag` and `qs` appear
@@ -376,6 +378,7 @@ steps:{
 },
 stepOrder:["pause","question","verify","decide","own"],
 target:4,
+riskyPenalty:1,   /* points a risky choice subtracts from the loop-step it skipped (floored at 0) */
 
 scenarios:[
 /* ---------- S1 · The Homework Shortcut 功課捷徑 ---------- */
@@ -1165,7 +1168,7 @@ function confettiBurst(){
   }catch(e){}
 }
 /* transient (per-session) animation/sound guards */
-let typingShown={}, stampedKey=null, justUnlocked=-1, endCelebrated=false, rewindPraise=false;
+let typingShown={}, stampedKey=null, justUnlocked=-1, endCelebrated=false, rewindPraise=false, meterHit=null;
 
 /* ---- designer artwork (inlined SVGs from the asset kit) ---- */
 const ART={
@@ -1374,8 +1377,10 @@ function renderScene(){
   }else if(n.type==="out"){
     const tone=n.tone||"mixed";
     h+='<div class="outcome '+tone+'"><div class="verdict">'+TONE_ICON[tone]+' '+esc(ui(TONE_LABEL[tone]))+
-       (tone==="wise"?" "+art("sticker-wise","tf-pop",34):"")+'</div>'+
+       (tone==="wise"?" "+art("sticker-wise","tf-pop",34):"")+
+       (meterHit?'<span class="meterdrop tf-pop" style="--c:'+C.steps[meterHit].color+'">▼ '+esc(tt(C.steps[meterHit].name))+' '+esc(ui("meterDrop"))+'</span>':"")+'</div>'+
        '<div class="story">'+esc(tt(n.text))+'</div></div>';
+    meterHit=null;
     if(n.ask){
       const pose=tone==="wise"?"sonar-celebrate":tone==="risky"?"sonar-worried":"sonar-thinking";
       h+='<p class="muted" style="margin:8px 0 2px;font-size:.78rem;font-weight:800">'+esc(ui("sonarAsks"))+'</p>'+
@@ -1414,7 +1419,15 @@ function choose(i){
   TFSFX[ch.tone==="wise"?"wise":ch.tone==="risky"?"risky":"mixed"]();
   if(ch.fx){setTimeout(function(){TFSFX.tick();},300);}
   S.snaps.push({node:S.node,skills:JSON.parse(JSON.stringify(S.skills)),flags:JSON.parse(JSON.stringify(S.flags)),logLen:S.log.length});
-  if(ch.fx){for(const k in ch.fx){S.skills[k]=(S.skills[k]||0)+ch.fx[k];}}
+  if(ch.fx){for(const k in ch.fx){S.skills[k]=Math.max(0,(S.skills[k]||0)+ch.fx[k]);}}
+  /* a risky choice costs a point on the loop-step it skipped — floored at 0 so
+     there's no invisible debt to dig out of. Snapshot above is pre-deduction,
+     so rewind restores the full bar. */
+  else if(ch.tone==="risky" && n.step){
+    const had=S.skills[n.step]||0;
+    S.skills[n.step]=Math.max(0,had-(C.riskyPenalty||0));
+    meterHit=(S.skills[n.step]<had)?n.step:null;
+  }
   if(ch.set){for(const k in ch.set){S.flags[k]=ch.set[k];}}
   S.log.push({si:S.si,node:S.node,idx:i,tone:ch.tone,tier:S.tier,axis:ch.axis||null});
   S.node=resolveNext(ch.next);
@@ -1425,7 +1438,7 @@ function rewind(){
   const sp=S.snaps.pop(); if(!sp)return;
   TFSFX.rewind();
   S.node=sp.node; S.skills=sp.skills; S.flags=sp.flags; S.log.length=sp.logLen;
-  S.rewinds++; rewindPraise=true; save(); render();
+  S.rewinds++; rewindPraise=true; meterHit=null; save(); render();
 }
 function finishScenario(){
   if(S.done.indexOf(S.si)<0)S.done.push(S.si);
@@ -1638,7 +1651,7 @@ function resetProgress(){
   const keep={lang:S.lang,tier:S.tier,name:S.name,muted:S.muted};
   S=JSON.parse(JSON.stringify(DEFAULTS));
   Object.assign(S,keep);
-  typingShown={}; stampedKey=null; justUnlocked=-1; endCelebrated=false; rewindPraise=false;
+  typingShown={}; stampedKey=null; justUnlocked=-1; endCelebrated=false; rewindPraise=false; meterHit=null;
   save();
 }
 function resetAll(){
