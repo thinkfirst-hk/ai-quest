@@ -38,13 +38,16 @@ Each entry in `C.scenarios` is:
 }
 ```
 
-Three node types:
+Five node types (the first three are the original menu model; `flag`/`reveal` are the
+v2.0 flag-then-check model — see §9):
 
 | Type | Looks like | Purpose |
 |---|---|---|
 | story (no `type`) | `{step:"pause", text:…, sonar:…, choices:…}` | a beat + decision. `step` lights the Think-First-Loop chip. `sonar` (optional) is a Captain Sonar bubble. |
 | outcome | `{type:"out", tone:"wise"/"risky"/"mixed", step:…, text:…, ask:…, next:…}` | consequence of a choice. `tone` drives the glow/shake animation and the debrief icon. `ask` is Sonar's one reflective question. Rewind is automatic. |
 | end | `{type:"end", text:{…}}` | the scenario's closing reflection. Every scenario must have a node with id `end`. |
+| flag | `{type:"flag", step:…, claims:{ex,pi}, next:"reveal", …}` | active-reading board: the child taps the claims that seem off, with a scripted check tool. No labelled right/wrong. See §9. |
+| reveal | `{type:"reveal", step:…, out:{calibrated,overrely,overreject}, next:"end", …}` | truth board + calibrated consequence + (Pilot) reflection. |
 
 **Choices** are either one array (both tiers) or `{ex:[…2 max…], pi:[…3–4…]}`:
 
@@ -57,7 +60,11 @@ Three node types:
 ```
 
 Rules of thumb that keep the pedagogy intact:
-* risky choices: **no `fx`** — the consequence text is the teaching, never a penalty;
+* risky choices: **no `fx`** — and they automatically subtract `C.riskyPenalty`
+  (default 1) from the decision node's own loop `step`, floored at 0, so a risky
+  pick visibly costs a point on the bar without ever going negative. The consequence
+  text + Captain Sonar's reflection stay the main teaching; the tone never punishes.
+  Set `C.riskyPenalty:0` to restore the original "no meter effect" behaviour;
 * every outcome reconverges eventually; the "memory" of a risky path lives in its text;
 * Explorer arrays max 2 choices; keep one clearly tempting option in every decision.
 
@@ -80,6 +87,10 @@ choices, convert `choices:[…]` to `choices:{ex:[…], pi:[…]}`.
 ## 5. Meter & licence logic (in case you need it)
 
 * `C.target` (= 4) is the points needed to fill one meter segment.
+* Wise/mixed `fx` add points; a risky choice subtracts `C.riskyPenalty` (= 1) from
+  its decision node's loop `step`, clamped to `0…`. A small "▼ STEP −1" cue shows on
+  that risky outcome; rewinding restores the points (the snapshot is taken before the
+  deduction).
 * The licence's **strongest skill** = highest score; **training focus** = lowest
   (ties resolve in loop order). Sonar Checks give +1 to their step when answered
   right first try.
@@ -143,6 +154,7 @@ Automated (what was run before shipping v1.0 — all passing):
 - [x] 5 Sonar Checks, exactly one correct option each
 - [x] 16 full headless playthroughs (en/zh × Explorer/Pilot × 4 choice strategies), including a rewind in every scenario and a wrong-then-right answer on every check — all reach the licence
 - [x] all five skills reach the meter target on a wise-choices run
+- [x] risky choices deduct 1 from their loop step, floor at 0, show the cue once, and rewind restores the points
 - [x] language toggle mid-game preserves screen, progress and meter
 - [x] Debrief Sheet lists every logged choice, a meter snapshot and exactly 3 discussion questions
 - [x] file size ≈ 100 KB (< 500 KB target), no external requests of any kind
@@ -161,3 +173,61 @@ Manual (2 minutes in a browser):
 - [ ] complete all 6 → licence shows name, strongest skill + training focus
 - [ ] Debrief Sheet → Print preview: buttons/topbar hidden, sheet prints clean
 - [ ] refresh the page mid-mission → resumes where you were
+
+## 9. The flag-then-check model (v2.0) — and how to apply it to the other scenarios
+
+Mission 4 ("The Confident Wrong Answer") is the flagship of a new interaction model
+that **makes the child perform the judgment** instead of picking it from a labelled
+menu. It is two reusable node types, driven entirely by data in the content object:
+
+**`type:"flag"`** — the AI answer rendered as tappable **claim chips**. Each claim:
+
+```js
+{ status:"correct" | "error" | "cant",      // truth (never shown until the reveal)
+  text:{en,zh},
+  check:{ truth:{en,zh},                     // what the check tool concludes
+          sources:[ {title:{en,zh}, snip:{en,zh}} ] } }
+```
+
+Put the claims under `claims:{ ex:[…], pi:[…] }` (Explorer: one clear error + correct
+claims; Pilot: a subtler error + a `cant` claim so they must tell *wrong* from
+*unverifiable*). The board also carries plain bilingual labels (`assistant`, `topic`,
+`intro`, `sonar`, `instab`, `checkBtn`, `lockBtn`, `toolTitle`, `srcLbl`, `checkedTag`,
+`flaggedLbl`, `toolBack`) — all editable, no logic.
+
+**`type:"reveal"`** — three consequence variants the engine picks by calibration:
+
+```js
+out:{ calibrated:{tone:"wise",  text:{en,zh}, ask:{en,zh}},
+      overrely:  {tone:"risky", text:{en,zh}, ask:{en,zh}},   // missed it
+      overreject:{tone:"mixed", text:{en,zh}, ask:{en,zh}} }   // flagged everything
+```
+
+plus `truthLbl`, `yourFlags`, and (Pilot) `reflectQ`/`reflectPh` for the one-line
+free-text reflection.
+
+**Scoring is calibration, not suspicion** (in `computeCalib`/`lockFlags`): caught the
+error **and** didn't over-flag → wise `+question/+verify`; flagged accurate/`cant`
+claims → `axis:"guard"` (over-rejection); missed it → `axis:"trust"` (over-reliance).
+This feeds the existing meter, the Pilot-Profile classifier (Ground Crew vs Autopilot)
+and the Debrief — no separate scoring system. The adult Debrief gains a one-line
+diagnostic (`flagshipDebriefHTML`) and a copy-paste **JSON export** for pilot data;
+each session record is `S.flagship[scenarioId] = {caughtError, overFlagged,
+usedCheckTool, checkedError, bucket, reflection}`.
+
+**To convert another scenario:** replace its `start` with a `board` (`type:"flag"`)
++ a `reveal` node, write the `claims[]`/`check` data and the three reveal variants,
+keep `skills`/`id`/`end`. Nothing else changes — the map, meter, profile, debrief,
+rewind/undo, language toggle, age tiers and print all work automatically. All board
+state lives in `S.fb` (serialisable), so the language toggle and refresh are safe
+mid-board, and the commit is snapshotted so ⏪ Rewind recomputes the meter.
+
+**A/B toggle:** the original multiple-choice Mission 4 is kept at `C._classicM4`.
+Load the game with `?m4=classic` (or run `TFQm4('classic')` in the console; `TFQm4('flag')`
+to switch back) to play the old version in the same build for pilot comparison.
+
+Self-test (automated, all passing): error catchable on both tiers; flag-everything
+scores as over-rejection and missing it as over-reliance; calibrated catch lights
+QUESTION/VERIFY; check tool reachable; language toggle mid-flag/mid-check keeps
+selections; ⏪ rewind from the reveal restores the board and undoes the meter; Debrief
+shows the diagnostic + JSON export; the other five scenarios still play end-to-end.
