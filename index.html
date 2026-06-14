@@ -1250,7 +1250,7 @@ debriefQs:{
 const SAVE_KEY="tfq_v1";
 const DEFAULTS={screen:"home",lang:"zh",tier:"pi",si:0,node:null,
   skills:{pause:0,question:0,verify:0,decide:0,own:0},
-  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub",muted:false,
+  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:99,debriefFrom:"hub",muted:false,
   fb:null,flagship:{}};
 
 /* Dev A/B toggle: ?m4=classic (or localStorage tfq_m4=classic) swaps the new
@@ -1480,14 +1480,11 @@ function renderHub(){
         '<p class="muted" style="font-size:.8rem;margin:0">'+esc(ui("meterHint"))+'</p></div>';
   h+='<div class="card"><h2>🗺️ '+esc(ui("missionMap"))+'</h2>';
   C.scenarios.forEach(function(scn,i){
-    const done=S.done.indexOf(i)>=0, open=i<S.unlocked;
-    const icArt=!open?art("icon-lock",null,26):(i===justUnlocked?art("icon-unlock","tf-pop",28):"");
-    const inner='<span class="ic">'+(icArt||scn.icon)+'</span><span><span class="tt">'+
+    const done=S.done.indexOf(i)>=0;   /* all missions open — pick any order */
+    const inner='<span class="ic">'+scn.icon+'</span><span><span class="tt">'+
       esc(ui("mission"))+' '+(i+1)+' · '+esc(tt(scn.title))+'</span><br><span class="st">'+
-      esc(done?ui("replay"):(open?ui("play"):ui("locked")))+'</span></span>';
-    h+= open
-      ? '<button class="mcard'+(done?" done":"")+(i===justUnlocked?" tf-unlock":"")+'" onclick="startScenario('+i+')">'+inner+'</button>'
-      : '<div class="mcard locked" aria-disabled="true">'+inner+'</div>';
+      esc(done?ui("replay"):ui("play"))+'</span></span>';
+    h+='<button class="mcard'+(done?" done":"")+'" onclick="startScenario('+i+')">'+inner+'</button>';
   });
   if(S.done.length===C.scenarios.length){
     h+='<button class="btn primary" onclick="goEnd()">'+esc(ui("getLicence"))+'</button>';
@@ -1500,7 +1497,7 @@ function renderHub(){
 }
 
 function startScenario(i){
-  if(i>=S.unlocked)return;
+  if(i<0||i>=C.scenarios.length)return;
   TFSFX.tap();
   Object.keys(typingShown).forEach(function(k){if(k.indexOf(i+":")===0)delete typingShown[k];});
   S.si=i; S.node=C.scenarios[i].start; S.flags={}; S.snaps=[];
@@ -1724,9 +1721,6 @@ function rewind(){
 }
 function finishScenario(){
   if(S.done.indexOf(S.si)<0)S.done.push(S.si);
-  const before=S.unlocked;
-  S.unlocked=Math.max(S.unlocked,Math.min(C.scenarios.length,S.si+2));
-  if(S.unlocked>before){justUnlocked=S.unlocked-1;TFSFX.unlock();}
   S.node=null; S.snaps=[];
   if(C.checks[S.si]&&S.checksDone.indexOf(S.si)<0){S.screen="check";chkWrong=false;chkPicked=-1;}
   else{S.screen="hub";}
