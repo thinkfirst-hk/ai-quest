@@ -89,6 +89,39 @@
   .outcome.mixed{background:var(--paper);animation:tilt .55s ease-in-out 1}
   .verdict{font-weight:800;margin-bottom:4px}
   .meterdrop{display:inline-block;margin-left:6px;border:2.5px solid var(--ink);border-radius:999px;background:var(--c,#FF6B5B);color:#fff;font-size:.66rem;font-weight:800;padding:2px 9px;vertical-align:middle;letter-spacing:.2px}
+
+  /* ---- flag-then-check (v2.0 flagship) ---- */
+  .ans{border:3px solid var(--ink);border-radius:14px;background:#F7FBFF;padding:12px;margin:10px 0}
+  .ans-head{display:flex;align-items:center;gap:9px;margin-bottom:4px}
+  .ans-head .artw{flex:0 0 32px;width:32px;height:32px;border-radius:50%;overflow:hidden;border:2.5px solid var(--ink);background:#fff}
+  .ans-head .artw svg{width:100%;height:100%}
+  .instab{font-weight:800;font-size:.78rem;opacity:.7;margin:2px 0 8px}
+  .claim{display:flex;gap:9px;align-items:flex-start;width:100%;text-align:left;background:#fff;border:3px solid var(--ink);border-radius:12px;color:var(--ink);font-family:inherit;font-weight:700;font-size:.92rem;line-height:1.4;padding:11px 12px;margin-bottom:8px;min-height:48px;cursor:pointer;box-shadow:var(--shadow)}
+  .claim:hover{background:var(--paper)}
+  .claim:active{transform:translateY(3px);box-shadow:none}
+  .claim:focus-visible{outline:3px dashed var(--verify);outline-offset:3px}
+  .claim.on{background:#FFE9E6;border-color:var(--pause)}
+  .claim .flagdot{flex:0 0 18px;width:18px;font-size:1rem;line-height:1.3}
+  .claim .ctext{flex:1}
+  .claim .cchecked{flex:0 0 auto;font-size:.68rem;font-weight:800;color:var(--verify);align-self:center}
+  .tool{border:3px solid var(--ink);border-radius:14px;background:var(--soft);padding:12px;margin:10px 0}
+  .tool-head{display:flex;align-items:center;gap:8px;font-size:1rem;margin-bottom:8px}
+  .tool-head .owlart{flex:0 0 30px;width:30px}
+  .srclbl,.srccard b{font-weight:800}
+  .srclbl{font-size:.78rem;opacity:.7;margin:8px 0 6px}
+  .srccard{border:2.5px solid var(--ink);border-radius:11px;background:#fff;padding:9px 11px;margin-bottom:8px}
+  .truthboard{border:3px solid var(--ink);border-radius:14px;background:#fff;padding:10px;margin:10px 0}
+  .tb-head{font-weight:800;font-size:.85rem;margin-bottom:6px;opacity:.8}
+  .tbrow{display:flex;gap:8px;align-items:flex-start;border-radius:10px;padding:8px 9px;margin-bottom:6px;font-weight:600;font-size:.88rem;border:2.5px solid var(--ink)}
+  .tbrow.ok{background:#EAF7F0}.tbrow.err{background:#FFE9E6}.tbrow.cant{background:#FFF6DE}
+  .tbrow.good{box-shadow:inset 4px 0 0 var(--decide)}
+  .tbrow.miss{box-shadow:inset 4px 0 0 var(--coral,#FF6B5B)}
+  .tbmark{flex:0 0 18px;font-weight:800}
+  .tbtext{flex:1}
+  .tbflag{flex:0 0 auto;font-size:.68rem;font-weight:800;align-self:center;opacity:.8}
+  .reflabel{display:block;font-weight:800;font-size:.86rem;margin:12px 0 4px}
+  @keyframes tf-glowc{0%{box-shadow:0 0 0 0 rgba(62,207,142,.55)}100%{box-shadow:0 0 0 16px rgba(62,207,142,0)}}
+  .tf-glow{animation:tf-glowc 1.1s ease-out 1}
   @keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-7px)}40%{transform:translateX(7px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
   @keyframes glowp{0%{box-shadow:0 0 0 0 rgba(62,207,142,.65)}100%{box-shadow:0 0 0 18px rgba(62,207,142,0)}}
   @keyframes tilt{0%,100%{transform:rotate(0)}30%{transform:rotate(-1.2deg)}70%{transform:rotate(1.2deg)}}
@@ -283,7 +316,7 @@ ui:{
   toneRisky:{en:"⚠️ risky", zh:"⚠️ 危險"},
   toneMixed:{en:"🤔 mixed", zh:"🤔 一半半"},
   notPlayed:{en:"(not played yet)", zh:"(未玩)"},
-  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v1.4", zh:"ThinkFirst Learning 先思考 · 香港 · v1.4"},
+  footer:{en:"ThinkFirst Learning 先思考 · Hong Kong · v2.0", zh:"ThinkFirst Learning 先思考 · 香港 · v2.0"},
   langName:{en:"中文", zh:"EN"},
   exitHint:{en:"Progress saves automatically on this device.", zh:"進度會自動儲存喺呢部機。"},
   /* pilot profile */
@@ -305,7 +338,21 @@ ui:{
   noneLbl:{en:"none — nicely balanced!", zh:"沒有——相當均衡!"},
   soundLbl:{en:"Sound effects on/off", zh:"音效開關"},
   rewindPraise:{en:"Rewinding = re-thinking. Pilot move!", zh:"識回帶=識反思,機師先至會咁做!"},
-  meterDrop:{en:"−1 · skipped this step", zh:"−1 · 略過咗呢一步"}
+  meterDrop:{en:"−1 · skipped this step", zh:"−1 · 略過咗呢一步"},
+  flagDone:{en:"Locked in", zh:"已鎖定"},
+  flagshipDiag:{en:"Flag-and-check result", zh:"標記與查證結果"},
+  diagCalibrated:{en:"caught the planted error AND cross-checked, without over-flagging → calibrated judgement", zh:"捉到刻意設下嘅錯處,又有查證,亦冇過度標記 → 判斷校準得好"},
+  diagOverrely:{en:"missed the planted error and didn't cross-check → over-reliance signal", zh:"走漏咗刻意設下嘅錯處,亦冇查證 → 過度信任訊號"},
+  diagOverreject:{en:"flagged accurate or unverifiable claims (blanket distrust) → over-rejection signal", zh:"連正確或無法證實嘅句子都標記咗(一概不信) → 過度拒絕訊號"},
+  runCalibrated:{en:"Flagged the wrong claim and cross-checked it", zh:"標記咗錯嗰句,仲查證咗"},
+  runOverrely:{en:"Took the AI answer as-is", zh:"原封不動照用 AI 答案"},
+  runOverreject:{en:"Flagged accurate claims too (blanket distrust)", zh:"連啱嘅句子都標記埋(一概不信)"},
+  usedToolLbl:{en:"Used the check tool", zh:"用咗查證工具"},
+  reflectionLbl:{en:"Reflection", zh:"反思"},
+  noReflection:{en:"(none given)", zh:"(冇填)"},
+  exportTitle:{en:"📤 Copy session result (JSON)", zh:"📤 複製本次結果(JSON)"},
+  copyBtn:{en:"Copy to clipboard", zh:"複製到剪貼簿"},
+  copied:{en:"Copied ✓", zh:"已複製 ✓"}
 },
 
 /* Kid-facing text is warm and identity-positive; `diag` and `qs` appear
@@ -375,6 +422,114 @@ steps:{
   verify:  {name:{en:"VERIFY",   zh:"查一查"}, color:"var(--verify)"},
   decide:  {name:{en:"DECIDE",   zh:"決定"},   color:"var(--decide)"},
   own:     {name:{en:"OWN IT",   zh:"負責任"}, color:"var(--own)"}
+},
+_classicM4:{
+ id:"confident", icon:"🤖",
+ title:{en:"The Confident Wrong Answer", zh:"好有自信但答錯"},
+ skills:["question","verify"],
+ start:"b1",
+ nodes:{
+  b1:{step:"question",
+    text:{en:{ex:"For your school project you ask the AI: “Which MTR station is the deepest?”\nIt answers right away, super confidently: “Admiralty — 55 metres deep!” It even names a book as its source.",
+              pi:"School project: “Underground Hong Kong!” You ask the AI: which MTR station is the deepest?\nInstant answer: “Admiralty Station — 55 metres deep, because four lines cross there. (Source: HK Rail Yearbook 2019.)”\nFluent. Precise. A source and everything."},
+          zh:{ex:"做專題,你問 AI:「港鐵邊個站最深?」\n佢即刻好有信心咁答:「金鐘站——55 米深!」仲話係出自一本書。",
+              pi:"專題研習:《地下香港》!你問 AI:港鐵邊個站最深?\n秒答:「金鐘站——深 55 米,因為有四條線喺度交匯。(來源:《香港鐵路年鑑2019》)」\n流暢、精準、仲有埋出處。"}},
+    sonar:{en:"Smooth answer! Tiny question: how do we know that yearbook… exists?",
+           zh:"答得好順!小小問題:嗰本「年鑑」……真係存在嘅咩?"},
+    choices:{
+     pi:[
+      {t:{en:"Paste it into the project. It literally cited a source!", zh:"照貼落專題度。佢都有列出處㗎!"}, tone:"risky", axis:"trust", set:{pasted:true}, next:"c1a"},
+      {t:{en:"Search for that “HK Rail Yearbook 2019” first.", zh:"先 search 下嗰本《香港鐵路年鑑2019》。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"},
+      {t:{en:"Ask the AI: “Are you sure?”", zh:"問返 AI:「你肯定?」"}, tone:"mixed", fx:{question:1}, next:"c1c"}
+     ],
+     ex:[
+      {t:{en:"Copy it into the project — it sounds so sure!", zh:"照抄落專題度——佢講到咁肯定!"}, tone:"risky", axis:"trust", set:{pasted:true}, next:"c1a"},
+      {t:{en:"Check somewhere else first.", zh:"先去第二度查下。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"}
+     ]}
+  },
+  c1a:{type:"out", tone:"risky", step:"question",
+    text:{en:"Pasted, formatted, DONE in two minutes. Next morning you present it… and Mei's hand shoots up: “Um — my mum works at HKU Station. SHE says that one's the deepest. Like, 70 metres?”\nThe class looks at you. The AI is not standing next to you.",
+          zh:"貼完、執靚格式,兩分鐘搞掂。第二朝你出去報告……阿美隻手即刻舉高:「嗯——我媽媽喺香港大學站返工。佢話最深嗰個係香港大學站喎,成 70 米?」\n全班望住你。而個 AI,冇企喺你隔籬。"},
+    ask:{en:"The AI answered in one second. Who's standing in front of the class?", zh:"AI 一秒就答咗。但企喺全班面前嘅,係邊個?"},
+    next:"bx"},
+  c1b:{type:"out", tone:"wise", step:"verify",
+    text:{en:"You search. There is… no such book. A “source” that doesn't exist is called a hallucination — the AI didn't lie on purpose; it auto-completed something source-SHAPED. Good catch, pilot.",
+          zh:"你 search 咗。根本……冇呢本書。一個唔存在嘅「出處」,叫做 AI 幻覺——佢唔係特登呃你,只係自動補完咗一舊「似出處嘅嘢」。捉得好,機師。"},
+    ask:{en:"If the source is fake, what should we now assume about the answer?", zh:"出處係假嘅,咁個答案,我哋應該點睇?"},
+    next:"b2"},
+  c1c:{type:"out", tone:"mixed", step:"question",
+    text:{en:"“You're right to check! I apologise. The deepest is actually Tsim Sha Tsui — 48 metres.”\n…Wait. That's a DIFFERENT confident answer. Asking the same tool again isn't verification — it's re-flipping the same coin.",
+          zh:"「你問得啱!唔好意思。最深嘅其實係尖沙咀站——48 米。」\n……等等,呢個係「另一個」好有信心嘅答案。問返同一個工具,唔叫查證——只係將個銀仔再擲多次。"},
+    ask:{en:"Why can't the AI check itself?", zh:"點解 AI 自己查唔到自己?"},
+    next:"b2"},
+
+  bx:{step:"own",
+    text:{en:"Everyone's waiting. Your move:", zh:"全班等緊。你點接?"},
+    choices:[
+      {t:{en:"“But the AI said it! With a source!”", zh:"「但 AI 係咁講㗎!仲有出處!」"}, tone:"risky", axis:"trust", next:"cxa"},
+      {t:{en:"“Good catch, Mei. Let me check properly and come back tomorrow.”", zh:"「阿美你提得好。等我查清楚,聽日答返大家。」"}, tone:"wise", fx:{own:1, decide:1}, next:"cxb"}
+    ]},
+  cxa:{type:"out", tone:"risky", step:"own",
+    text:{en:"“…So the AI is giving the presentation?” someone whispers. Ouch. Blaming the tool didn't move the spotlight — you picked the answer, and you carried it in.",
+          zh:"有人細細聲:「……即係個報告係 AI 做㗎?」哎。賴個工具,支 spotlight 冇移開過:個答案係你揀、你帶入嚟。"},
+    ask:{en:"You didn't write the answer. Did you still choose it?", zh:"個答案唔係你寫。但係咪你揀?"},
+    next:"b2"},
+  cxb:{type:"out", tone:"wise", step:"own",
+    text:{en:"Miss Chan nods. “THAT is what real researchers say.” Somehow “I'll check” sounded stronger than the wrong fact did.",
+          zh:"陳老師點頭:「真正嘅研究員就係咁講嘢。」唔知點解,「我查清楚先」聽落,仲似專家過頭先嗰個錯答案。"},
+    ask:{en:"Why did admitting it feel strong, not weak?", zh:"點解認返句「未查清楚」,反而顯得強,唔係弱?"},
+    next:"b2"},
+
+  b2:{step:"verify",
+    text:{en:"That evening: time to find the real answer. Pick your check:", zh:"當晚:係時候搵真答案。揀你嘅查證方法:"},
+    choices:{
+     pi:[
+      {t:{en:"MTR's official info, plus a news article about station depths.", zh:"港鐵官方資料,加一篇講車站深度嘅新聞報道。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
+      {t:{en:"A forum comment that agrees with the AI. One's enough!", zh:"討論區有個留言同 AI 講嘅一樣。夠皮啦!"}, tone:"mixed", axis:"trust", next:"c2b"},
+      {t:{en:"Ask your uncle — the family's MTR superfan.", zh:"問舅父——成家最痴港鐵嗰個。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
+     ],
+     ex:[
+      {t:{en:"Look at MTR's official information.", zh:"睇港鐵官方資料。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
+      {t:{en:"Ask your uncle — he loves the MTR.", zh:"問舅父——佢最熟港鐵。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
+     ]}
+  },
+  c2a:{type:"out", tone:"wise", step:"verify",
+    text:{en:"Official info and the news agree: HKU Station, about 70 metres — deep enough to hide a 20-storey building. You fix your project and write down WHERE you checked. Two sources. Locked.",
+          zh:"官方資料同新聞講法一致:香港大學站,大約 70 米深——擺得落成幢 20 層高嘅樓。你執返好個專題,仲寫埋你「喺邊度查」。兩個來源。穩。"},
+    ask:{en:"Why write down where you checked?", zh:"點解要寫埋「喺邊度查」?"},
+    next:{flag:"pasted", then:"end", else:"b3"}},
+  c2b:{type:"out", tone:"mixed", step:"verify",
+    text:{en:"“Admiralty obviously, my cousin said” — typed by a stranger called “trainboi2012”. One stranger agreeing with the AI isn't a check; it's an echo. Sonar nudges you to the official page… which says HKU, 70 m.",
+          zh:"「梗係金鐘啦,我表哥講嘅」——一個叫「trainboi2012」嘅陌生人打嘅。一個陌生人同 AI 講法一樣,唔係查證,係回音。思拿隊長督一督你去官方網頁……上面寫:香港大學站,70 米。"},
+    ask:{en:"What's the difference between “someone agrees” and “it's confirmed”?", zh:"「有人同意」同「獲得證實」,差喺邊?"},
+    next:{flag:"pasted", then:"end", else:"b3"}},
+  c2c:{type:"out", tone:"wise", step:"verify",
+    text:{en:"Uncle doesn't even blink: “HKU. Seventy metres. The lifts are FAMOUS.” Then he sends a news clip proving it. People can be sources too — when they can show you receipts.",
+          zh:"舅父眼都唔眨:「香港大學站。七十米。啲𨋢出晒名。」跟住仲 send 段新聞片做證。人都可以係來源——只要佢攞得出「單據」。"},
+    ask:{en:"What made Uncle a good source — being family, or having receipts?", zh:"舅父點解信得過——因為佢係屋企人,定因為佢攞得出證據?"},
+    next:{flag:"pasted", then:"end", else:"b3"}},
+
+  b3:{step:"own",
+    text:{en:"Presentation day. Your slide reads: “Deepest: HKU Station (~70 m) — checked: MTR info + news.” Afterwards Mei asks: “How come YOURS was right? Three groups wrote Admiralty.”",
+          zh:"報告日。你張 slide 寫住:「最深:香港大學站(約 70 米)——已查證:港鐵資料+新聞」。完咗之後阿美問你:「點解你哋組會啱嘅?有三組都寫咗金鐘。」"},
+    choices:[
+      {t:{en:"Show her the two-source trick: never trust one voice, however confident.", zh:"教佢「兩個來源」呢招:一把聲幾有信心都好,唔好淨信一把。"}, tone:"wise", fx:{own:1, question:1}, next:"c3a"},
+      {t:{en:"Shrug. “I'm just smart like that.” 😏", zh:"耍下膊:「天生醒目,冇辦法。」😏"}, tone:"mixed", next:"c3b"}
+    ]},
+  c3a:{type:"out", tone:"wise", step:"own",
+    text:{en:"Mei's eyes go wide: “The other groups all asked the same AI… that's why they're all wrong the same WAY.” Now two of you check things. It spreads — the good way.",
+          zh:"阿美眼都大埋:「嗰三組咪即係問咗同一個 AI……所以先錯得一模一樣!」而家識查證嘅人有兩個。呢樣嘢都會傳染——係好嗰種。"},
+    ask:{en:"Three groups, one AI, one identical mistake. What does that tell you?", zh:"三組人、一個 AI、一個一模一樣嘅錯。呢件事話緊你知乜?"},
+    next:"end"},
+  c3b:{type:"out", tone:"mixed", step:"own",
+    text:{en:"She rolls her eyes and walks off. You WERE smart — but the checking method dies with the secret, and next week the one copying answers might be you.",
+          zh:"佢反咗個白眼就走。你的確係醒——但個查證方法同個秘密一齊收埋咗;下個星期,抄答案嗰個隨時係你。"},
+    ask:{en:"Skills you share come back to you. What happens to skills you hide?", zh:"分享出去嘅技能會回流。收埋嘅技能會點?"},
+    next:"end"},
+
+  end:{type:"end",
+    text:{en:"Confidence is a sound. What's your move when something SOUNDS sure?", zh:"自信只係一種聲線。下次有嘢「聽落」好肯定,你嘅標準動作係乜?"}}
+ }
 },
 stepOrder:["pause","question","verify","decide","own"],
 target:4,
@@ -733,113 +888,100 @@ scenarios:[
  }
 },
 
-/* ---------- S4 · The Confident Wrong Answer 好有自信但答錯 ---------- */
+
+/* ---------- S4 · The Confident Wrong Answer 好有自信但答錯 ----------
+   FLAGSHIP of the new "flag-then-check" interaction model (v2.0).
+   The child PERFORMS the judgment instead of picking it from a labelled menu:
+     1) type:"flag"  — read the AI answer and TAP the claim(s) that smell off.
+                       claims[] carry status:"correct"|"error"|"cant"; nothing is
+                       labelled right/wrong on screen. A built-in check tool (each
+                       claim's check{sources,truth}) supports lateral reading.
+     2) type:"reveal"— lockFlags() scores CALIBRATION, not suspicion:
+                         caught the error + didn't over-flag  -> wise (+question,+verify)
+                         over-flagged accurate/​can't-tell claims -> guard (over-rejection)
+                         missed the error                     -> trust (over-reliance)
+                       Renders the truth board + a consequence; Pilot adds one
+                       optional free-text reflection. Feeds meter / profile /
+                       debrief through the same tone/axis/fx/log as choices do.
+   REUSE: copy a board+reveal pair, swap claims[] + the three reveal variants.
+   The old multiple-choice version lives at C._classicM4 (load with ?m4=classic). */
 {
  id:"confident", icon:"🤖",
  title:{en:"The Confident Wrong Answer", zh:"好有自信但答錯"},
  skills:["question","verify"],
- start:"b1",
+ start:"board",
  nodes:{
-  b1:{step:"question",
-    text:{en:{ex:"For your school project you ask the AI: “Which MTR station is the deepest?”\nIt answers right away, super confidently: “Admiralty — 55 metres deep!” It even names a book as its source.",
-              pi:"School project: “Underground Hong Kong!” You ask the AI: which MTR station is the deepest?\nInstant answer: “Admiralty Station — 55 metres deep, because four lines cross there. (Source: HK Rail Yearbook 2019.)”\nFluent. Precise. A source and everything."},
-          zh:{ex:"做專題,你問 AI:「港鐵邊個站最深?」\n佢即刻好有信心咁答:「金鐘站——55 米深!」仲話係出自一本書。",
-              pi:"專題研習:《地下香港》!你問 AI:港鐵邊個站最深?\n秒答:「金鐘站——深 55 米,因為有四條線喺度交匯。(來源:《香港鐵路年鑑2019》)」\n流暢、精準、仲有埋出處。"}},
-    sonar:{en:"Smooth answer! Tiny question: how do we know that yearbook… exists?",
-           zh:"答得好順!小小問題:嗰本「年鑑」……真係存在嘅咩?"},
-    choices:{
-     pi:[
-      {t:{en:"Paste it into the project. It literally cited a source!", zh:"照貼落專題度。佢都有列出處㗎!"}, tone:"risky", axis:"trust", set:{pasted:true}, next:"c1a"},
-      {t:{en:"Search for that “HK Rail Yearbook 2019” first.", zh:"先 search 下嗰本《香港鐵路年鑑2019》。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"},
-      {t:{en:"Ask the AI: “Are you sure?”", zh:"問返 AI:「你肯定?」"}, tone:"mixed", fx:{question:1}, next:"c1c"}
-     ],
-     ex:[
-      {t:{en:"Copy it into the project — it sounds so sure!", zh:"照抄落專題度——佢講到咁肯定!"}, tone:"risky", axis:"trust", set:{pasted:true}, next:"c1a"},
-      {t:{en:"Check somewhere else first.", zh:"先去第二度查下。"}, tone:"wise", fx:{question:1, verify:1}, next:"c1b"}
-     ]}
+  board:{ type:"flag", step:"question", next:"reveal",
+    assistant:{en:"Smarty · AI homework helper", zh:"醒目仔 · AI 功課助手"},
+    topic:{en:"My project: “Amazing Hong Kong — Geography Facts”", zh:"我嘅專題:《驚奇香港——地理冷知識》"},
+    intro:{en:"You ask Smarty for facts. It fires back a tidy, confident list — neat bullet points, the lot. Looks perfect. (You're still the one handing this in.)",
+           zh:"你問醒目仔攞資料。佢即刻俾返一個又齊又自信嘅清單——點列、靚靚格式,睇落完美。(但交㗎,係你。)"},
+    sonar:{en:"Read it like a detective, pilot. Tap any line that smells off — and you can check it before you decide. (Some lines are perfectly fine.)",
+           zh:"機師,當自己係偵探咁睇。邊句覺得怪,就㩒邊句——㩒之前仲可以查證。(有啲句子其實冇問題㗎。)"},
+    instab:{en:"Tap the claims that seem off:", zh:"㩒你覺得有問題嘅句子:"},
+    checkBtn:{en:"🔍 Check a claim", zh:"🔍 查證一句"},
+    lockBtn:{en:"I'm done — lock it in", zh:"睇完——鎖定"},
+    flaggedLbl:{en:"flagged", zh:"已標記"},
+    toolTitle:{en:"Check tool — tap a claim to look it up", zh:"查證工具——㩒一句去查"},
+    toolBack:{en:"← Back to the answer", zh:"← 返回個答案"},
+    srcLbl:{en:"What the sources say:", zh:"啲來源點講:"},
+    checkedTag:{en:"checked ✓", zh:"已查 ✓"},
+    claims:{
+      ex:[
+        {status:"correct", text:{en:"Hong Kong is made up of more than 200 islands.", zh:"香港由超過 200 個島組成。"},
+          check:{ truth:{en:"✓ This holds up. Sources say Hong Kong has around 260 islands.", zh:"✓ 站得住腳。資料話香港大約有 260 個島。"},
+            sources:[{title:{en:"HK Geography 101", zh:"香港地理 101"}, snip:{en:"Hong Kong is made up of around 260 islands of all sizes.", zh:"香港由大約 260 個大大小小嘅島組成。"}}]}},
+        {status:"error", text:{en:"The highest mountain in Hong Kong is Victoria Peak.", zh:"香港最高嘅山係太平山(扯旗山)。"},
+          check:{ truth:{en:"✗ Not right. Hong Kong's highest point is Tai Mo Shan (957 m). Victoria Peak is about 552 m — a famous viewpoint, but not the tallest.", zh:"✗ 唔啱。香港最高點係大帽山(957 米)。太平山約 552 米——係出名嘅觀景點,但唔係最高。"},
+            sources:[{title:{en:"HK Country Parks", zh:"香港郊野公園"}, snip:{en:"Tai Mo Shan, at 957 m, is the highest peak in Hong Kong.", zh:"大帽山高 957 米,係香港最高嘅山峰。"}},
+                     {title:{en:"Peak visitor guide", zh:"山頂遊客指南"}, snip:{en:"Victoria Peak (552 m) is famous for its harbour views.", zh:"太平山(552 米)以飽覽維港景色聞名。"}}]}},
+        {status:"correct", text:{en:"Hong Kong's official languages are Chinese and English.", zh:"香港嘅法定語文係中文同英文。"},
+          check:{ truth:{en:"✓ Correct — both Chinese and English are official.", zh:"✓ 啱——中文同英文都係法定語文。"},
+            sources:[{title:{en:"Basic Law facts", zh:"基本法資料"}, snip:{en:"Chinese and English are the official languages of Hong Kong.", zh:"中文同英文係香港嘅法定語文。"}}]}}
+      ],
+      pi:[
+        {status:"correct", text:{en:"Hong Kong covers about 1,100 square kilometres.", zh:"香港面積大約 1,100 平方公里。"},
+          check:{ truth:{en:"✓ Holds up. Hong Kong's land area is about 1,114 km².", zh:"✓ 站得住腳。香港陸地面積大約 1,114 平方公里。"},
+            sources:[{title:{en:"HK Year Book — Land", zh:"香港年報——土地"}, snip:{en:"The total land area of Hong Kong is approximately 1,114 km².", zh:"香港陸地總面積約為 1,114 平方公里。"}}]}},
+        {status:"error", text:{en:"Its highest point is Victoria Peak, at 552 metres.", zh:"佢嘅最高點係太平山,海拔 552 米。"},
+          check:{ truth:{en:"✗ Half-true — that's the trap. 552 m really IS Victoria Peak's height, but it is NOT the highest point. Tai Mo Shan (957 m) is. The number is right; the word “highest” is wrong.", zh:"✗ 一半真,陷阱就喺度。552 米的確係太平山嘅高度,但佢唔係最高點。最高係大帽山(957 米)。個數字啱,但「最高」呢個詞錯。"},
+            sources:[{title:{en:"HK Country Parks", zh:"香港郊野公園"}, snip:{en:"Tai Mo Shan (957 m) is the highest peak in Hong Kong; Victoria Peak is 552 m.", zh:"大帽山(957 米)係香港最高山峰;太平山則為 552 米。"}},
+                     {title:{en:"Survey & Mapping data", zh:"地政測量資料"}, snip:{en:"Highest natural point: Tai Mo Shan, 957 m above sea level.", zh:"最高天然點:大帽山,海拔 957 米。"}}]}},
+        {status:"correct", text:{en:"It has 260-plus islands; the largest is Lantau.", zh:"佢有 260 幾個島;最大嘅係大嶼山。"},
+          check:{ truth:{en:"✓ Correct — Lantau is the largest island, bigger than Hong Kong Island.", zh:"✓ 啱——大嶼山係最大嘅島,仲大過香港島。"},
+            sources:[{title:{en:"HK Geography 101", zh:"香港地理 101"}, snip:{en:"Lantau is the largest of Hong Kong's ~260 islands.", zh:"大嶼山係香港約 260 個島中最大嘅。"}}]}},
+        {status:"cant", text:{en:"On a clear day, over half of residents can see the sea from their window.", zh:"天氣好嘅時候,超過一半市民可以喺窗口望到海。"},
+          check:{ truth:{en:"❓ Can't confirm this. No reliable source measures it — that doesn't make it false, it makes it UNverifiable. “Can't tell” is not the same as “wrong.”", zh:"❓ 查唔到。冇可靠來源量度過——咁唔代表佢假,而係「無法證實」。「唔肯定」同「錯」係兩回事。"},
+            sources:[{title:{en:"Search results", zh:"搜尋結果"}, snip:{en:"No official statistic found for this claim.", zh:"搵唔到呢個說法嘅官方統計。"}}]}},
+        {status:"correct", text:{en:"About 40% of Hong Kong's land is country parks.", zh:"香港大約 40% 土地係郊野公園。"},
+          check:{ truth:{en:"✓ Correct — roughly 40% of Hong Kong is protected country parks.", zh:"✓ 啱——香港大約 40% 土地係受保護郊野公園。"},
+            sources:[{title:{en:"AFCD country parks", zh:"漁護署郊野公園"}, snip:{en:"Country parks cover about 40% of Hong Kong's land area.", zh:"郊野公園佔香港陸地面積約 40%。"}}]}}
+      ]
+    }
   },
-  c1a:{type:"out", tone:"risky", step:"question",
-    text:{en:"Pasted, formatted, DONE in two minutes. Next morning you present it… and Mei's hand shoots up: “Um — my mum works at HKU Station. SHE says that one's the deepest. Like, 70 metres?”\nThe class looks at you. The AI is not standing next to you.",
-          zh:"貼完、執靚格式,兩分鐘搞掂。第二朝你出去報告……阿美隻手即刻舉高:「嗯——我媽媽喺香港大學站返工。佢話最深嗰個係香港大學站喎,成 70 米?」\n全班望住你。而個 AI,冇企喺你隔籬。"},
-    ask:{en:"The AI answered in one second. Who's standing in front of the class?", zh:"AI 一秒就答咗。但企喺全班面前嘅,係邊個?"},
-    next:"bx"},
-  c1b:{type:"out", tone:"wise", step:"verify",
-    text:{en:"You search. There is… no such book. A “source” that doesn't exist is called a hallucination — the AI didn't lie on purpose; it auto-completed something source-SHAPED. Good catch, pilot.",
-          zh:"你 search 咗。根本……冇呢本書。一個唔存在嘅「出處」,叫做 AI 幻覺——佢唔係特登呃你,只係自動補完咗一舊「似出處嘅嘢」。捉得好,機師。"},
-    ask:{en:"If the source is fake, what should we now assume about the answer?", zh:"出處係假嘅,咁個答案,我哋應該點睇?"},
-    next:"b2"},
-  c1c:{type:"out", tone:"mixed", step:"question",
-    text:{en:"“You're right to check! I apologise. The deepest is actually Tsim Sha Tsui — 48 metres.”\n…Wait. That's a DIFFERENT confident answer. Asking the same tool again isn't verification — it's re-flipping the same coin.",
-          zh:"「你問得啱!唔好意思。最深嘅其實係尖沙咀站——48 米。」\n……等等,呢個係「另一個」好有信心嘅答案。問返同一個工具,唔叫查證——只係將個銀仔再擲多次。"},
-    ask:{en:"Why can't the AI check itself?", zh:"點解 AI 自己查唔到自己?"},
-    next:"b2"},
-
-  bx:{step:"own",
-    text:{en:"Everyone's waiting. Your move:", zh:"全班等緊。你點接?"},
-    choices:[
-      {t:{en:"“But the AI said it! With a source!”", zh:"「但 AI 係咁講㗎!仲有出處!」"}, tone:"risky", axis:"trust", next:"cxa"},
-      {t:{en:"“Good catch, Mei. Let me check properly and come back tomorrow.”", zh:"「阿美你提得好。等我查清楚,聽日答返大家。」"}, tone:"wise", fx:{own:1, decide:1}, next:"cxb"}
-    ]},
-  cxa:{type:"out", tone:"risky", step:"own",
-    text:{en:"“…So the AI is giving the presentation?” someone whispers. Ouch. Blaming the tool didn't move the spotlight — you picked the answer, and you carried it in.",
-          zh:"有人細細聲:「……即係個報告係 AI 做㗎?」哎。賴個工具,支 spotlight 冇移開過:個答案係你揀、你帶入嚟。"},
-    ask:{en:"You didn't write the answer. Did you still choose it?", zh:"個答案唔係你寫。但係咪你揀?"},
-    next:"b2"},
-  cxb:{type:"out", tone:"wise", step:"own",
-    text:{en:"Miss Chan nods. “THAT is what real researchers say.” Somehow “I'll check” sounded stronger than the wrong fact did.",
-          zh:"陳老師點頭:「真正嘅研究員就係咁講嘢。」唔知點解,「我查清楚先」聽落,仲似專家過頭先嗰個錯答案。"},
-    ask:{en:"Why did admitting it feel strong, not weak?", zh:"點解認返句「未查清楚」,反而顯得強,唔係弱?"},
-    next:"b2"},
-
-  b2:{step:"verify",
-    text:{en:"That evening: time to find the real answer. Pick your check:", zh:"當晚:係時候搵真答案。揀你嘅查證方法:"},
-    choices:{
-     pi:[
-      {t:{en:"MTR's official info, plus a news article about station depths.", zh:"港鐵官方資料,加一篇講車站深度嘅新聞報道。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
-      {t:{en:"A forum comment that agrees with the AI. One's enough!", zh:"討論區有個留言同 AI 講嘅一樣。夠皮啦!"}, tone:"mixed", axis:"trust", next:"c2b"},
-      {t:{en:"Ask your uncle — the family's MTR superfan.", zh:"問舅父——成家最痴港鐵嗰個。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
-     ],
-     ex:[
-      {t:{en:"Look at MTR's official information.", zh:"睇港鐵官方資料。"}, tone:"wise", fx:{verify:2}, next:"c2a"},
-      {t:{en:"Ask your uncle — he loves the MTR.", zh:"問舅父——佢最熟港鐵。"}, tone:"wise", fx:{verify:1}, next:"c2c"}
-     ]}
+  reveal:{ type:"reveal", step:"verify", next:"end",
+    reflectQ:{en:"In one line — what made that claim feel off to you?", zh:"用一句講——係乜令你覺得嗰句怪怪哋?"},
+    reflectPh:{en:"e.g. the number felt too exact / I'd never heard that…", zh:"例如:個數字太準/我未聽過咁嘅講法……"},
+    truthLbl:{en:"What's actually true", zh:"真相係咁"},
+    yourFlags:{en:"You flagged", zh:"你標記咗"},
+    skipBtn:{en:"Skip", zh:"略過"},
+    out:{
+      calibrated:{ tone:"wise",
+        text:{en:"Nice aim. You flagged the dodgy line, checked it, and left the solid facts alone. THAT is the skill — not trusting everything, not doubting everything, but aiming. Your project goes in with the right fact and a source beside it.",
+              zh:"瞄得好。你㩒中咗有問題嗰句、查咗證,又冇亂㩒啲穩陣嘅事實。呢個先係本事——唔係乜都信,亦唔係乜都唔信,而係「瞄得準」。你份專題交得出,擺住啱嘅事實同出處。"},
+        ask:{en:"You aimed, instead of trusting OR rejecting the whole thing. How did checking change what you believed?", zh:"你冇盲信,亦冇盲拒,而係瞄準咗。查證之後,你信嘅嘢有冇變?"}},
+      overrely:{ tone:"risky",
+        text:{en:"You handed it in as-is. Two days later it's on the classroom wall — “Hong Kong's highest mountain: Victoria Peak” — and a classmate who hikes Tai Mo Shan every Sunday just… stares. The most confident line was the wrong one. Confidence isn't a source.",
+              zh:"你照交。兩日後貼咗上壁報——「香港最高山:太平山」——一個逢星期日行大帽山嘅同學,望住份嘢……無言。最自信嗰句,正正係錯嗰句。自信,唔等於有出處。"},
+        ask:{en:"Nothing on the page looked wrong. So what could you check NEXT time, before it goes on the wall?", zh:"成版嘢睇落都冇錯。咁下次貼上壁報之前,你可以查啲乜?"}},
+      overreject:{ tone:"mixed",
+        text:{en:"You flagged loads — including the true bits. Cross out everything and you bin the good facts along with the bad one, and you STILL have to find the real answer. Doubting everything isn't checking; it's just another way of not thinking.",
+              zh:"你㩒咗一大堆——連啱嘅都㩒埋。乜都劃花,就會連好嘅事實都掉埋,而你最後仲係要搵返正確答案。乜都唔信唔叫查證——只係另一種唔用腦。"},
+        ask:{en:"Some of those claims were rock-solid. How do you tell “this one's off” from “I don't trust any of it”?", zh:"有啲句子其實好穩陣。「呢句有問題」同「我乜都唔信」,你點分?"}}
+    }
   },
-  c2a:{type:"out", tone:"wise", step:"verify",
-    text:{en:"Official info and the news agree: HKU Station, about 70 metres — deep enough to hide a 20-storey building. You fix your project and write down WHERE you checked. Two sources. Locked.",
-          zh:"官方資料同新聞講法一致:香港大學站,大約 70 米深——擺得落成幢 20 層高嘅樓。你執返好個專題,仲寫埋你「喺邊度查」。兩個來源。穩。"},
-    ask:{en:"Why write down where you checked?", zh:"點解要寫埋「喺邊度查」?"},
-    next:{flag:"pasted", then:"end", else:"b3"}},
-  c2b:{type:"out", tone:"mixed", step:"verify",
-    text:{en:"“Admiralty obviously, my cousin said” — typed by a stranger called “trainboi2012”. One stranger agreeing with the AI isn't a check; it's an echo. Sonar nudges you to the official page… which says HKU, 70 m.",
-          zh:"「梗係金鐘啦,我表哥講嘅」——一個叫「trainboi2012」嘅陌生人打嘅。一個陌生人同 AI 講法一樣,唔係查證,係回音。思拿隊長督一督你去官方網頁……上面寫:香港大學站,70 米。"},
-    ask:{en:"What's the difference between “someone agrees” and “it's confirmed”?", zh:"「有人同意」同「獲得證實」,差喺邊?"},
-    next:{flag:"pasted", then:"end", else:"b3"}},
-  c2c:{type:"out", tone:"wise", step:"verify",
-    text:{en:"Uncle doesn't even blink: “HKU. Seventy metres. The lifts are FAMOUS.” Then he sends a news clip proving it. People can be sources too — when they can show you receipts.",
-          zh:"舅父眼都唔眨:「香港大學站。七十米。啲𨋢出晒名。」跟住仲 send 段新聞片做證。人都可以係來源——只要佢攞得出「單據」。"},
-    ask:{en:"What made Uncle a good source — being family, or having receipts?", zh:"舅父點解信得過——因為佢係屋企人,定因為佢攞得出證據?"},
-    next:{flag:"pasted", then:"end", else:"b3"}},
-
-  b3:{step:"own",
-    text:{en:"Presentation day. Your slide reads: “Deepest: HKU Station (~70 m) — checked: MTR info + news.” Afterwards Mei asks: “How come YOURS was right? Three groups wrote Admiralty.”",
-          zh:"報告日。你張 slide 寫住:「最深:香港大學站(約 70 米)——已查證:港鐵資料+新聞」。完咗之後阿美問你:「點解你哋組會啱嘅?有三組都寫咗金鐘。」"},
-    choices:[
-      {t:{en:"Show her the two-source trick: never trust one voice, however confident.", zh:"教佢「兩個來源」呢招:一把聲幾有信心都好,唔好淨信一把。"}, tone:"wise", fx:{own:1, question:1}, next:"c3a"},
-      {t:{en:"Shrug. “I'm just smart like that.” 😏", zh:"耍下膊:「天生醒目,冇辦法。」😏"}, tone:"mixed", next:"c3b"}
-    ]},
-  c3a:{type:"out", tone:"wise", step:"own",
-    text:{en:"Mei's eyes go wide: “The other groups all asked the same AI… that's why they're all wrong the same WAY.” Now two of you check things. It spreads — the good way.",
-          zh:"阿美眼都大埋:「嗰三組咪即係問咗同一個 AI……所以先錯得一模一樣!」而家識查證嘅人有兩個。呢樣嘢都會傳染——係好嗰種。"},
-    ask:{en:"Three groups, one AI, one identical mistake. What does that tell you?", zh:"三組人、一個 AI、一個一模一樣嘅錯。呢件事話緊你知乜?"},
-    next:"end"},
-  c3b:{type:"out", tone:"mixed", step:"own",
-    text:{en:"She rolls her eyes and walks off. You WERE smart — but the checking method dies with the secret, and next week the one copying answers might be you.",
-          zh:"佢反咗個白眼就走。你的確係醒——但個查證方法同個秘密一齊收埋咗;下個星期,抄答案嗰個隨時係你。"},
-    ask:{en:"Skills you share come back to you. What happens to skills you hide?", zh:"分享出去嘅技能會回流。收埋嘅技能會點?"},
-    next:"end"},
-
   end:{type:"end",
-    text:{en:"Confidence is a sound. What's your move when something SOUNDS sure?", zh:"自信只係一種聲線。下次有嘢「聽落」好肯定,你嘅標準動作係乜?"}}
+    text:{en:"Confidence is a sound, not a source. What's your move when something just SOUNDS sure?", zh:"自信只係一種聲線,唔係出處。下次有嘢「聽落」好肯定,你嘅標準動作係乜?"}}
  }
 },
 
@@ -1108,7 +1250,21 @@ debriefQs:{
 const SAVE_KEY="tfq_v1";
 const DEFAULTS={screen:"home",lang:"zh",tier:"pi",si:0,node:null,
   skills:{pause:0,question:0,verify:0,decide:0,own:0},
-  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub",muted:false};
+  flags:{},log:[],done:[],checksDone:[],snaps:[],rewinds:0,name:"",licNo:null,unlocked:1,debriefFrom:"hub",muted:false,
+  fb:null,flagship:{}};
+
+/* Dev A/B toggle: ?m4=classic (or localStorage tfq_m4=classic) swaps the new
+   flag-then-check Mission 4 back to the original multiple-choice version, so the
+   two can be A/B-tested in the same build. window.TFQm4('classic'|'flag') sets it. */
+function applyDevFlags(){
+  try{
+    let m4=null;
+    if(window.location&&/[?&]m4=classic/.test(window.location.search))m4="classic";
+    else{try{m4=localStorage.getItem("tfq_m4");}catch(e){}}
+    if(m4==="classic"&&C._classicM4){C.scenarios[3]=C._classicM4;}
+  }catch(e){}
+}
+try{window.TFQm4=function(v){try{localStorage.setItem("tfq_m4",v||"flag");}catch(e){}location.reload();};}catch(e){}
 
 /* ---- synthesized SFX (designer kit: assets/sfx.js equivalent, inline) ----
    WebAudio only — no files, no network. Context created lazily on first
@@ -1348,6 +1504,9 @@ function startScenario(i){
   TFSFX.tap();
   Object.keys(typingShown).forEach(function(k){if(k.indexOf(i+":")===0)delete typingShown[k];});
   S.si=i; S.node=C.scenarios[i].start; S.flags={}; S.snaps=[];
+  const startNode=C.scenarios[i].nodes[C.scenarios[i].start];
+  S.fb=(startNode&&startNode.type==="flag")?{sel:{},checked:{},reflection:"",tool:null,bucket:null}:null;
+  if(C.scenarios[i].id){delete S.flagship[C.scenarios[i].id];}  /* replay clears the old measurement */
   S.log=S.log.filter(function(e){return e.si!==i;});   /* replay replaces old record */
   S.screen="scene"; save(); render();
 }
@@ -1361,7 +1520,7 @@ function renderScene(){
     '<div class="shead"><span class="tag">'+esc(ui("mission"))+' '+(S.si+1)+' / '+C.scenarios.length+' · '+scn.icon+' '+esc(tt(scn.title))+'</span>'+
     (cast?'<span class="cast">'+cast+'</span>':"")+'</div>'+
     loopChips(n.step||null);
-  if(S.node===scn.start&&ART[SCENE_ART[S.si]]){
+  if(S.node===scn.start&&n.type!=="flag"&&ART[SCENE_ART[S.si]]){
     h+='<div class="scenebox tf-enter">'+ART[SCENE_ART[S.si]]+'</div>';
   }
   if(n.type==="end"){
@@ -1388,6 +1547,10 @@ function renderScene(){
     }
     h+='<button class="btn primary" onclick="advance()">'+esc(ui("continueBtn"))+'</button>';
     if(S.snaps.length>0){h+='<button class="btn ghost tf-wiggle" onclick="rewind()">'+art("icon-rewind",null,20)+' '+esc(ui("rewind"))+'</button>';}
+  }else if(n.type==="flag"){
+    h+=renderFlagBoard(n);
+  }else if(n.type==="reveal"){
+    h+=renderReveal(n);
   }else if(n.typing&&!typingShown[nodeKey]&&!reducedMotion()){
     /* chatbot beats: show typing dots, then reveal the message */
     h+=typingBubble();
@@ -1412,6 +1575,124 @@ function renderScene(){
   h+='</div>';
   $("app").innerHTML=h;
 }
+
+/* ===== flag-then-check primitives (v2.0 flagship interaction model) =====
+   Generic over a node's claims[] + check{} data, so the other five scenarios can
+   adopt the same mechanic by copying a board+reveal pair and swapping the content.
+     renderFlagBoard(node) — the AI answer as tappable claim chips + a scripted
+                             check tool (lateral reading); no labelled right/wrong.
+     lockFlags()           — scores CALIBRATION (accuracy, not suspicion) into the
+                             existing meter/profile/debrief via tone/axis/fx/log.
+     renderReveal(node)    — truth board + consequence + (Pilot) free-text reflection.
+   All state lives in S.fb (serialisable) so language toggle / refresh never lose it,
+   and the commit is snapshotted so the back button (rewind) recomputes the meter. */
+function flagClaims(n){ const c=n.claims; return Array.isArray(c)?c:(c[S.tier]||c.pi||c.ex); }
+
+function renderFlagBoard(n){
+  if(!S.fb)S.fb={sel:{},checked:{},reflection:"",tool:null,bucket:null};
+  const claims=flagClaims(n);
+  if(S.fb.tool!==null&&S.fb.tool!==undefined){ return checkToolHTML(n,claims); }
+  let h=sonarBubble(tt(n.sonar),"sonar-point");
+  h+='<div class="ans"><div class="ans-head">'+art("avatar-smarty",null,32)+
+     '<span><b>'+esc(tt(n.assistant))+'</b><br><span class="muted" style="font-size:.76rem">'+esc(tt(n.topic))+'</span></span></div>'+
+     '<div class="muted" style="font-size:.86rem;margin:4px 0 10px;white-space:pre-line">'+esc(tt(n.intro))+'</div>'+
+     '<div class="instab">'+esc(tt(n.instab))+'</div>';
+  claims.forEach(function(c,i){
+    const on=!!S.fb.sel[i], chk=!!S.fb.checked[i];
+    h+='<button class="claim'+(on?" on":"")+'" aria-pressed="'+(on?"true":"false")+'" onclick="toggleFlag('+i+')">'+
+       '<span class="flagdot" aria-hidden="true">'+(on?"🚩":"")+'</span>'+
+       '<span class="ctext">'+esc(tt(c.text))+'</span>'+
+       (chk?'<span class="cchecked">'+esc(tt(n.checkedTag))+'</span>':'')+
+       '</button>';
+  });
+  h+='</div>';
+  const nflag=Object.keys(S.fb.sel).filter(function(k){return S.fb.sel[k];}).length;
+  h+='<button class="btn" onclick="openCheckList()">'+esc(tt(n.checkBtn))+'</button>'+
+     '<button class="btn primary" onclick="lockFlags()">'+esc(tt(n.lockBtn))+(nflag?' · '+nflag+' '+esc(tt(n.flaggedLbl)):'')+'</button>';
+  return h;
+}
+function checkToolHTML(n,claims){
+  const t=S.fb.tool;
+  let h='<div class="tool"><div class="tool-head">'+art("sonar-point",null,30)+'<b>'+esc(tt(n.toolTitle))+'</b></div>';
+  if(t==="list"){
+    claims.forEach(function(c,i){
+      h+='<button class="chk" onclick="checkClaim('+i+')">'+esc(tt(c.text))+(S.fb.checked[i]?' · '+esc(tt(n.checkedTag)):'')+'</button>';
+    });
+  }else{
+    const c=claims[t];
+    h+='<div class="claim on" style="cursor:default"><span class="ctext">'+esc(tt(c.text))+'</span></div>'+
+       '<div class="srclbl">'+esc(tt(n.srcLbl))+'</div>';
+    (c.check.sources||[]).forEach(function(s){
+      h+='<div class="srccard"><b>🔎 '+esc(tt(s.title))+'</b><div class="muted" style="font-size:.84rem">'+esc(tt(s.snip))+'</div></div>';
+    });
+    const tone=c.status==="error"?"risky":c.status==="cant"?"mixed":"wise";
+    h+='<div class="outcome '+tone+'" style="margin-top:10px">'+esc(tt(c.check.truth))+'</div>';
+  }
+  h+='<button class="btn ghost" onclick="closeCheck()">'+esc(tt(n.toolBack))+'</button></div>';
+  return h;
+}
+function toggleFlag(i){ if(!S.fb)return; if(S.fb.sel[i])delete S.fb.sel[i]; else S.fb.sel[i]=true; TFSFX.tap(); save(); render(); }
+function openCheckList(){ if(!S.fb)return; S.fb.tool="list"; TFSFX.tap(); save(); render(); }
+function checkClaim(i){ if(!S.fb)return; S.fb.tool=i; S.fb.checked[i]=true; TFSFX.tick(); save(); render(); }
+function closeCheck(){ if(!S.fb)return; S.fb.tool=null; TFSFX.tap(); save(); render(); }
+
+/* calibration: reward accuracy, not blanket suspicion (and not blanket trust) */
+function computeCalib(n){
+  const claims=flagClaims(n), sel=S.fb.sel||{}, chk=S.fb.checked||{};
+  let errIdx=-1; claims.forEach(function(c,i){ if(c.status==="error")errIdx=i; });
+  const flagged=claims.map(function(c,i){return i;}).filter(function(i){return sel[i];});
+  const caught=errIdx>=0&&!!sel[errIdx];
+  const overflag=flagged.some(function(i){return claims[i].status!=="error";});
+  const usedTool=Object.keys(chk).some(function(k){return chk[k];});
+  const checkedErr=errIdx>=0&&!!chk[errIdx];
+  let bucket=(caught&&!overflag)?"calibrated":(overflag?"overreject":"overrely");
+  return {bucket:bucket,caught:caught,overflag:overflag,usedTool:usedTool,checkedErr:checkedErr};
+}
+function lockFlags(){
+  const n=nodeOf(S.node), r=computeCalib(n);
+  let fx={},tone,axis=null,label;
+  if(r.bucket==="calibrated"){ fx={question:2,verify:r.checkedErr?2:1}; tone="wise"; label=C.ui.runCalibrated; }
+  else if(r.bucket==="overreject"){ fx=r.usedTool?{verify:1}:{}; tone="mixed"; axis="guard"; label=C.ui.runOverreject; }
+  else { fx={}; tone="risky"; axis="trust"; label=C.ui.runOverrely; }
+  S.snaps.push({node:S.node,skills:JSON.parse(JSON.stringify(S.skills)),flags:JSON.parse(JSON.stringify(S.flags)),logLen:S.log.length,fb:JSON.parse(JSON.stringify(S.fb))});
+  for(const k in fx){S.skills[k]=Math.max(0,(S.skills[k]||0)+fx[k]);}
+  if(tone==="risky"&&n.step){const had=S.skills[n.step]||0;S.skills[n.step]=Math.max(0,had-(C.riskyPenalty||0));meterHit=(S.skills[n.step]<had)?n.step:null;}
+  S.log.push({si:S.si,node:S.node,tier:S.tier,tone:tone,axis:axis,label:label});
+  S.flagship[cur().id]={caughtError:r.caught,overFlagged:r.overflag,usedCheckTool:r.usedTool,checkedError:r.checkedErr,bucket:r.bucket,reflection:(S.fb.reflection||"")};
+  S.fb.bucket=r.bucket;
+  TFSFX[tone==="wise"?"wise":tone==="risky"?"risky":"mixed"]();
+  S.node=resolveNext(n.next); save(); render();
+}
+function renderReveal(n){
+  meterHit=null;
+  const bucket=(S.fb&&S.fb.bucket)||"overrely", ov=n.out[bucket]||n.out.overrely;
+  const boardNode=cur().nodes[cur().start], claims=flagClaims(boardNode), sel=(S.fb&&S.fb.sel)||{};
+  let h='<div class="outcome '+ov.tone+(ov.tone==="wise"?" tf-glow":"")+'"><div class="verdict">'+TONE_ICON[ov.tone]+' '+esc(ui(TONE_LABEL[ov.tone]))+
+     (ov.tone==="wise"?" "+art("sticker-wise","tf-pop",34):"")+'</div>'+
+     '<div class="story">'+esc(tt(ov.text))+'</div></div>';
+  h+='<div class="truthboard"><div class="tb-head">'+esc(tt(n.truthLbl))+'</div>';
+  claims.forEach(function(c,i){
+    const mark=c.status==="error"?"✗":c.status==="cant"?"❓":"✓";
+    const cls=c.status==="error"?"err":c.status==="cant"?"cant":"ok";
+    const flagged=!!sel[i];
+    const good=(c.status==="error"&&flagged)||(c.status!=="error"&&!flagged);
+    h+='<div class="tbrow '+cls+(good?" good":" miss")+'"><span class="tbmark">'+mark+'</span>'+
+       '<span class="tbtext">'+esc(tt(c.text))+'</span>'+
+       (flagged?'<span class="tbflag">🚩 '+esc(tt(n.yourFlags))+'</span>':'')+'</div>';
+  });
+  h+='</div>';
+  h+='<p class="muted" style="margin:8px 0 2px;font-size:.78rem;font-weight:800">'+esc(ui("sonarAsks"))+'</p>'+
+     sonarBubble(tt(ov.ask),ov.tone==="wise"?"sonar-celebrate":ov.tone==="risky"?"sonar-worried":"sonar-thinking",ov.tone==="wise"?"tf-hop":"tf-bob");
+  if(S.tier==="pi"){
+    h+='<label class="reflabel" for="refl">'+esc(tt(n.reflectQ))+'</label>'+
+       '<input id="refl" class="name" maxlength="140" value="'+esc((S.fb&&S.fb.reflection)||"")+'" placeholder="'+esc(tt(n.reflectPh))+'" oninput="setReflection(this.value)">';
+  }
+  h+='<button class="btn primary" onclick="revealContinue()">'+esc(ui("continueBtn"))+'</button>';
+  if(S.snaps.length>0){h+='<button class="btn ghost tf-wiggle" onclick="rewind()">'+art("icon-rewind",null,20)+' '+esc(ui("rewind"))+'</button>';}
+  return h;
+}
+function setReflection(v){ if(S.fb){S.fb.reflection=v.slice(0,140); if(S.flagship[cur().id])S.flagship[cur().id].reflection=S.fb.reflection; save();} }
+function revealContinue(){ const n=nodeOf(S.node); TFSFX.tap(); meterHit=null; S.node=resolveNext(n.next); save(); render(); }
 
 function choose(i){
   const n=nodeOf(S.node); const ch=choicesOf(n)[i];
@@ -1438,6 +1719,7 @@ function rewind(){
   const sp=S.snaps.pop(); if(!sp)return;
   TFSFX.rewind();
   S.node=sp.node; S.skills=sp.skills; S.flags=sp.flags; S.log.length=sp.logLen;
+  if(sp.fb!==undefined)S.fb=sp.fb;   /* restore flag-board selections (flagship) */
   S.rewinds++; rewindPraise=true; meterHit=null; save(); render();
 }
 function finishScenario(){
@@ -1597,6 +1879,7 @@ function renderDebrief(){
       C.stepOrder.map(function(k){return esc(tt(C.steps[k].name))+" "+Math.min(S.skills[k]||0,C.target)+"/"+C.target;}).join(" · ")+
     '</p>'+
     profileDebriefHTML()+
+    flagshipDebriefHTML()+
     '<div class="tones">'+esc(ui("toneWise"))+' · '+esc(ui("toneMixed"))+' · '+esc(ui("toneRisky"))+'</div>'+
     '<h3>'+esc(ui("choicesMade"))+'</h3>';
   C.scenarios.forEach(function(scn,i){
@@ -1607,7 +1890,8 @@ function renderDebrief(){
       h+='<ul>';
       entries.forEach(function(e){
         const n=scn.nodes[e.node]; let label="";
-        if(n){const cs=choicesOf(n,e.tier); const ch=cs&&cs[e.idx]; if(ch)label=tt(ch.t);}
+        if(e.label){label=tt(e.label);}   /* flag-then-check entries carry a label */
+        else if(n){const cs=choicesOf(n,e.tier); const ch=cs&&cs[e.idx]; if(ch)label=tt(ch.t);}
         h+='<li>'+(TONE_ICON[e.tone]||"·")+' '+esc(label)+'</li>';
       });
       h+='</ul>';
@@ -1618,12 +1902,48 @@ function renderDebrief(){
   h+='<h3>'+esc(ui("discussion"))+'</h3><ol class="qs">';
   qs.forEach(function(q){h+='<li>'+esc(tt(q))+'</li>';});
   h+='</ol><p class="muted" style="font-size:.75rem">'+esc(ui("footer"))+'</p></div>';
+  h+='<details class="card no-print"><summary>'+esc(ui("exportTitle"))+'</summary>'+
+     '<textarea id="exportta" readonly rows="8" style="width:100%;font-family:monospace;font-size:.72rem;border:2.5px solid var(--ink);border-radius:10px;padding:8px;margin-top:8px">'+esc(exportJSON())+'</textarea>'+
+     '<button class="btn" id="copybtn" onclick="copyExport()">'+esc(ui("copyBtn"))+'</button></details>';
   h+='<div class="no-print">'+
     '<button class="btn primary" onclick="window.print()">'+esc(ui("print"))+'</button>'+
     '<button class="btn ghost" onclick="debriefBack()">'+esc(ui("back"))+'</button></div>';
   $("app").innerHTML=h;
 }
 function debriefBack(){S.screen=(S.debriefFrom==="end")?"end":"hub";save();render();}
+
+/* adult-facing flag-then-check diagnostic — Debrief Sheet only */
+function flagshipDebriefHTML(){
+  const keys=Object.keys(S.flagship||{});
+  if(keys.length===0)return "";
+  let h='<h3>🔎 '+esc(ui("flagshipDiag"))+'</h3>';
+  keys.forEach(function(id){
+    const r=S.flagship[id];
+    let scn=null; C.scenarios.forEach(function(s){if(s.id===id)scn=s;}); if(!scn&&C._classicM4&&C._classicM4.id===id)scn=C._classicM4;
+    const title=scn?tt(scn.title):id;
+    const diag=r.bucket==="calibrated"?ui("diagCalibrated"):r.bucket==="overreject"?ui("diagOverreject"):ui("diagOverrely");
+    h+='<p class="muted" style="font-size:.85rem"><b>'+esc(title)+':</b> '+esc(diag)+'<br>'+
+       esc(ui("usedToolLbl"))+': '+(r.usedCheckTool?"✓":"✗");
+    if(r.reflection){h+=' · '+esc(ui("reflectionLbl"))+': “'+esc(r.reflection)+'”';}
+    else if(S.tier==="pi"){h+=' · '+esc(ui("reflectionLbl"))+': '+esc(ui("noReflection"));}
+    h+='</p>';
+  });
+  return h;
+}
+function exportJSON(){
+  return JSON.stringify({
+    app:"think-first-ai-quest", v:"2.0", date:new Date().toISOString(),
+    tier:S.tier, lang:S.lang, profile:computeProfile().key,
+    skills:S.skills, rewinds:S.rewinds, flagship:S.flagship,
+    log:S.log.map(function(e){return {si:e.si,tone:e.tone,axis:e.axis||null};})
+  },null,2);
+}
+function copyExport(){
+  const ta=$("exportta");
+  if(ta){try{ta.focus();ta.select();document.execCommand("copy");}catch(e){}}
+  try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(exportJSON());}catch(e){}
+  const b=$("copybtn"); if(b)b.textContent=ui("copied");
+}
 
 /* adult-facing profile diagnostic — Debrief Sheet only */
 function profileDebriefHTML(){
@@ -1658,6 +1978,7 @@ function resetAll(){
   if(confirm(ui("confirmReset"))){resetProgress();S.screen="home";save();render();}
 }
 
+applyDevFlags();
 render();
 </script>
 </body>

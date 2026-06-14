@@ -141,3 +141,40 @@ Single self-contained HTML (inline CSS + vanilla JS, `'use strict'`), no fonts/C
 backend/build. Mobile-first, ≥44 px targets, semantic buttons, keyboard navigable,
 `prefers-reduced-motion` respected, print stylesheet for the debrief. Progress in
 memory + `localStorage` (`try/catch` fallback). Target < 500 KB.
+
+## 10. Flag-then-check interaction model (v2.0) — flagship: Mission 4
+
+The original scenarios are branching multiple-choice: a labelled menu ("Trust it /
+Check it") does the pausing for the child. v2.0 reinvents the *in-scenario interaction*
+so the child **performs** the judgment. Mission 4 ("The Confident Wrong Answer") is the
+proving ground; the other five are unchanged and ship as-is.
+
+**Mechanic — flag, then check.** The AI gives a fluent, confident, well-formatted answer
+about Hong Kong geography. The child **taps the specific claims that seem off** (active
+reading), can open a **scripted, deterministic check tool** (2–3 source cards) to
+cross-check, then locks in. Nothing is labelled right/wrong until the reveal.
+
+**The fact (stable, verified).** Planted error: "Hong Kong's highest point is Victoria
+Peak." Truth: **Tai Mo Shan, 957 m**; Victoria Peak is 552 m. Pilot tier makes it subtle
+("Victoria Peak, at 552 m" — the *number* is right for Victoria Peak, the *superlative*
+is false) and adds an unverifiable "can't-tell" claim so the child must separate *wrong*
+from *unverifiable*. Correct claims (area ≈1,114 km²; Lantau largest island; ~40% country
+parks; Chinese+English official; 260+ islands) make blanket-flagging a miscalibration.
+
+**Calibration, not suspicion.** Caught the error + didn't over-flag → wise (+QUESTION,
++VERIFY). Flagged accurate/can't-tell claims → over-rejection (`axis:"guard"` → Ground
+Crew signal). Missed it → over-reliance (`axis:"trust"` → Autopilot signal). Flagging
+everything scores like trusting everything: the healthy middle is the only rewarded path.
+
+**Data instrument.** `S.flagship[id] = {caughtError, overFlagged, usedCheckTool,
+checkedError, bucket, reflection}` (Pilot adds an optional one-line free-text reflection).
+The adult Debrief shows a plain diagnostic ("missed the error and didn't cross-check →
+over-reliance signal") and a copy-paste **JSON export** for aggregating pilot results;
+child screens and the certificate stay growth-framed.
+
+**Reusability.** Two generic node types, `type:"flag"` and `type:"reveal"`, driven by
+`claims[]`/`check{}` data — documented inline and in EDIT-GUIDE §9 as the template for
+re-skinning the other five. All board state is in `S.fb` (serialisable: language toggle
+and refresh safe), and the commit is snapshotted so the back button (rewind) recomputes
+the meter. The original multiple-choice M4 is preserved at `C._classicM4` behind a dev
+toggle (`?m4=classic`) for A/B testing with pilot kids.
